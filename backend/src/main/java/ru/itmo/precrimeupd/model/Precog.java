@@ -12,22 +12,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "precogs")
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Precog {
+public class PreCog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String precogName;
+    private String preCogName;
     private int age;
-    private int dopamineLevel;
-    private int serotoninLevel;
-    private int stressLevel;
+    @Builder.Default
+    private int dopamineLevel = 100;
+    @Builder.Default
+    private int serotoninLevel = 100;
+    @Builder.Default
+    private int stressLevel = 100;
     @Builder.Default
     private boolean isOk = true;
-    // can be added date of commissioning
     @CreationTimestamp
     private LocalDateTime commissionedOn;
 }

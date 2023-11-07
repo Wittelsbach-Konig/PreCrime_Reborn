@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface CardRepository extends JpaRepository<CrimeCard, Long> {
     Optional<CrimeCard> findById(Long id);
-
 }

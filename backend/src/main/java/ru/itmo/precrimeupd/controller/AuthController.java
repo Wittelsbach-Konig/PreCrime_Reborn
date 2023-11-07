@@ -22,10 +22,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<String> loginPage(){
-        return new ResponseEntity<>("auth/login", HttpStatus.OK) ;
-    }
+
 
     @GetMapping("/registration")
     public ResponseEntity<RegistrationDto> getRegistrationPage() {

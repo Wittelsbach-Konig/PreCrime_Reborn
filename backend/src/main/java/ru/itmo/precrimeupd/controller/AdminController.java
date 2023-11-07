@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.precrimeupd.dto.RegistrationDto;
+import ru.itmo.precrimeupd.dto.VisionDto;
 import ru.itmo.precrimeupd.model.UserEntity;
+import ru.itmo.precrimeupd.model.Vision;
 import ru.itmo.precrimeupd.service.UserService;
+import ru.itmo.precrimeupd.service.VisionService;
 
 import java.util.List;
 

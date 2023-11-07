@@ -28,4 +28,5 @@ public class CrimeCard {
     private UserEntity responsibleDetective;
     @Builder.Default
     private Boolean approve = false;
+
 }
