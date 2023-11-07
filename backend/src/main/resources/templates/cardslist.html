@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Card List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charSet="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/card_table.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic|Playfair+Display:400,700&subset=latin,cyrillic">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script src="js/incest.js"></script>
+</head>
+<body>
+<div class="widget_prof">
+    <h3 class="widget-title">Profile</h3>
+    <a href="/cabinet" class="but-logout">Return</a>
+    <a href="/login" class="but-logout">Logout</a>
+</div>
+<div class="widget">
+    <div class="table-container">
+    <h1>Card List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Crime scene</th>
+                <th>The instrument of the crime</th>
+                <th>Time of the crime</th>
+                <th>Type of murder</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="card : ${cards}">
+                <td th:text="${card.placeofcrime}"></td>
+                <td th:text="${card.weapon}"></td>
+                <td th:text="${{card.crimetime}}"></td>
+                <td th:text="${card.typecrime}"></td>
+                <td><a th:href="@{/cards/{id}(id=${card.id})}">View</a></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+</div>
+</body>
+</html>
