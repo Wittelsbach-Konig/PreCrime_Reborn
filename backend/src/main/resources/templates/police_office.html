@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cabinet.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic|Playfair+Display:400,700&subset=latin,cyrillic">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script>
+        var stompClient = null;
+        var notification = null; // Переменная для хранения уведомления
+        var isNotificationVisible = false;
+
+        function connect() {
+            var socket = new SockJS('/websocket');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                stompClient.subscribe('/topic/notifications', function(notification) {
+                    notification = JSON.parse(notification.body)
+                    showNotification(notification);
+                });
+                // Запрашиваем последнее уведомление при подключении
+                stompClient.send("/app/notifications/latest", {});
+            });
+        }
+
+        function showNotification(data) {
+            notification = data; // Сохраняем уведомление в переменной
+
+            var notificationDiv = document.getElementById('notification');
+            var notificationMessage = document.getElementById('notificationMessage');
+            var showButton = document.getElementById('showButton');
+            var hideButton = document.getElementById('hideButton');
+
+            if (notification) {
+                notificationMessage.innerHTML = notification.message;
+                notificationDiv.style.display = "block"; // Показываем уведомление
+                notificationDiv.className = "notification"
+                showButton.style.display = "none"; // Скрываем кнопку "Показать"
+                hideButton.style.display = "block"; // Показываем кнопку "Скрыть"
+                isNotificationVisible = true;
+            } else {
+                hideNotification();
+            }
+        }
+
+        function hideNotification() {
+
+            var notificationDiv = document.getElementById('notification');
+            var showButton = document.getElementById('showButton');
+            var hideButton = document.getElementById('hideButton');
+
+            notificationDiv.style.display = "none"; // Скрываем уведомление
+            showButton.style.display = "block"; // Показываем кнопку "Показать"
+            hideButton.style.display = "none"; // Скрываем кнопку "Скрыть"
+            isNotificationVisible = false;
+        }
+
+        function toggleNotification() {
+            if (isNotificationVisible) {
+                hideNotification();
+            } else {
+                showNotification(notification);
+            }
+        }
+
+        connect();
+    </script>
+    <style>
+        .notification {
+            position: absolute;
+            left: 22%;
+            bottom: 2%;
+            width: 60%;
+            height: 10%;
+            padding: 3%;
+            color: #ff0000;
+            animation: blink 1s infinite;
+        }
+        .button {
+            margin-top: 10px;
+        }
+    </style>
+</head>  
+    
+    <body>
+
+        <img class="logo" th:src="@{image/logo.png}" alt="Логотип">
+            <div class="widget">
+                <a href="/cardslist" class="but">View Crime Cards</a>
+                <a href="/investigation" class="but">Investigate Crime</a>
+
+                <div id="notification">
+                    <span id="notificationMessage"></span>
+                </div>
+                <button id="showButton" class="but" onclick="toggleNotification()">Показать уведомление</button>
+                <button id="hideButton" class="but" style="display: none;" onclick="toggleNotification()">Скрыть уведомление</button>
+
+            </div>
+        <div class="widget_prof">
+            <h3 class="widget-title">Profile</h3>
+            <a href="/login" class="but-log">Logout</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <link rel="stylesheet" th:href="@{/css/styles.css}">
+      <script th:src="@{/js/script.js}"></script>
+      <title>My Website</title>
+  </head>
+  <body>
+    <header th:insert="~{includes/header.html :: header}">      
+    </header>
+    <main>
+      <h1>Welcome to My Website</h1>
+      <p>This is a basic template with CSS and JS files included.</p>
+      <div class="image-container">
+        <img class="logo" th:src="@{image/logo.png}" alt="Логотип">
+      </div>
+      <button id="myButton">Click Me</button>
+
+      <script th:inline="javascript">
+          // JavaScript code
+          document.getElementById("myButton").addEventListener("click", function() {
+              alert("Button clicked!");
+          });
+      </script>
+    </main>
+    <footer th:insert="~{includes/footer.html :: footer}">    
+    </footer>
+  </body>
+</html>
