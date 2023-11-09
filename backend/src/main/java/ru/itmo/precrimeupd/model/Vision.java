@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity(name = "visions")
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
