@@ -9,7 +9,7 @@ import ru.itmo.precrimeupd.model.PreCog;
 import ru.itmo.precrimeupd.service.PreCogService;
 
 import java.util.List;
-
+@RequestMapping("/api/v1/precogs")
 @RestController
 public class PreCogController {
     private PreCogService preCogService;
@@ -19,7 +19,7 @@ public class PreCogController {
         this.preCogService = preCogService;
     }
 
-    @GetMapping("/precogs")
+    @GetMapping
     public ResponseEntity<List<PreCog>> getAllPreCogs() {
         List<PreCog> preCogs = preCogService.getAllPreCogs();
         if(preCogs.isEmpty()){
@@ -28,21 +28,21 @@ public class PreCogController {
         return new ResponseEntity<>(preCogs, HttpStatus.OK);
     }
 
-    @GetMapping("/precogs/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PreCog> getPreCog(@PathVariable Long id) {
         PreCog preCog = preCogService.getPreCog(id);
         return preCog != null ? new ResponseEntity<>(preCog, HttpStatus.OK)
                               : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/precogs/newprecog")
+    @PostMapping("/newprecog")
     public ResponseEntity<String> addNewPreCog(@RequestBody PreCogDto preCogDto) {
         // add check if precog already exists ??
         preCogService.addNewPreCog(preCogDto);
         return new ResponseEntity<>("New PreCog successfully added", HttpStatus.CREATED);
     }
 
-    @PutMapping("/precogs/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatePreCogInfo(@PathVariable Long id
                                                     , @RequestBody PreCogDto preCogDto) {
         PreCog preCog = preCogService.getPreCog(id);
@@ -54,7 +54,7 @@ public class PreCogController {
         return new ResponseEntity<>("Precog successfully updated", HttpStatus.OK);
     }
 
-    @PutMapping("/precogs/{id}/enterdopamine")
+    @PutMapping("/{id}/enterdopamine")
     public ResponseEntity<String> enterDopamineToPreCog(@PathVariable Long id, @RequestBody int amount) {
         PreCog preCog = preCogService.getPreCog(id);
         if (preCog == null){
@@ -70,7 +70,7 @@ public class PreCogController {
         return new ResponseEntity<>("Dopamine successfully added", HttpStatus.OK);
     }
 
-    @PutMapping("/precogs/{id}/enterserotonin")
+    @PutMapping("/{id}/enterserotonin")
     public ResponseEntity<String> enterSerotoninToPreCog(@PathVariable Long id
                                                         , @RequestBody int amount){
         PreCog preCog = preCogService.getPreCog(id);
@@ -86,7 +86,7 @@ public class PreCogController {
         return new ResponseEntity<>("Serotonine successfully added", HttpStatus.OK);
     }
 
-    @PutMapping("/precogs/{id}/enterdepressant")
+    @PutMapping("/{id}/enterdepressant")
     public ResponseEntity<String> enterDepressantToPreCog(@PathVariable Long id, @RequestBody int amount){
         PreCog preCog = preCogService.getPreCog(id);
         if (preCog == null){
@@ -102,7 +102,7 @@ public class PreCogController {
         return new ResponseEntity<>("Depressant successfully added", HttpStatus.OK);
     }
 
-    @PostMapping("/precogs/{id}/retire")
+    @PostMapping("/{id}/retire")
     public ResponseEntity<String> retirePreCog(@PathVariable Long id) {
         PreCog preCog = preCogService.getPreCog(id);
         if (preCog == null){
@@ -112,7 +112,7 @@ public class PreCogController {
         return new ResponseEntity<>("Precog successfully retired", HttpStatus.OK);
     }
 
-    @PostMapping("/precogs/{id}/rehabilitate")
+    @PostMapping("/{id}/rehabilitate")
     public ResponseEntity<String> rehabilitatePreCog(@PathVariable Long id) {
         PreCog preCog = preCogService.getPreCog(id);
         if (preCog == null){
@@ -122,7 +122,7 @@ public class PreCogController {
         return new ResponseEntity<>("Precog successfullt rehabilitated", HttpStatus.OK);
     }
 
-    @DeleteMapping("/precogs/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePreCog (@PathVariable Long id) {
         PreCog preCog = preCogService.getPreCog(id);
         if (preCog == null){

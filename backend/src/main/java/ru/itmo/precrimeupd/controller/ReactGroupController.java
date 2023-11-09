@@ -18,7 +18,7 @@ import ru.itmo.precrimeupd.service.ReactGroupService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/reactiongroup")
 public class ReactGroupController {
     private ReactGroupService reactGroupService;
     private CardService cardService;
@@ -33,20 +33,20 @@ public class ReactGroupController {
         this.groupResourceService = groupResourceService;
     }
 
-    @GetMapping("/reactiongroup")
+    @GetMapping
     public ResponseEntity<List<ReactGroup>> getAllGroups(){
         List<ReactGroup> reactGroups = reactGroupService.getAllMembers();
         return new ResponseEntity<>(reactGroups, HttpStatus.OK);
     }
 
-    @GetMapping("/reactiongroup/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ReactGroup> getReactGroup(@PathVariable Long id){
         ReactGroup reactGroup = reactGroupService.findGroupMemberById(id);
         return reactGroup != null ? new ResponseEntity<>(reactGroup, HttpStatus.OK)
                                   : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/reactiongroup/criminal")
+    @GetMapping("/criminal")
     public ResponseEntity<List<Criminal>> getAllCriminals() {
         List<Criminal> criminals = cardService.getAllCriminals();
         if(criminals.isEmpty()){
@@ -55,14 +55,14 @@ public class ReactGroupController {
         return new ResponseEntity<>(criminals, HttpStatus.OK);
     }
 
-    @GetMapping("/reactiongroup/criminal/{id}")
+    @GetMapping("/criminal/{id}")
     public ResponseEntity<Criminal> getCriminal(@PathVariable Long id){
         Criminal criminal = cardService.getCriminalById(id);
         return criminal != null ? new ResponseEntity<>(criminal, HttpStatus.OK)
                                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/reactiongroup/supply")
+    @GetMapping("/supply")
     public ResponseEntity<List<GroupResource>> getResources() {
         List<GroupResource> resources = groupResourceService.getAllResources();
         if(resources.isEmpty()){
@@ -71,7 +71,7 @@ public class ReactGroupController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @GetMapping("/reactiongroup/supply/filter")
+    @GetMapping("/supply/filter")
     public ResponseEntity<List<GroupResource>> getResourcesByFilter(@RequestBody List<String> types){
         List<GroupResource> resources = groupResourceService.getResourcesByType(types);
         if(resources.isEmpty()){
@@ -80,7 +80,7 @@ public class ReactGroupController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @GetMapping("/reactiongroup/supply/{id}")
+    @GetMapping("/supply/{id}")
     public ResponseEntity<GroupResource> getResource(@PathVariable Long id){
         GroupResource resource = groupResourceService.findResourceById(id);
         if(resource == null){
@@ -89,7 +89,7 @@ public class ReactGroupController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
-    @PostMapping("/reactiongroup/newsupply")
+    @PostMapping("/newsupply")
     public ResponseEntity<String> addNewResource(@RequestBody ResourceDto resourceDto) {
         try {
             groupResourceService.addNewResource(resourceDto);
@@ -100,13 +100,13 @@ public class ReactGroupController {
         return new ResponseEntity<>("New resource added succesfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/reactiongroup/newman")
+    @PostMapping("/newman")
     public ResponseEntity<String> addNewMan(@RequestBody ReactGroupDto reactGroupDto){
         reactGroupService.createNewGroupMember(reactGroupDto);
         return new ResponseEntity<>("New group member added successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/reactiongroup/criminal/{id}")
+    @PostMapping("/criminal/{id}")
     public ResponseEntity<String> appointGroup(@PathVariable Long id, @RequestBody List<Long> peopleIds){
         Criminal criminal = cardService.getCriminalById(id);
         if(criminal == null) {
@@ -119,7 +119,7 @@ public class ReactGroupController {
         return new ResponseEntity<>("React group successfully appointed", HttpStatus.OK);
     }
 
-    @PutMapping("/reactiongroup/criminal/{id}")
+    @PutMapping("/criminal/{id}")
     public ResponseEntity<String> updateCriminalStatus (@PathVariable Long id, @RequestBody String status){
         Criminal criminal = cardService.getCriminalById(id);
         if(criminal == null) {
@@ -139,7 +139,7 @@ public class ReactGroupController {
         return new ResponseEntity<>("Criminal status successfully updated", HttpStatus.OK);
     }
 
-    @PutMapping("/reactiongroup/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateGroupMemberInfo(@PathVariable Long id
                                                 , @RequestBody ReactGroupDto reactGroupDto) {
         ReactGroup memberToUpdate = reactGroupService.findGroupMemberById(id);
@@ -150,7 +150,7 @@ public class ReactGroupController {
         return new ResponseEntity<>("Group successfully updated", HttpStatus.OK);
     }
 
-    @PutMapping("/reactiongroup/supply/{id}")
+    @PutMapping("/supply/{id}")
     public ResponseEntity<String> orderResource(@PathVariable Long id, @RequestBody int amount){
         GroupResource resourceToOrder = groupResourceService.findResourceById(id);
         if(resourceToOrder == null){
@@ -165,7 +165,7 @@ public class ReactGroupController {
         return new ResponseEntity<>("Resource successfully ordered", HttpStatus.OK);
     }
 
-    @DeleteMapping("/reactiongroup/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
         ReactGroup memberToDelete = reactGroupService.findGroupMemberById(id);
         if(memberToDelete == null) {
@@ -174,6 +174,5 @@ public class ReactGroupController {
         reactGroupService.deleteGroupMember(id);
         return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
     }
-
 
 }

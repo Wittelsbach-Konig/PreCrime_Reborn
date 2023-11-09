@@ -11,7 +11,7 @@ import ru.itmo.precrimeupd.service.VisionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/visions")
 public class VisionController {
 
     private VisionService visionService;
@@ -21,13 +21,13 @@ public class VisionController {
         this.visionService = visionService;
     }
 
-    @GetMapping("/visionslist")
+    @GetMapping
     public ResponseEntity<List<Vision>> getVisionsList(){
         List<Vision> visions = visionService.getVisionsList();
         return new ResponseEntity<>(visions, HttpStatus.OK);
     }
 
-    @PostMapping("/visions/{id}/accept")
+    @PostMapping("/{id}/accept")
     public ResponseEntity<String> acceptVision(@PathVariable Long id){
         Vision visionToAccept = visionService.findById(id);
         if(visionToAccept == null){
@@ -38,7 +38,7 @@ public class VisionController {
     }
 
     // only for ADMIN
-    @PostMapping("/visions/add")
+    @PostMapping("/add")
     public ResponseEntity<String> addNewVision(@RequestParam VisionDto vision) {
         Vision existingVision = visionService.findByUrl(vision.getVideoUrl());
         if(existingVision != null
@@ -51,7 +51,7 @@ public class VisionController {
         return new ResponseEntity<>("New vision successfully added", HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/visions/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVision(@PathVariable Long id){
         Vision visionToAccept = visionService.findById(id);
         if(visionToAccept == null){

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/cards")
 public class CrimeCardController {
     private CardService cardService;
 
@@ -23,13 +23,13 @@ public class CrimeCardController {
         this.cardService = cardService;
     }
 
-    @GetMapping("/cardslist")
+    @GetMapping
     public ResponseEntity<List<CrimeCard>> getAllCards(){
         List<CrimeCard> crimeCards = cardService.getAllCards();
         return new ResponseEntity<>(crimeCards, HttpStatus.OK);
     }
 
-    @GetMapping("/cardslist/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CrimeCard> getCard(@PathVariable Long id) {
         CrimeCard card = cardService.getCardById(id);
         return card != null ? new ResponseEntity<>(card, HttpStatus.OK)
@@ -67,7 +67,7 @@ public class CrimeCardController {
         return new ResponseEntity<>("Card added successfully", HttpStatus.CREATED);
     }
 
-    @PutMapping("/cardslist/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateCardData(@PathVariable Long id
                                                 , @RequestBody CrimeCardDto updatedCardDto) {
         CrimeCard card = cardService.getCardById(id);
@@ -78,7 +78,7 @@ public class CrimeCardController {
         return new ResponseEntity<>("Card successfully updated", HttpStatus.OK);
     }
 
-    @DeleteMapping("/cardslist/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCard(@PathVariable Long id) {
         CrimeCard card = cardService.getCardById(id);
         if(card == null){
@@ -87,7 +87,4 @@ public class CrimeCardController {
         cardService.deleteCard(id);
         return  new ResponseEntity<>("Card successfully deleted", HttpStatus.NO_CONTENT);
     }
-
-
-
 }
