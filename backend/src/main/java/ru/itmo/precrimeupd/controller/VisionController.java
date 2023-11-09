@@ -34,7 +34,7 @@ public class VisionController {
             return new ResponseEntity<>("Vision does not exist", HttpStatus.NOT_FOUND);
         }
         visionService.approveVision(id);
-        return new ResponseEntity<>("Vision successfully updated", HttpStatus.OK);
+        return new ResponseEntity<>("Vision successfully accepted", HttpStatus.OK);
     }
 
     // only for ADMIN

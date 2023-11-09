@@ -20,13 +20,14 @@ public class CrimeCard {
     private String placeOfCrime;
     private String weapon;
     private LocalDateTime crimeTime;
-    @ManyToOne
-    @JoinColumn(name = "crime_type_id", nullable = false)
+    @Enumerated(EnumType.STRING)
     private CrimeType typeOfCrime;
     @ManyToOne
     @JoinColumn(name = "responsible_detective_id", nullable = false)
     private UserEntity responsibleDetective;
     @Builder.Default
-    private Boolean approve = false;
-
+    private Boolean isCriminalCaught = false;
+    @OneToOne
+    @JoinColumn(name = "vision_id", nullable = false)
+    private Vision vision;
 }

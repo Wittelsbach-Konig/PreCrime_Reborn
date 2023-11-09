@@ -30,7 +30,7 @@ public class PreCog {
     @Builder.Default
     private int stressLevel = 100;
     @Builder.Default
-    private boolean isOk = true;
+    private boolean isWork = true;
     @CreationTimestamp
     private LocalDateTime commissionedOn;
 }
