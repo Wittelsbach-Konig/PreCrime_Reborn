@@ -16,5 +16,5 @@ public interface CardService {
     List<Criminal> getAllCriminals();
     Criminal getCriminalById(Long id);
     void updateCriminalStatus(Long id, CriminalStatus status);
-
+    void reportCardMistake(Long id, String messsage);
 }

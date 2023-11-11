@@ -9,6 +9,7 @@ import ru.itmo.precrimeupd.model.Role;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.repository.RoleRepository;
 import ru.itmo.precrimeupd.repository.UserRepository;
+import ru.itmo.precrimeupd.service.StatisticService;
 import ru.itmo.precrimeupd.service.UserService;
 
 import java.util.HashSet;
@@ -21,12 +22,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private StatisticService statisticService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository
+            , RoleRepository roleRepository
+            , PasswordEncoder passwordEncoder
+            , StatisticService statisticService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.statisticService = statisticService;
     }
 
     @Override
@@ -52,6 +58,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setRoles(userRole);
         userRepository.save(user);
+        statisticService.createNewStatisticRecordRegistration(user.getLogin());
     }
 
     @Override

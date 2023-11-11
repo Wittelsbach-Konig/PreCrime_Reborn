@@ -30,17 +30,33 @@ public class WebSecurityConfig {
             "/registration",
             "/login",
             "/error",
-    };
-    private static final String [] DETECTIVE_WHITELIST = {
-            "/investigation",
-            "/cardfill"
+            "/api/v1/**" // for testing api, later should be removed
     };
 
-    private static final String ADMIN_URL = "/admin";
+    private static final String[] REACT_GROUP_BOSS_ENDPOINTs = {"/api/v1/reactiongroup/**"};
+
+    private static final String[] ADMIN_ENDPOINTs = {"/api/v1/admin",
+                                                    "/api/v1/visions/add"};
+
+    private static final String[] TECHNIC_ENDPOINTs = {"/api/v1/precogs/**",
+                                                        "/api/v1/visions/{id}/accept",
+                                                        "/api/v1/visions/{id}"};
+
+
+    private static final String[] DETECTIVE_ENDPOINTs = {"/api/v1/cards/randomDateTime",
+                                                        "/api/v1/cards/randomVictimName",
+                                                        "/api/v1/cards/randomCriminalName",
+                                                        "/api/v1/cards/newcard"};
+
+    private static final String[] COMMON_VISION_ENDPOINTS = {"/api/v1/visions"};
+
+    private static final String[] COMMON_CARDS_ENDPOINTS = {"/api/v1/cards",
+                                                           "/api/v1/cards/{id}"};
+
 
     public static final String LOGIN_URL = "/login";
     public static final String LOGIN_PROCESSING_URL = "/process_login";
-    public static final String DEFAULT_SUCCESS_URL = "/cabinet";
+    //public static final String DEFAULT_SUCCESS_URL = "/cabinet";
     public static final String LOGOUT_URL = "/logout";
     public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
 
@@ -54,15 +70,15 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeRequests((requests) -> requests
                         .antMatchers(ENDPOINTS_WHITELIST).permitAll()
-                        .antMatchers(ADMIN_URL).hasRole("ADMIN")
-                        .antMatchers(DETECTIVE_WHITELIST).hasRole("DETECTIVE")
+                        //.antMatchers(ADMIN_URL).hasRole("ADMIN")
+                        //.antMatchers(DETECTIVE_WHITELIST).hasRole("DETECTIVE")
                         .anyRequest()
                         .authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage(LOGIN_URL)
                         .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+                        //.defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                         .failureUrl(LOGIN_FAIL_URL)
                         .permitAll()
                 )

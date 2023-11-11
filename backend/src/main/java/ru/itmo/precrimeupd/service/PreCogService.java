@@ -13,6 +13,7 @@ public interface PreCogService {
     void updatePreCogInfo(Long id, PreCogDto preCogDto);
     void retirePreCog(Long id);
     void rehabilitatePreCog(Long id);
+    void updateVitalSigns();
     void enterDopamine(Long id, int amount) throws IllegalArgumentException;
     void enterSerotonine(Long id, int amount) throws IllegalArgumentException;
     void enterDepressant(Long id, int amount) throws IllegalArgumentException;

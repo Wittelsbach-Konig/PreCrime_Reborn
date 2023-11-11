@@ -7,6 +7,8 @@ import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.security.SecurityUtil;
 import ru.itmo.precrimeupd.service.CardService;
+import ru.itmo.precrimeupd.service.PreCogService;
+import ru.itmo.precrimeupd.service.StatisticService;
 import ru.itmo.precrimeupd.service.TelegramBotService;
 
 import java.util.List;
@@ -19,15 +21,23 @@ public class CardServiceImpl implements CardService {
     private CardRepository cardRepository;
     private CriminalRepository criminalRepository;
     private UserRepository userRepository;
-
+    private TelegramBotService telegramBotService;
+    private StatisticService statisticService;
+    private PreCogService preCogService;
 
     @Autowired
     public CardServiceImpl(CardRepository cardRepository
                             , UserRepository userRepository
-                            , CriminalRepository criminalRepository) {
+                            , CriminalRepository criminalRepository
+                            , TelegramBotService telegramBotService
+                            , StatisticService statisticService
+                            , PreCogService preCogService) {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.criminalRepository = criminalRepository;
+        this.telegramBotService = telegramBotService;
+        this.statisticService = statisticService;
+        this.preCogService = preCogService;
     }
 
     @Override
@@ -44,6 +54,8 @@ public class CardServiceImpl implements CardService {
         }
         Criminal criminal = new Criminal();
         cardRepository.save(crimeCard);
+        statisticService.completedInvestigation(crimeCard.getResponsibleDetective());
+        preCogService.updateVitalSigns();
         criminal.setLocation(crimeCardDto.getPlaceOfCrime());
         criminal.setName(crimeCardDto.getCriminalName());
         criminal.setWeapon(crimeCardDto.getWeapon());
@@ -115,14 +127,27 @@ public class CardServiceImpl implements CardService {
         Criminal criminal = criminalRepository.findById(id).get();
         if(status == CriminalStatus.ESCAPED){
             criminal.setStatus(CriminalStatus.ESCAPED);
+            statisticService.criminalEscaped(criminal);
         }
         else if(status == CriminalStatus.CAUGHT) {
             CrimeCard cardToUpdate = criminal.getCrimeCard();
             cardToUpdate.setIsCriminalCaught(true);
             cardRepository.save(cardToUpdate);
             criminal.setStatus(CriminalStatus.CAUGHT);
+            statisticService.criminalArrested(criminal);
         }
         criminalRepository.save(criminal);
     }
 
+    @Override
+    public void reportCardMistake(Long id, String message) {
+        CrimeCard card = cardRepository.findById(id).get();
+        String informMessage = "the auditor found an error in the card №"
+                + id +
+                "\nMake corrections in accordance with the auditor’s recommendations\n"
+                + message;
+        UserEntity detectiveToInform = card.getResponsibleDetective();
+        telegramBotService.sendMessage(detectiveToInform.getTelegramId(), informMessage);
+        statisticService.foundErrorInCard(detectiveToInform);
+    }
 }
