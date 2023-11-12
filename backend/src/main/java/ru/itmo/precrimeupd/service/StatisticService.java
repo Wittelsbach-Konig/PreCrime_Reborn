@@ -1,5 +1,6 @@
 package ru.itmo.precrimeupd.service;
 
+import ru.itmo.precrimeupd.dto.UserStatisticInfo;
 import ru.itmo.precrimeupd.model.Criminal;
 import ru.itmo.precrimeupd.model.GroupResourceType;
 import ru.itmo.precrimeupd.model.UserEntity;
@@ -23,4 +24,6 @@ public interface StatisticService {
     void enteredDopamine(UserEntity technic, int amount);
     void enteredSerotonine(UserEntity technic, int amount);
     void enteredDepressant(UserEntity technic, int amount);
+
+    UserStatisticInfo getUserStatistic(Long id);
 }

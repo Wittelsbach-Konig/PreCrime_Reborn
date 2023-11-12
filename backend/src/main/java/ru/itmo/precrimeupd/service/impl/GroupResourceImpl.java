@@ -113,8 +113,8 @@ public class GroupResourceImpl implements GroupResourceService {
             throw new IllegalArgumentException("Trying to order too much resources");
         }
         resourceToOrder.setAmount(newAmount);
-
         groupResourceRepository.save(resourceToOrder);
+        statisticService.orderedResource(user, amount, resourceToOrder.getType());
     }
 
     @Override

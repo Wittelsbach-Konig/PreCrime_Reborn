@@ -2,12 +2,19 @@ package ru.itmo.precrimeupd.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.itmo.precrimeupd.dto.*;
 import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.service.StatisticService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import static ru.itmo.precrimeupd.mapper.BossStatisticMapper.mapToBossStatisticDto;
+import static ru.itmo.precrimeupd.mapper.DetectiveStatisticMapper.mapToDetectiveStatisticDto;
+import static ru.itmo.precrimeupd.mapper.TechnicStatisticMapper.mapToTechnicStatisticDto;
+import static ru.itmo.precrimeupd.mapper.UserInfoMapper.mapToUserInfo;
 
 @Service
 public class StatisticServiceImpl implements StatisticService {
@@ -80,7 +87,7 @@ public class StatisticServiceImpl implements StatisticService {
 
     @Override
     public List<UserEntity> getSystemWorkers() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
@@ -206,5 +213,32 @@ public class StatisticServiceImpl implements StatisticService {
             technicStatistic.setDepressantEntered(technicStatistic.getDepressantEntered() + 1);
             technicStatisticRepository.save(technicStatistic);
         }
+    }
+
+    @Override
+    public UserStatisticInfo getUserStatistic(Long id) {
+        UserStatisticInfo userStatisticInfo = new UserStatisticInfo();
+        UserEntity user = userRepository.findById(id).get();
+        UserInfoDto userInfo = mapToUserInfo(user);
+        userStatisticInfo.setUserInfo(userInfo);
+        userStatisticInfo.setBossReactGroupStatistic(Optional.empty());
+        BossReactGroupStatistic bossReactGroupStatistic = bossStatisticRepository.findByBoss(user);
+        if(bossReactGroupStatistic != null){
+            BossReactGroupStatisticDto bossReactGroupStatisticDto = mapToBossStatisticDto(bossReactGroupStatistic);
+            userStatisticInfo.setBossReactGroupStatistic(Optional.of(bossReactGroupStatisticDto));
+        }
+        userStatisticInfo.setDetectiveStatistic(Optional.empty());
+        DetectiveStatistic detectiveStatistic = detectiveStatisticRepository.findByDetective(user);
+        if (detectiveStatistic != null) {
+            DetectiveStatisticDto detectiveStatisticDto = mapToDetectiveStatisticDto(detectiveStatistic);
+            userStatisticInfo.setDetectiveStatistic(Optional.of(detectiveStatisticDto));
+        }
+        userStatisticInfo.setTechnicStatistic(Optional.empty());
+        TechnicStatistic technicStatistic = technicStatisticRepository.findByTechnic(user);
+        if(technicStatistic != null){
+            TechnicStatisticDto technicStatisticDto = mapToTechnicStatisticDto(technicStatistic);
+            userStatisticInfo.setTechnicStatistic(Optional.of(technicStatisticDto));
+        }
+        return userStatisticInfo;
     }
 }
