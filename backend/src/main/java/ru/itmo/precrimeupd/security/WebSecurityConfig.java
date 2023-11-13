@@ -3,62 +3,64 @@ package ru.itmo.precrimeupd.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private CustomUserDetailService userDetailService;
+    private final CustomUserDetailService userDetailService;
+    private final JwtAuthEntryPoint authEntryPoint;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public WebSecurityConfig(CustomUserDetailService userDetailService) {
+    public WebSecurityConfig(CustomUserDetailService userDetailService, JwtAuthEntryPoint authEntryPoint, JwtRequestFilter jwtRequestFilter) {
         this.userDetailService = userDetailService;
+        this.authEntryPoint = authEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
-    private static final String[] ENDPOINTS_WHITELIST = {
-            "/css/**",
-            "/image/**",
-            "/js/**",
-            "/includes/**",
-            "/registration",
-            "/login",
-            "/error",
-            "/api/v1/**" // for testing api, later should be removed
-    };
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).permitAll()
+                .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAnyAuthority("ADMIN")
+                .antMatchers("/api/v1/me").hasAuthority("ADMIN")
+                .antMatchers(SecurityLiterals.SWAGGER_ENDPOINTS).permitAll()
+                .antMatchers(SecurityLiterals.APIDOCS_ENDPOINTS).permitAll()
+                .antMatchers(SecurityLiterals.AUDITOR_ENDPOINTS).hasAuthority("AUDITOR")
+                .antMatchers(SecurityLiterals.DETECTIVE_ENDPOINTS).hasAuthority("DETECTIVE")
+                .antMatchers(SecurityLiterals.TECHNIC_ENDPOINTS).hasAuthority("TECHNIC")
+                .antMatchers(SecurityLiterals.COMMON_VISION_ENDPOINTS).hasAnyAuthority("ADMIN", "TECHNIC")
+                .antMatchers(SecurityLiterals.COMMON_CARDS_ENDPOINTS).hasAnyAuthority("DETECTIVE", "AUDITOR")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .authenticationProvider(daoAuthenticationProvider())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin().disable()
+                .logout().disable()
+                .httpBasic();
 
-    private static final String[] REACT_GROUP_BOSS_ENDPOINTs = {"/api/v1/reactiongroup/**"};
-
-    private static final String[] ADMIN_ENDPOINTs = {"/api/v1/admin",
-                                                    "/api/v1/visions/add"};
-
-    private static final String[] TECHNIC_ENDPOINTs = {"/api/v1/precogs/**",
-                                                        "/api/v1/visions/{id}/accept",
-                                                        "/api/v1/visions/{id}"};
-
-
-    private static final String[] DETECTIVE_ENDPOINTs = {"/api/v1/cards/randomDateTime",
-                                                        "/api/v1/cards/randomVictimName",
-                                                        "/api/v1/cards/randomCriminalName",
-                                                        "/api/v1/cards/newcard"};
-
-    private static final String[] COMMON_VISION_ENDPOINTS = {"/api/v1/visions"};
-
-    private static final String[] COMMON_CARDS_ENDPOINTS = {"/api/v1/cards",
-                                                           "/api/v1/cards/{id}"};
-
-
-    public static final String LOGIN_URL = "/login";
-    public static final String LOGIN_PROCESSING_URL = "/process_login";
-    //public static final String DEFAULT_SUCCESS_URL = "/cabinet";
-    public static final String LOGOUT_URL = "/logout";
-    public static final String LOGIN_FAIL_URL = LOGIN_URL + "?error";
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,31 +68,16 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests((requests) -> requests
-                        .antMatchers(ENDPOINTS_WHITELIST).permitAll()
-                        //.antMatchers(ADMIN_URL).hasRole("ADMIN")
-                        //.antMatchers(DETECTIVE_WHITELIST).hasRole("DETECTIVE")
-                        .anyRequest()
-                        .authenticated()
-                )
-                .formLogin((form) -> form
-                        .loginPage(LOGIN_URL)
-                        .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                        //.defaultSuccessUrl(DEFAULT_SUCCESS_URL)
-                        .failureUrl(LOGIN_FAIL_URL)
-                        .permitAll()
-                )
-                .logout((logout) -> logout
-                        .logoutUrl(LOGOUT_URL)
-                        .logoutSuccessUrl(LOGIN_URL)
-                        .permitAll());
-        return http.build();
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailService);
+        return daoAuthenticationProvider;
     }
 
-    public void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
-
 }

@@ -12,6 +12,8 @@ public class RegistrationDto {
     private String login;
     @NotEmpty
     private String password;
+    @NotEmpty
+    private String confirmPassword;
     private String email;
     @NotEmpty
     private String firstName;
