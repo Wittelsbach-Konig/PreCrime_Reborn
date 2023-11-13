@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/precogs")
 @RestController
 public class PreCogController {
-    private PreCogService preCogService;
+    private final PreCogService preCogService;
 
     @Autowired
     public PreCogController(PreCogService preCogService) {
@@ -51,7 +51,7 @@ public class PreCogController {
             return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
         }
         preCogService.updatePreCogInfo(id, preCogDto);
-        return new ResponseEntity<>("Precog successfully updated", HttpStatus.OK);
+        return new ResponseEntity<>("PreCog successfully updated", HttpStatus.OK);
     }
 
     @PutMapping("/{id}/enterdopamine")
@@ -109,7 +109,7 @@ public class PreCogController {
             return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
         }
         preCogService.retirePreCog(id);
-        return new ResponseEntity<>("Precog successfully retired", HttpStatus.OK);
+        return new ResponseEntity<>("PreCog successfully retired", HttpStatus.OK);
     }
 
     @PostMapping("/{id}/rehabilitate")
@@ -119,7 +119,7 @@ public class PreCogController {
             return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
         }
         preCogService.rehabilitatePreCog(id);
-        return new ResponseEntity<>("Precog successfullt rehabilitated", HttpStatus.OK);
+        return new ResponseEntity<>("PreCog successfully rehabilitated", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

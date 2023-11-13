@@ -7,6 +7,7 @@ import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.service.StatisticService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,18 +15,19 @@ import java.util.Set;
 import static ru.itmo.precrimeupd.mapper.BossStatisticMapper.mapToBossStatisticDto;
 import static ru.itmo.precrimeupd.mapper.DetectiveStatisticMapper.mapToDetectiveStatisticDto;
 import static ru.itmo.precrimeupd.mapper.TechnicStatisticMapper.mapToTechnicStatisticDto;
+import static ru.itmo.precrimeupd.mapper.UserEntitiyMapper.mapToUserOutDto;
 import static ru.itmo.precrimeupd.mapper.UserInfoMapper.mapToUserInfo;
 
 @Service
 public class StatisticServiceImpl implements StatisticService {
 
-    private BossStatisticRepository bossStatisticRepository;
-    private DetectiveStatisticRepository detectiveStatisticRepository;
-    private ReactGroupStatisticRepository reactGroupStatisticRepository;
-    private TechnicStatisticRepository technicStatisticRepository;
-    private UserRepository userRepository;
-    private ReactGroupRepository reactGroupRepository;
-    private CriminalToReactGroupRepository criminalToReactGroupRepository;
+    private final BossStatisticRepository bossStatisticRepository;
+    private final DetectiveStatisticRepository detectiveStatisticRepository;
+    private final ReactGroupStatisticRepository reactGroupStatisticRepository;
+    private final TechnicStatisticRepository technicStatisticRepository;
+    private final UserRepository userRepository;
+    private final ReactGroupRepository reactGroupRepository;
+    private final CriminalToReactGroupRepository criminalToReactGroupRepository;
 
     @Autowired
     public StatisticServiceImpl(BossStatisticRepository bossStatisticRepository
@@ -86,8 +88,20 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public List<UserEntity> getSystemWorkers() {
-        return userRepository.findAll();
+    public List<UserOutDto> getSystemWorkers() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        List<UserOutDto> userOutDtos = new ArrayList<>();
+        for(UserEntity userEntity : userEntities){
+            UserOutDto tempUserDto = mapToUserOutDto(userEntity);
+            Set<Role> roles = userEntity.getRoles();
+            List<String> userRoles = new ArrayList<>();
+            for(Role role : roles){
+                userRoles.add(role.getName());
+            }
+            tempUserDto.setRoles(userRoles);
+            userOutDtos.add(tempUserDto);
+        }
+        return userOutDtos;
     }
 
     @Override

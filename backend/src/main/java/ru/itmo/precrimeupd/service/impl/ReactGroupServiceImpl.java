@@ -23,12 +23,12 @@ import static ru.itmo.precrimeupd.mapper.ReactGroupMapper.mapToReactGroup;
 
 @Service
 public class ReactGroupServiceImpl implements ReactGroupService {
-    private ReactGroupRepository reactGroupRepository;
-    private TelegramBotService telegramBotService;
-    private CriminalRepository criminalRepository;
-    private StatisticService statisticService;
-    private UserRepository userRepository;
-    private CriminalToReactGroupRepository criminalToReactGroupRepository;
+    private final ReactGroupRepository reactGroupRepository;
+    private final TelegramBotService telegramBotService;
+    private final CriminalRepository criminalRepository;
+    private final StatisticService statisticService;
+    private final UserRepository userRepository;
+    private final CriminalToReactGroupRepository criminalToReactGroupRepository;
 
     @Autowired
     public ReactGroupServiceImpl(ReactGroupRepository reactGroupRepository

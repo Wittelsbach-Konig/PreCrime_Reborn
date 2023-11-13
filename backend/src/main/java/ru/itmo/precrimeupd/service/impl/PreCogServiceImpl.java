@@ -18,9 +18,9 @@ import java.util.Random;
 @Service
 public class PreCogServiceImpl implements PreCogService {
 
-    private PreCogRepository preCogRepository;
-    private UserRepository userRepository;
-    private StatisticService statisticService;
+    private final PreCogRepository preCogRepository;
+    private final UserRepository userRepository;
+    private final StatisticService statisticService;
 
     @Autowired
     public PreCogServiceImpl(PreCogRepository preCogRepository
@@ -40,10 +40,7 @@ public class PreCogServiceImpl implements PreCogService {
     @Override
     public PreCog getPreCog(Long id) {
         Optional<PreCog> preCog = preCogRepository.findById(id);
-        if(preCog.isPresent()){
-            return preCog.get();
-        }
-        return null;
+        return preCog.orElse(null);
     }
 
     @Override
@@ -86,7 +83,7 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void updateVitalSigns() {
-        List<PreCog> preCogs = preCogRepository.findByIsWorkTrue();
+        List<PreCog> preCogs = preCogRepository.findAllByIsWorkTrue();
         if(!preCogs.isEmpty()){
             Random random = new Random();
             for(PreCog preCog : preCogs){

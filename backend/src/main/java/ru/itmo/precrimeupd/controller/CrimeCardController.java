@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.precrimeupd.dto.CrimeCardDto;
+import ru.itmo.precrimeupd.dto.CrimeCardInDto;
+import ru.itmo.precrimeupd.dto.CrimeCardOutDto;
 import ru.itmo.precrimeupd.model.CrimeCard;
 import ru.itmo.precrimeupd.service.CardService;
 
@@ -16,7 +17,7 @@ import java.util.Random;
 @RestController
 @RequestMapping("/api/v1/cards")
 public class CrimeCardController {
-    private CardService cardService;
+    private final CardService cardService;
 
     @Autowired
     public CrimeCardController(CardService cardService) {
@@ -24,16 +25,16 @@ public class CrimeCardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CrimeCard>> getAllCards(){
-        List<CrimeCard> crimeCards = cardService.getAllCards();
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCards(){
+        List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCards();
         return new ResponseEntity<>(crimeCards, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CrimeCard> getCard(@PathVariable Long id) {
-        CrimeCard card = cardService.getCardById(id);
+    public ResponseEntity<CrimeCardOutDto> getCard(@PathVariable Long id) {
+        CrimeCardOutDto card = cardService.getCardById(id);
         return card != null ? new ResponseEntity<>(card, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/randomDateTime")
@@ -55,22 +56,22 @@ public class CrimeCardController {
 
     @GetMapping("/randomCriminalName")
     public ResponseEntity<String> getRandomCriminalName(){
-        String[] names = {"John", "Emma", "Michael", "Sophia", "William", "Adolph", "Stepam", "Roman"};
+        String[] names = {"John", "Emma", "Michael", "Sophia", "William", "Adolph", "Stepan", "Roman"};
         Random random = new Random();
         int index = random.nextInt(names.length);
         return new ResponseEntity<>(names[index], HttpStatus.OK);
     }
 
     @PostMapping("/newcard")
-    public ResponseEntity<String> fillCard(@RequestBody CrimeCardDto cardDto){
+    public ResponseEntity<String> fillCard(@RequestBody CrimeCardInDto cardDto){
         cardService.createCard(cardDto);
         return new ResponseEntity<>("Card added successfully", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateCardData(@PathVariable Long id
-                                                , @RequestBody CrimeCardDto updatedCardDto) {
-        CrimeCard card = cardService.getCardById(id);
+                                                , @RequestBody CrimeCardInDto updatedCardDto) {
+        CrimeCard card = cardService.findCardById(id);
         if(card == null){
             return new ResponseEntity<>("Card does not exist",HttpStatus.NOT_FOUND);
         }
@@ -80,11 +81,11 @@ public class CrimeCardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCard(@PathVariable Long id) {
-        CrimeCard card = cardService.getCardById(id);
+        CrimeCard card = cardService.findCardById(id);
         if(card == null){
             return new ResponseEntity<>("Card does not exist",HttpStatus.NOT_FOUND);
         }
         cardService.deleteCard(id);
-        return  new ResponseEntity<>("Card successfully deleted", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Card successfully deleted", HttpStatus.NO_CONTENT);
     }
 }

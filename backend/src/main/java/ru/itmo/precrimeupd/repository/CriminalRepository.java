@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CriminalRepository extends JpaRepository<Criminal, Long> {
     Criminal findByCrimeCard(CrimeCard card);
-    List<Criminal> findByStatusIsLike(CriminalStatus status);
+    List<Criminal> findAllByStatusIsLike(CriminalStatus status);
 }

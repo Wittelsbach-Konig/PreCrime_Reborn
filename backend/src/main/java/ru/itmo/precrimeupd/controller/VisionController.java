@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1/visions")
 public class VisionController {
 
-    private VisionService visionService;
+    private final VisionService visionService;
 
     @Autowired
     public VisionController(VisionService visionService) {

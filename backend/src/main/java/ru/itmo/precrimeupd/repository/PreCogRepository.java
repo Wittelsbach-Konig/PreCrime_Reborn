@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PreCogRepository extends JpaRepository<PreCog, Long> {
-    //PreCog findByPreCogName(String name);
     Optional<PreCog> findById(Long id);
-
-    List<PreCog> findByIsWorkTrue();
+    List<PreCog> findAllByIsWorkTrue();
 }

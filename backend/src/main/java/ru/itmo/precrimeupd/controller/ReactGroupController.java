@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.itmo.precrimeupd.dto.CriminalOutDto;
 import ru.itmo.precrimeupd.dto.ReactGroupDto;
 import ru.itmo.precrimeupd.dto.ResourceDto;
 import ru.itmo.precrimeupd.dto.TransportDto;
@@ -17,9 +18,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/reactiongroup")
 public class ReactGroupController {
-    private ReactGroupService reactGroupService;
-    private CardService cardService;
-    private GroupResourceService groupResourceService;
+    private final ReactGroupService reactGroupService;
+    private final CardService cardService;
+    private final GroupResourceService groupResourceService;
 
     @Autowired
     public ReactGroupController(ReactGroupService reactGroupService
@@ -44,8 +45,8 @@ public class ReactGroupController {
     }
 
     @GetMapping("/criminal")
-    public ResponseEntity<List<Criminal>> getAllCriminals() {
-        List<Criminal> criminals = cardService.getAllCriminals();
+    public ResponseEntity<List<CriminalOutDto>> getAllCriminals() {
+        List<CriminalOutDto> criminals = cardService.getAllCriminals();
         if(criminals.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -53,8 +54,8 @@ public class ReactGroupController {
     }
 
     @GetMapping("/criminal/{id}")
-    public ResponseEntity<Criminal> getCriminal(@PathVariable Long id){
-        Criminal criminal = cardService.getCriminalById(id);
+    public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id){
+        CriminalOutDto criminal = cardService.getCriminalById(id);
         return criminal != null ? new ResponseEntity<>(criminal, HttpStatus.OK)
                                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -128,7 +129,7 @@ public class ReactGroupController {
 
     @PostMapping("/criminal/{id}")
     public ResponseEntity<String> appointGroup(@PathVariable Long id, @RequestBody List<Long> peopleIds){
-        Criminal criminal = cardService.getCriminalById(id);
+        Criminal criminal = cardService.findCriminalById(id);
         if(criminal == null) {
             return new ResponseEntity<>("Criminal does not exist", HttpStatus.NOT_FOUND);
         }
@@ -141,15 +142,15 @@ public class ReactGroupController {
 
     @PutMapping("/criminal/{id}")
     public ResponseEntity<String> updateCriminalStatus (@PathVariable Long id, @RequestBody String status){
-        Criminal criminal = cardService.getCriminalById(id);
+        Criminal criminal = cardService.findCriminalById(id);
         if(criminal == null) {
             return new ResponseEntity<>("Criminal does not exist", HttpStatus.NOT_FOUND);
         }
         CriminalStatus criminalStatus = null;
-        if(status == "CAUGHT"){
+        if(status.equals("CAUGHT")){
             criminalStatus = CriminalStatus.CAUGHT;
         }
-        else if(status == "ESCAPED") {
+        else if(status.equals("ESCAPED")) {
             criminalStatus = CriminalStatus.ESCAPED;
         }
         if(criminalStatus == null){

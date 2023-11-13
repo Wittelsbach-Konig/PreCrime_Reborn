@@ -44,7 +44,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         message.setText(textToSend);
 
         executeMessage(message);
-        logger.trace("Send message to chat: " + String.valueOf(chatId));
+        logger.trace("Send message to chat: " + chatId);
     }
 
     private void startCommandReceived(Long chatId, String name) {
@@ -57,7 +57,7 @@ public class TelegramBotService extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            System.out.printf(e.getMessage());
+            //System.out.printf(e.getMessage());
             logger.error(ERROR_TEXT + e.getMessage());
         }
     }

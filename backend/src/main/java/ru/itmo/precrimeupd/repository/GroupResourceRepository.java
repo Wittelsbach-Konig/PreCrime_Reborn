@@ -8,6 +8,6 @@ import ru.itmo.precrimeupd.model.GroupResourceType;
 import java.util.List;
 
 public interface GroupResourceRepository extends JpaRepository<GroupResource, Long> {
-    List<GroupResource> findByType(GroupResourceType type);
+    List<GroupResource> findAllByType(GroupResourceType type);
     GroupResource findByResourceName(String resourceName);
 }

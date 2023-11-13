@@ -2,7 +2,9 @@ package ru.itmo.precrimeupd.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.itmo.precrimeupd.dto.CrimeCardDto;
+import ru.itmo.precrimeupd.dto.CrimeCardInDto;
+import ru.itmo.precrimeupd.dto.CrimeCardOutDto;
+import ru.itmo.precrimeupd.dto.CriminalOutDto;
 import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.security.SecurityUtil;
@@ -11,19 +13,22 @@ import ru.itmo.precrimeupd.service.PreCogService;
 import ru.itmo.precrimeupd.service.StatisticService;
 import ru.itmo.precrimeupd.service.TelegramBotService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static ru.itmo.precrimeupd.mapper.CardMapper.mapToCrimeCard;
+import static ru.itmo.precrimeupd.mapper.CardMapper.mapToCrimeCardOutDto;
+import static ru.itmo.precrimeupd.mapper.CriminalOutMapper.mapToCriminalOutDto;
 
 @Service
 public class CardServiceImpl implements CardService {
-    private CardRepository cardRepository;
-    private CriminalRepository criminalRepository;
-    private UserRepository userRepository;
-    private TelegramBotService telegramBotService;
-    private StatisticService statisticService;
-    private PreCogService preCogService;
+    private final CardRepository cardRepository;
+    private final CriminalRepository criminalRepository;
+    private final UserRepository userRepository;
+    private final TelegramBotService telegramBotService;
+    private final StatisticService statisticService;
+    private final PreCogService preCogService;
 
     @Autowired
     public CardServiceImpl(CardRepository cardRepository
@@ -41,49 +46,49 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void createCard(CrimeCardDto crimeCardDto) {
+    public void createCard(CrimeCardInDto crimeCardInDto) {
         String login = SecurityUtil.getSessionUser();
         UserEntity user = userRepository.findByLogin(login);
-        CrimeCard crimeCard = mapToCrimeCard(crimeCardDto);
+        CrimeCard crimeCard = mapToCrimeCard(crimeCardInDto);
         crimeCard.setResponsibleDetective(user);
-        if(crimeCardDto.getCrimeType() == "INTENTIONAL"){
+        if(crimeCardInDto.getCrimeType().equals("INTENTIONAL")){
             crimeCard.setTypeOfCrime(CrimeType.INTENTIONAL);
         }
-        if(crimeCardDto.getCrimeType() == "UNINTENTIONAL") {
+        if(crimeCardInDto.getCrimeType().equals("UNINTENTIONAL")) {
             crimeCard.setTypeOfCrime(CrimeType.UNINTENTIONAL);
         }
         Criminal criminal = new Criminal();
         cardRepository.save(crimeCard);
         statisticService.completedInvestigation(crimeCard.getResponsibleDetective());
         preCogService.updateVitalSigns();
-        criminal.setLocation(crimeCardDto.getPlaceOfCrime());
-        criminal.setName(crimeCardDto.getCriminalName());
-        criminal.setWeapon(crimeCardDto.getWeapon());
+        criminal.setLocation(crimeCardInDto.getPlaceOfCrime());
+        criminal.setName(crimeCardInDto.getCriminalName());
+        criminal.setWeapon(crimeCardInDto.getWeapon());
         criminal.setStatus(CriminalStatus.NOT_CAUGHT);
         criminal.setCrimeCard(crimeCard);
         criminalRepository.save(criminal);
     }
 
     @Override
-    public void updateCard(Long id, CrimeCardDto crimeCardDto) {
+    public void updateCard(Long id, CrimeCardInDto crimeCardInDto) {
 
         CrimeCard cardToUpdate = cardRepository.findById(id).get();
         Criminal criminalToUpdate = criminalRepository.findByCrimeCard(cardToUpdate);
-        cardToUpdate.setVictimName(crimeCardDto.getVictimName());
-        cardToUpdate.setCriminalName(crimeCardDto.getCriminalName());
-        cardToUpdate.setPlaceOfCrime(crimeCardDto.getPlaceOfCrime());
-        cardToUpdate.setWeapon(crimeCardDto.getWeapon());
-        cardToUpdate.setCrimeTime(crimeCardDto.getCrimeTime());
-        if (crimeCardDto.getCrimeType() == "INTENTIONAL") {
+        cardToUpdate.setVictimName(crimeCardInDto.getVictimName());
+        cardToUpdate.setCriminalName(crimeCardInDto.getCriminalName());
+        cardToUpdate.setPlaceOfCrime(crimeCardInDto.getPlaceOfCrime());
+        cardToUpdate.setWeapon(crimeCardInDto.getWeapon());
+        cardToUpdate.setCrimeTime(crimeCardInDto.getCrimeTime());
+        if (crimeCardInDto.getCrimeType().equals("INTENTIONAL")) {
             cardToUpdate.setTypeOfCrime(CrimeType.INTENTIONAL);
         }
-        if (crimeCardDto.getCrimeType() == "UNINTENTIONAL") {
+        if (crimeCardInDto.getCrimeType().equals("UNINTENTIONAL")) {
             cardToUpdate.setTypeOfCrime(CrimeType.UNINTENTIONAL);
         }
         cardRepository.save(cardToUpdate);
-        criminalToUpdate.setName(crimeCardDto.getCriminalName());
-        criminalToUpdate.setWeapon(crimeCardDto.getWeapon());
-        criminalToUpdate.setLocation(crimeCardDto.getPlaceOfCrime());
+        criminalToUpdate.setName(crimeCardInDto.getCriminalName());
+        criminalToUpdate.setWeapon(crimeCardInDto.getWeapon());
+        criminalToUpdate.setLocation(crimeCardInDto.getPlaceOfCrime());
     }
 
     @Override
@@ -95,29 +100,74 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CrimeCard> getAllCards() {
-        return cardRepository.findAll();
+    public List<CrimeCardOutDto> getAllCards() {
+        List<CrimeCard> crimeCards = cardRepository.findAll();
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
     }
 
     @Override
-    public CrimeCard getCardById(Long id) {
-        Optional<CrimeCard> card = cardRepository.findById(id);
-        if(card.isPresent()){
-            return card.get();
+    public List<CrimeCardOutDto> getAllDetectiveCards() {
+        String login = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
+        List<CrimeCard> crimeCards = cardRepository.findAllByResponsibleDetective(user);
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
+    }
+
+    @Override
+    public CrimeCardOutDto getCardById(Long id) {
+        Optional<CrimeCard> cardOpt = cardRepository.findById(id);
+        if(cardOpt.isPresent()){
+            CrimeCard card = cardOpt.get();
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            return crimeCardOutDto;
         }
         return null;
     }
 
     @Override
-    public List<Criminal> getAllCriminals() {
-        return criminalRepository.findByStatusIsLike(CriminalStatus.NOT_CAUGHT);
+    public CrimeCard findCardById(Long id) {
+        Optional<CrimeCard> cardOpt = cardRepository.findById(id);
+        return cardOpt.orElse(null);
     }
 
     @Override
-    public Criminal getCriminalById(Long id) {
-        Optional<Criminal> criminal = criminalRepository.findById(id);
-        if(criminal.isPresent()) {
-            return criminal.get();
+    public List<CriminalOutDto> getAllCriminals() {
+        List<Criminal> criminals = criminalRepository.findAllByStatusIsLike(CriminalStatus.NOT_CAUGHT);
+        List<CriminalOutDto> criminalOutDtos = new ArrayList<>();
+        for(Criminal criminal : criminals){
+            CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);
+            criminalOutDtos.add(criminalOutDto);
+        }
+        return criminalOutDtos;
+    }
+
+    @Override
+    public CriminalOutDto getCriminalById(Long id) {
+        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
+        if(criminalOpt.isPresent()) {
+            Criminal criminal =  criminalOpt.get();
+            CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);
+            return criminalOutDto;
+        }
+        return null;
+    }
+
+    @Override
+    public Criminal findCriminalById(Long id) {
+        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
+        if(criminalOpt.isPresent()) {
+            Criminal criminal =  criminalOpt.get();
+            return criminal;
         }
         return null;
     }
@@ -149,5 +199,21 @@ public class CardServiceImpl implements CardService {
         UserEntity detectiveToInform = card.getResponsibleDetective();
         telegramBotService.sendMessage(detectiveToInform.getTelegramId(), informMessage);
         statisticService.foundErrorInCard(detectiveToInform);
+    }
+
+    private CrimeCardOutDto prepareCardForOutput(CrimeCard card){
+        if(card != null){
+            CrimeCardOutDto crimeCardOutDto = mapToCrimeCardOutDto(card);
+            return crimeCardOutDto;
+        }
+        return null;
+    }
+
+    private CriminalOutDto prepareCriminalForOutput(Criminal criminal){
+        if(criminal != null){
+            CriminalOutDto criminalOutDto = mapToCriminalOutDto(criminal);
+            return criminalOutDto;
+        }
+        return null;
     }
 }

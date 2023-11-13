@@ -1,9 +1,7 @@
 package ru.itmo.precrimeupd.service.impl;
 
-import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.VisionDto;
-import ru.itmo.precrimeupd.model.Role;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.model.Vision;
 import ru.itmo.precrimeupd.repository.UserRepository;
@@ -19,9 +17,9 @@ import java.util.Optional;
 @Service
 public class VisionServiceImpl implements VisionService {
 
-    private VisionRepository visionRepository;
-    private UserRepository userRepository;
-    private StatisticService statisticService;
+    private final VisionRepository visionRepository;
+    private final UserRepository userRepository;
+    private final StatisticService statisticService;
 
     public VisionServiceImpl(VisionRepository visionRepository
                             , UserRepository userRepository
@@ -83,10 +81,10 @@ public class VisionServiceImpl implements VisionService {
         List<Vision> visionList = new ArrayList<>();
         List<String> userRoles = SecurityUtil.getSessionUserRoles();
         if (userRoles.contains("DETECTIVE")) {
-            visionList.addAll(visionRepository.findByAcceptedTrue());
+            visionList.addAll(visionRepository.findAllByAcceptedTrue());
         }
         if (userRoles.contains("TECHNIC")) {
-            visionList.addAll(visionRepository.findByAcceptedFalse());
+            visionList.addAll(visionRepository.findAllByAcceptedFalse());
         }
         return visionList;
     }

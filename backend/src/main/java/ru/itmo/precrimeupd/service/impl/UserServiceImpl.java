@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.itmo.precrimeupd.dto.RegistrationDto;
+import ru.itmo.precrimeupd.dto.UserOutDto;
 import ru.itmo.precrimeupd.model.Role;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.repository.RoleRepository;
@@ -12,17 +13,16 @@ import ru.itmo.precrimeupd.repository.UserRepository;
 import ru.itmo.precrimeupd.service.StatisticService;
 import ru.itmo.precrimeupd.service.UserService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
+import static ru.itmo.precrimeupd.mapper.UserEntitiyMapper.mapToUserOutDto;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private StatisticService statisticService;
+    private final StatisticService statisticService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository
@@ -94,8 +94,14 @@ public class UserServiceImpl implements UserService {
 
     // For ADMIN
     @Override
-    public List<UserEntity> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserOutDto> getAllUsers() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        List<UserOutDto> userOutDtos = new ArrayList<>();
+        for(UserEntity userEntity : userEntities){
+            UserOutDto tempUserDto = prepareUserForOutput(userEntity);
+            userOutDtos.add(tempUserDto);
+        }
+        return userOutDtos;
     }
 
 
@@ -109,6 +115,29 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isPresent()){
             return user.get();
+        }
+        return null;
+    }
+
+    @Override
+    public UserOutDto getUserById(Long id) {
+        UserEntity user = findById(id);
+        UserOutDto tempUserDto = prepareUserForOutput(user);
+        return tempUserDto;
+    }
+
+    private UserOutDto prepareUserForOutput(UserEntity userEntity){
+        if(userEntity != null){
+            UserOutDto tempUserDto = mapToUserOutDto(userEntity);
+            tempUserDto.setLogin(userEntity.getLogin());
+            tempUserDto.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+            Set<Role> roles = userEntity.getRoles();
+            List<String> userRoles = new ArrayList<>();
+            for(Role role : roles){
+                userRoles.add(role.getName());
+            }
+            tempUserDto.setRoles(userRoles);
+            return tempUserDto;
         }
         return null;
     }

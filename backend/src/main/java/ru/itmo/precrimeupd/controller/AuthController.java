@@ -15,7 +15,7 @@ import ru.itmo.precrimeupd.service.UserService;
 @RequestMapping("/api/v1")
 public class AuthController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AuthController(UserService userService) {

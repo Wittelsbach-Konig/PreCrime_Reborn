@@ -1,5 +1,6 @@
 package ru.itmo.precrimeupd.service;
 
+import ru.itmo.precrimeupd.dto.UserOutDto;
 import ru.itmo.precrimeupd.dto.UserStatisticInfo;
 import ru.itmo.precrimeupd.model.Criminal;
 import ru.itmo.precrimeupd.model.GroupResourceType;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface StatisticService {
     void createNewStatisticRecordRegistration(String login);
     void createNewStatisticRecordReactGroup(int telegramId);
-    List<UserEntity> getSystemWorkers();
+    List<UserOutDto> getSystemWorkers();
     void foundErrorInCard(UserEntity detective);
     void completedInvestigation(UserEntity detective);
 

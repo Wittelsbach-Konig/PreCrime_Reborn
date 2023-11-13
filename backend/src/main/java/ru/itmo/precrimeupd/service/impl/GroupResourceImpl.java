@@ -19,10 +19,10 @@ import java.util.*;
 
 @Service
 public class GroupResourceImpl implements GroupResourceService {
-    private GroupResourceRepository groupResourceRepository;
-    private TransportRepository transportRepository;
-    private UserRepository userRepository;
-    private StatisticService statisticService;
+    private final GroupResourceRepository groupResourceRepository;
+    private final TransportRepository transportRepository;
+    private final UserRepository userRepository;
+    private final StatisticService statisticService;
 
     @Autowired
     public GroupResourceImpl(GroupResourceRepository groupResourceRepository
@@ -43,10 +43,7 @@ public class GroupResourceImpl implements GroupResourceService {
     @Override
     public GroupResource findResourceById(Long id) {
         Optional<GroupResource> resource = groupResourceRepository.findById(id);
-        if(resource.isPresent()) {
-            return resource.get();
-        }
-        return null;
+        return resource.orElse(null);
     }
 
     @Override
@@ -59,13 +56,13 @@ public class GroupResourceImpl implements GroupResourceService {
         for(String type : resourceTypes) {
             switch (type){
                 case "AMMUNITION":
-                    resources.addAll(groupResourceRepository.findByType(GroupResourceType.AMMUNITION));
+                    resources.addAll(groupResourceRepository.findAllByType(GroupResourceType.AMMUNITION));
                     break;
                 case "WEAPON":
-                    resources.addAll(groupResourceRepository.findByType(GroupResourceType.WEAPON));
+                    resources.addAll(groupResourceRepository.findAllByType(GroupResourceType.WEAPON));
                     break;
                 case "GADGET":
-                    resources.addAll(groupResourceRepository.findByType(GroupResourceType.GADGET));
+                    resources.addAll(groupResourceRepository.findAllByType(GroupResourceType.GADGET));
                 default:
                     break;
             }
@@ -125,10 +122,7 @@ public class GroupResourceImpl implements GroupResourceService {
     @Override
     public Transport findTransportById(Long id) {
         Optional<Transport> transport = transportRepository.findById(id);
-        if(transport.isPresent()){
-            return transport.get();
-        }
-        return null;
+        return transport.orElse(null);
     }
 
     @Override

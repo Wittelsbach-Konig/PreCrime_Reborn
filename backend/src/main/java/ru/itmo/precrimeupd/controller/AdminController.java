@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.precrimeupd.dto.RegistrationDto;
+import ru.itmo.precrimeupd.dto.UserOutDto;
 import ru.itmo.precrimeupd.dto.VisionDto;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.model.Vision;
@@ -24,14 +25,14 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserEntity>> getUsers() {
-        List<UserEntity> users = userService.getAllUsers();
+    public ResponseEntity<List<UserOutDto>> getAllUsers() {
+        List<UserOutDto> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserEntity> getUsers(@PathVariable Long id) {
-        UserEntity user = userService.findById(id);
+    public ResponseEntity<UserOutDto> getUser(@PathVariable Long id) {
+        UserOutDto user = userService.getUserById(id);
         if(user == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
