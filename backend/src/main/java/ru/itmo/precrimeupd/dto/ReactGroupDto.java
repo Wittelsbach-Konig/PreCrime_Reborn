@@ -8,13 +8,7 @@ import javax.validation.constraints.NotEmpty;
 public class ReactGroupDto {
     private Long id;
     @NotEmpty
-    private String driverName;
-    @NotEmpty
-    private String negotiatorName;
-    @NotEmpty
-    private String pointManName;
-    @NotEmpty
-    private String sniperName;
+    private String memberName;
     @NotEmpty
     private int telegramId;
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VisionRepository extends JpaRepository<Vision, Long> {
     Vision findByVideoUrl(String videoUrl);
-    List <Vision> findByAcceptedFalse();
-    List <Vision> findByAcceptedTrue();
+    List <Vision> findAllByAcceptedFalse();
+    List <Vision> findAllByAcceptedTrue();
 
 }

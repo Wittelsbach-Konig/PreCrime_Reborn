@@ -17,9 +17,6 @@ public class ReactGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String driverName;
-    private String negotiatorName;
-    private String pointManName;
-    private String sniperName;
+    private String memberName;
     private int telegramId;
 }

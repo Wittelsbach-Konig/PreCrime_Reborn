@@ -28,9 +28,9 @@ public class PreCog {
     @Builder.Default
     private int serotoninLevel = 100;
     @Builder.Default
-    private int stressLevel = 100;
+    private int stressLevel = 0;
     @Builder.Default
-    private boolean isOk = true;
+    private boolean isWork = true;
     @CreationTimestamp
     private LocalDateTime commissionedOn;
 }

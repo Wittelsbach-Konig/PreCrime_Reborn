@@ -7,10 +7,7 @@ public class ReactGroupMapper {
     public static ReactGroup mapToReactGroup(ReactGroupDto groupDto){
         ReactGroup group = ReactGroup.builder()
                 .id(groupDto.getId())
-                .driverName(groupDto.getDriverName())
-                .negotiatorName(groupDto.getNegotiatorName())
-                .pointManName(groupDto.getPointManName())
-                .sniperName(groupDto.getSniperName())
+                .memberName(groupDto.getMemberName())
                 .telegramId(groupDto.getTelegramId())
                 .build();
         return group;

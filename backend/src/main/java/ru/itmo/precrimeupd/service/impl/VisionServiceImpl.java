@@ -1,12 +1,13 @@
 package ru.itmo.precrimeupd.service.impl;
 
-import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.VisionDto;
-import ru.itmo.precrimeupd.model.Role;
+import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.model.Vision;
+import ru.itmo.precrimeupd.repository.UserRepository;
 import ru.itmo.precrimeupd.repository.VisionRepository;
 import ru.itmo.precrimeupd.security.SecurityUtil;
+import ru.itmo.precrimeupd.service.StatisticService;
 import ru.itmo.precrimeupd.service.VisionService;
 
 import java.util.ArrayList;
@@ -16,10 +17,16 @@ import java.util.Optional;
 @Service
 public class VisionServiceImpl implements VisionService {
 
-    private VisionRepository visionRepository;
+    private final VisionRepository visionRepository;
+    private final UserRepository userRepository;
+    private final StatisticService statisticService;
 
-    public VisionServiceImpl(VisionRepository visionRepository) {
+    public VisionServiceImpl(VisionRepository visionRepository
+                            , UserRepository userRepository
+                            , StatisticService statisticService) {
         this.visionRepository = visionRepository;
+        this.userRepository = userRepository;
+        this.statisticService = statisticService;
     }
 
     @Override
@@ -47,7 +54,11 @@ public class VisionServiceImpl implements VisionService {
     public void deleteVision(Long id) {
         Optional<Vision> visionToDelete = visionRepository.findById(id);
         if (visionToDelete.isPresent()){
+            String login = SecurityUtil.getSessionUser();
+            UserEntity user = userRepository.findByLogin(login);
+
             visionRepository.deleteById(id);
+            statisticService.visionRejected(user);
         }
     }
 
@@ -55,9 +66,13 @@ public class VisionServiceImpl implements VisionService {
     public void approveVision(Long id) {
         Optional<Vision> visionToApprove = visionRepository.findById(id);
         if (visionToApprove.isPresent()) {
+            String login = SecurityUtil.getSessionUser();
+            UserEntity user = userRepository.findByLogin(login);
+
             Vision approvedVision = visionToApprove.get();
             approvedVision.setAccepted(true);
             visionRepository.save(approvedVision);
+            statisticService.visionAccepted(user);
         }
     }
 
@@ -66,10 +81,10 @@ public class VisionServiceImpl implements VisionService {
         List<Vision> visionList = new ArrayList<>();
         List<String> userRoles = SecurityUtil.getSessionUserRoles();
         if (userRoles.contains("DETECTIVE")) {
-            visionList.addAll(visionRepository.findByAcceptedTrue());
+            visionList.addAll(visionRepository.findAllByAcceptedTrue());
         }
         if (userRoles.contains("TECHNIC")) {
-            visionList.addAll(visionRepository.findByAcceptedFalse());
+            visionList.addAll(visionRepository.findAllByAcceptedFalse());
         }
         return visionList;
     }
