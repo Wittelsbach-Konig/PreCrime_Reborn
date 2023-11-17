@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.precrimeupd.dto.CrimeCardOutDto;
 import ru.itmo.precrimeupd.dto.UserOutDto;
 import ru.itmo.precrimeupd.dto.UserStatisticInfo;
-import ru.itmo.precrimeupd.model.CrimeCard;
-import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.service.CardService;
 import ru.itmo.precrimeupd.service.StatisticService;
-import ru.itmo.precrimeupd.service.UserService;
 
 import java.util.List;
 
@@ -20,15 +17,12 @@ import java.util.List;
 public class AuditorController {
 
     private final StatisticService statisticService;
-    private final UserService userService;
     private final CardService cardService;
 
     @Autowired
     public AuditorController(StatisticService statisticService
-                            , UserService userService
                             , CardService cardService) {
         this.statisticService = statisticService;
-        this.userService = userService;
         this.cardService = cardService;
     }
 
@@ -43,10 +37,6 @@ public class AuditorController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserStatisticInfo> getUserStatistic(@PathVariable Long id){
-        UserEntity userEntity = userService.findById(id);
-        if(userEntity == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         UserStatisticInfo userStatisticInfo = statisticService.getUserStatistic(id);
         return new ResponseEntity<>(userStatisticInfo, HttpStatus.OK);
     }
@@ -63,16 +53,11 @@ public class AuditorController {
     @GetMapping("/cards/{id}")
     public ResponseEntity<CrimeCardOutDto> getCrimeCard(@PathVariable Long id){
         CrimeCardOutDto crimeCardOutDto = cardService.getCardById(id);
-        return crimeCardOutDto != null ? new ResponseEntity<>(crimeCardOutDto, HttpStatus.OK)
-                                       : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(crimeCardOutDto, HttpStatus.OK);
     }
 
     @PostMapping("/cards/{id}")
     public ResponseEntity<String> reportMistakeInCard(@PathVariable Long id, @RequestBody String message) {
-        CrimeCard card = cardService.findCardById(id);
-        if(card == null){
-            return new ResponseEntity<>("Card does not exist", HttpStatus.NOT_FOUND);
-        }
         cardService.reportCardMistake(id, message);
         return new ResponseEntity<>("Report successfully send",HttpStatus.OK);
     }

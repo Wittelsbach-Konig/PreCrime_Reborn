@@ -30,9 +30,7 @@ public class PreCogController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PreCog> getPreCog(@PathVariable Long id) {
-        PreCog preCog = preCogService.getPreCog(id);
-        return preCog != null ? new ResponseEntity<>(preCog, HttpStatus.OK)
-                              : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(preCogService.getPreCog(id), HttpStatus.OK);
     }
 
     @PostMapping("/newprecog")
@@ -45,21 +43,13 @@ public class PreCogController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updatePreCogInfo(@PathVariable Long id
                                                     , @RequestBody PreCogDto preCogDto) {
-        PreCog preCog = preCogService.getPreCog(id);
         // add check if precog already exists ??
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         preCogService.updatePreCogInfo(id, preCogDto);
         return new ResponseEntity<>("PreCog successfully updated", HttpStatus.OK);
     }
 
     @PutMapping("/{id}/enterdopamine")
     public ResponseEntity<String> enterDopamineToPreCog(@PathVariable Long id, @RequestBody int amount) {
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         try {
             preCogService.enterDopamine(id, amount);
         } catch (IllegalArgumentException ex){
@@ -73,10 +63,6 @@ public class PreCogController {
     @PutMapping("/{id}/enterserotonin")
     public ResponseEntity<String> enterSerotoninToPreCog(@PathVariable Long id
                                                         , @RequestBody int amount){
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         try{
             preCogService.enterSerotonine(id, amount);
         } catch (IllegalArgumentException ex){
@@ -88,10 +74,6 @@ public class PreCogController {
 
     @PutMapping("/{id}/enterdepressant")
     public ResponseEntity<String> enterDepressantToPreCog(@PathVariable Long id, @RequestBody int amount){
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         try{
             preCogService.enterDepressant(id, amount);
         } catch (IllegalArgumentException ex){
@@ -104,30 +86,18 @@ public class PreCogController {
 
     @PostMapping("/{id}/retire")
     public ResponseEntity<String> retirePreCog(@PathVariable Long id) {
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         preCogService.retirePreCog(id);
         return new ResponseEntity<>("PreCog successfully retired", HttpStatus.OK);
     }
 
     @PostMapping("/{id}/rehabilitate")
     public ResponseEntity<String> rehabilitatePreCog(@PathVariable Long id) {
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         preCogService.rehabilitatePreCog(id);
         return new ResponseEntity<>("PreCog successfully rehabilitated", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePreCog (@PathVariable Long id) {
-        PreCog preCog = preCogService.getPreCog(id);
-        if (preCog == null){
-            return new ResponseEntity<>("PreCog does not exist", HttpStatus.NOT_FOUND);
-        }
         preCogService.deletePreCog(id);
         return new ResponseEntity<>("PreCog successfully deleted", HttpStatus.NO_CONTENT);
     }

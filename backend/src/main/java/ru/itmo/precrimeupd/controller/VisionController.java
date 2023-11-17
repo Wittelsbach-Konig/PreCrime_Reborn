@@ -29,10 +29,6 @@ public class VisionController {
 
     @PostMapping("/{id}/accept")
     public ResponseEntity<String> acceptVision(@PathVariable Long id){
-        Vision visionToAccept = visionService.findById(id);
-        if(visionToAccept == null){
-            return new ResponseEntity<>("Vision does not exist", HttpStatus.NOT_FOUND);
-        }
         visionService.approveVision(id);
         return new ResponseEntity<>("Vision successfully accepted", HttpStatus.OK);
     }
@@ -53,10 +49,6 @@ public class VisionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteVision(@PathVariable Long id){
-        Vision visionToAccept = visionService.findById(id);
-        if(visionToAccept == null){
-            return new ResponseEntity<>("Vision does not exist", HttpStatus.NOT_FOUND);
-        }
         visionService.deleteVision(id);
         return new ResponseEntity<>("Vision successfully deleted", HttpStatus.NO_CONTENT);
     }

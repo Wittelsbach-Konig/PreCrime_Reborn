@@ -1,10 +1,7 @@
 package ru.itmo.precrimeupd.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -56,15 +53,17 @@ public class JwtTokenUtils {
         return getAllClaimsFromToken(token).get("roles", List.class);
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token){
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secret)
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect",ex.fillInStackTrace());
+        } catch (ExpiredJwtException ex) {
+            throw new RuntimeException("JWT was expired");
+        } catch (JwtException ex) {
+            throw new RuntimeException("JWT was incorrect");
         }
     }
 }

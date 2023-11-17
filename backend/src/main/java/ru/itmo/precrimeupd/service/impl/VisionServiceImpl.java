@@ -2,6 +2,7 @@ package ru.itmo.precrimeupd.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.VisionDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.model.Vision;
 import ru.itmo.precrimeupd.repository.UserRepository;
@@ -12,7 +13,6 @@ import ru.itmo.precrimeupd.service.VisionService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VisionServiceImpl implements VisionService {
@@ -31,11 +31,7 @@ public class VisionServiceImpl implements VisionService {
 
     @Override
     public Vision findById(Long id) {
-        Optional<Vision> vision = visionRepository.findById(id);
-        if (vision.isPresent()) {
-            return vision.get();
-        }
-        return null;
+        return visionRepository.findById(id).orElseThrow(() -> new NotFoundException("Vision not found: " + id));
     }
 
     @Override
@@ -52,28 +48,23 @@ public class VisionServiceImpl implements VisionService {
 
     @Override
     public void deleteVision(Long id) {
-        Optional<Vision> visionToDelete = visionRepository.findById(id);
-        if (visionToDelete.isPresent()){
-            String login = SecurityUtil.getSessionUser();
-            UserEntity user = userRepository.findByLogin(login);
+        Vision visionToDelete = findById(id);
+        String login = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
 
-            visionRepository.deleteById(id);
-            statisticService.visionRejected(user);
-        }
+        visionRepository.delete(visionToDelete);
+        statisticService.visionRejected(user);
     }
 
     @Override
     public void approveVision(Long id) {
-        Optional<Vision> visionToApprove = visionRepository.findById(id);
-        if (visionToApprove.isPresent()) {
-            String login = SecurityUtil.getSessionUser();
-            UserEntity user = userRepository.findByLogin(login);
+        Vision visionToApprove = findById(id);
+        String login = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
 
-            Vision approvedVision = visionToApprove.get();
-            approvedVision.setAccepted(true);
-            visionRepository.save(approvedVision);
-            statisticService.visionAccepted(user);
-        }
+        visionToApprove.setAccepted(true);
+        visionRepository.save(visionToApprove);
+        statisticService.visionAccepted(user);
     }
 
     @Override

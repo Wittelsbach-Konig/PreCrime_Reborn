@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.precrimeupd.dto.CrimeCardInDto;
 import ru.itmo.precrimeupd.dto.CrimeCardOutDto;
-import ru.itmo.precrimeupd.model.CrimeCard;
 import ru.itmo.precrimeupd.service.CardService;
 
 import java.text.SimpleDateFormat;
@@ -33,8 +32,7 @@ public class CrimeCardController {
     @GetMapping("/{id}")
     public ResponseEntity<CrimeCardOutDto> getCard(@PathVariable Long id) {
         CrimeCardOutDto card = cardService.getCardById(id);
-        return card != null ? new ResponseEntity<>(card, HttpStatus.OK)
-                            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(card, HttpStatus.OK);
     }
 
     @GetMapping("/randomDateTime")
@@ -71,20 +69,12 @@ public class CrimeCardController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateCardData(@PathVariable Long id
                                                 , @RequestBody CrimeCardInDto updatedCardDto) {
-        CrimeCard card = cardService.findCardById(id);
-        if(card == null){
-            return new ResponseEntity<>("Card does not exist",HttpStatus.NOT_FOUND);
-        }
         cardService.updateCard(id, updatedCardDto);
         return new ResponseEntity<>("Card successfully updated", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCard(@PathVariable Long id) {
-        CrimeCard card = cardService.findCardById(id);
-        if(card == null){
-            return new ResponseEntity<>("Card does not exist",HttpStatus.NOT_FOUND);
-        }
         cardService.deleteCard(id);
         return new ResponseEntity<>("Card successfully deleted", HttpStatus.NO_CONTENT);
     }

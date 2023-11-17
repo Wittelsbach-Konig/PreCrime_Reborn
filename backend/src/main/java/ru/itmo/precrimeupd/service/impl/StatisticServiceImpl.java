@@ -3,6 +3,7 @@ package ru.itmo.precrimeupd.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.*;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.service.StatisticService;
@@ -232,7 +233,7 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public UserStatisticInfo getUserStatistic(Long id) {
         UserStatisticInfo userStatisticInfo = new UserStatisticInfo();
-        UserEntity user = userRepository.findById(id).get();
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found: " + id));
         UserInfoDto userInfo = mapToUserInfo(user);
         userStatisticInfo.setUserInfo(userInfo);
         userStatisticInfo.setBossReactGroupStatistic(Optional.empty());

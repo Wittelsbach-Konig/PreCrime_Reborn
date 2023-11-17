@@ -1,6 +1,8 @@
 package ru.itmo.precrimeupd.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
 import ru.itmo.precrimeupd.model.PreCog;
 
 import java.util.List;

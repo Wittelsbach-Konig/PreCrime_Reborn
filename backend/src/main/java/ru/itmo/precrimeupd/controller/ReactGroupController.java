@@ -40,8 +40,7 @@ public class ReactGroupController {
     @GetMapping("/{id}")
     public ResponseEntity<ReactGroup> getReactGroup(@PathVariable Long id){
         ReactGroup reactGroup = reactGroupService.findGroupMemberById(id);
-        return reactGroup != null ? new ResponseEntity<>(reactGroup, HttpStatus.OK)
-                                  : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(reactGroup, HttpStatus.OK);
     }
 
     @GetMapping("/criminal")
@@ -56,8 +55,7 @@ public class ReactGroupController {
     @GetMapping("/criminal/{id}")
     public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id){
         CriminalOutDto criminal = cardService.getCriminalById(id);
-        return criminal != null ? new ResponseEntity<>(criminal, HttpStatus.OK)
-                                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(criminal, HttpStatus.OK);
     }
 
     @GetMapping("/supply")
@@ -81,8 +79,7 @@ public class ReactGroupController {
     @GetMapping("/transport/{id}")
     public ResponseEntity<Transport> getTransport(@PathVariable Long id){
         Transport transport = groupResourceService.findTransportById(id);
-        return transport != null ? new ResponseEntity<>(transport, HttpStatus.OK)
-                                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(transport, HttpStatus.OK);
     }
 
 
@@ -97,11 +94,7 @@ public class ReactGroupController {
 
     @GetMapping("/supply/{id}")
     public ResponseEntity<GroupResource> getResource(@PathVariable Long id){
-        GroupResource resource = groupResourceService.findResourceById(id);
-        if(resource == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(resource, HttpStatus.OK);
+        return new ResponseEntity<>(groupResourceService.findResourceById(id), HttpStatus.OK);
     }
 
     @PostMapping("/supply/new")
@@ -129,10 +122,6 @@ public class ReactGroupController {
 
     @PostMapping("/criminal/{id}")
     public ResponseEntity<String> appointGroup(@PathVariable Long id, @RequestBody List<Long> peopleIds){
-        Criminal criminal = cardService.findCriminalById(id);
-        if(criminal == null) {
-            return new ResponseEntity<>("Criminal does not exist", HttpStatus.NOT_FOUND);
-        }
         if(peopleIds.isEmpty()) {
             return new ResponseEntity<>("React group cannot be empty", HttpStatus.BAD_REQUEST);
         }
@@ -142,10 +131,6 @@ public class ReactGroupController {
 
     @PutMapping("/criminal/{id}")
     public ResponseEntity<String> updateCriminalStatus (@PathVariable Long id, @RequestBody String status){
-        Criminal criminal = cardService.findCriminalById(id);
-        if(criminal == null) {
-            return new ResponseEntity<>("Criminal does not exist", HttpStatus.NOT_FOUND);
-        }
         CriminalStatus criminalStatus = null;
         if(status.equals("CAUGHT")){
             criminalStatus = CriminalStatus.CAUGHT;
@@ -163,20 +148,12 @@ public class ReactGroupController {
     @PutMapping("/{id}")
     public ResponseEntity<String> updateGroupMemberInfo(@PathVariable Long id
                                                 , @RequestBody ReactGroupDto reactGroupDto) {
-        ReactGroup memberToUpdate = reactGroupService.findGroupMemberById(id);
-        if(memberToUpdate == null) {
-            return new ResponseEntity<>("Group does not exist", HttpStatus.NOT_FOUND);
-        }
         reactGroupService.updateGroupMember(id, reactGroupDto);
         return new ResponseEntity<>("Group successfully updated", HttpStatus.OK);
     }
 
     @PutMapping("/supply/{id}")
     public ResponseEntity<String> orderResource(@PathVariable Long id, @RequestBody int amount){
-        GroupResource resourceToOrder = groupResourceService.findResourceById(id);
-        if(resourceToOrder == null){
-            return new ResponseEntity<>("Resource does not exist", HttpStatus.NOT_FOUND);
-        }
         try {
             groupResourceService.orderResource(id, amount);
         } catch (IllegalArgumentException ex) {
@@ -188,40 +165,24 @@ public class ReactGroupController {
 
     @PutMapping("/transport/{id}/retire")
     public ResponseEntity<String> retireTransport(@PathVariable Long id){
-        Transport transport = groupResourceService.findTransportById(id);
-        if(transport == null){
-            return new ResponseEntity<>("Transport does not exist", HttpStatus.NOT_FOUND);
-        }
         groupResourceService.retireTransport(id);
         return new ResponseEntity<>("Transport retired successfully", HttpStatus.OK);
     }
 
     @PutMapping("/transport/{id}/rehabilitate")
     public ResponseEntity<String> rehabilitateTransport(@PathVariable Long id){
-        Transport transport = groupResourceService.findTransportById(id);
-        if(transport == null){
-            return new ResponseEntity<>("Transport does not exist", HttpStatus.NOT_FOUND);
-        }
-        groupResourceService.rehabilitateTransport(id);
+         groupResourceService.rehabilitateTransport(id);
         return new ResponseEntity<>("Transport rehabilitated successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
-        ReactGroup memberToDelete = reactGroupService.findGroupMemberById(id);
-        if(memberToDelete == null) {
-            return new ResponseEntity<>("Group member does not exist", HttpStatus.NOT_FOUND);
-        }
         reactGroupService.deleteGroupMember(id);
         return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/transport/{id}")
     public ResponseEntity<String> deleteTransport (@PathVariable Long id) {
-        Transport transport = groupResourceService.findTransportById(id);
-        if(transport == null){
-            return new ResponseEntity<>("Transport does not exist", HttpStatus.NOT_FOUND);
-        }
         groupResourceService.deleteTransport(id);
         return new ResponseEntity<>("Transport deleted successfully", HttpStatus.NO_CONTENT);
     }

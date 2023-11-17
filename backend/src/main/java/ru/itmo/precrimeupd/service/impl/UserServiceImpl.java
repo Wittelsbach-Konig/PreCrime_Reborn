@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.itmo.precrimeupd.dto.RegistrationDto;
 import ru.itmo.precrimeupd.dto.UserOutDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.Role;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.repository.RoleRepository;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, RegistrationDto updatedUserDto) {
-        UserEntity userToUpdate = userRepository.findById(id).get();
+        UserEntity userToUpdate = findById(id);
         userToUpdate.setLogin(updatedUserDto.getLogin());
         userToUpdate.setPassword(updatedUserDto.getPassword());
         userToUpdate.setEmail(updatedUserDto.getEmail());
@@ -86,10 +87,8 @@ public class UserServiceImpl implements UserService {
     // For ADMIN
     @Override
     public void deleteUser(Long userId) {
-        Optional<UserEntity> userToDelete = userRepository.findById(userId);
-        if(userToDelete.isPresent()){
-            userRepository.deleteById(userId);
-        }
+        UserEntity userToDelete = findById(userId);
+        userRepository.delete(userToDelete);
     }
 
     // For ADMIN
@@ -112,18 +111,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findById(Long id) {
-        Optional<UserEntity> user = userRepository.findById(id);
-        if (user.isPresent()){
-            return user.get();
-        }
-        return null;
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found: " + id));
     }
 
     @Override
     public UserOutDto getUserById(Long id) {
         UserEntity user = findById(id);
-        UserOutDto tempUserDto = prepareUserForOutput(user);
-        return tempUserDto;
+        return prepareUserForOutput(user);
     }
 
     private UserOutDto prepareUserForOutput(UserEntity userEntity){

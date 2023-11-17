@@ -3,6 +3,7 @@ package ru.itmo.precrimeupd.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.ReactGroupDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.Criminal;
 import ru.itmo.precrimeupd.model.CriminalToReactGroup;
 import ru.itmo.precrimeupd.model.ReactGroup;
@@ -54,27 +55,28 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
     @Override
     public ReactGroup findGroupMemberById(Long id) {
-        Optional<ReactGroup> reactGroup = reactGroupRepository.findById(id);
-        return reactGroup.orElse(null);
+        return reactGroupRepository.findById(id).orElseThrow(() -> new NotFoundException("GroupMember not found: " + id));
     }
 
     @Override
     public List<ReactGroup> getAllMembers() {
-        List<ReactGroup> reactGroups = reactGroupRepository.findAll();
-        return reactGroups;
+        return reactGroupRepository.findAll();
     }
 
     @Override
     public void deleteGroupMember(Long id) {
-        Optional<ReactGroup> reactGroup = reactGroupRepository.findById(id);
-        if (reactGroup.isPresent()){
-            reactGroupRepository.deleteById(id);
-        }
+        ReactGroup reactGroup = findGroupMemberById(id);
+        reactGroupRepository.delete(reactGroup);
+    }
+
+    @Override
+    public Criminal findCriminalById(Long id) {
+        return criminalRepository.findById(id).orElseThrow(()-> new NotFoundException("Criminal not found: " + id));
     }
 
     @Override
     public void updateGroupMember(Long id, ReactGroupDto reactGroupDto) {
-        ReactGroup groupToUpdate = reactGroupRepository.findById(id).get();
+        ReactGroup groupToUpdate = findGroupMemberById(id);
         groupToUpdate.setMemberName(reactGroupDto.getMemberName());
         groupToUpdate.setTelegramId(reactGroupDto.getTelegramId());
         reactGroupRepository.save(groupToUpdate);
@@ -86,21 +88,19 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         UserEntity user = userRepository.findByLogin(login);
         statisticService.appointedToArrest(user);
 
-        Criminal criminal = criminalRepository.findById(id).get();
+        Criminal criminal = findCriminalById(id);
         String message = "You have been assigned to arrest a criminal, information:\n"
                 + "Criminal Name: " + criminal.getName() + "\n"
                 + "Last known location: " + criminal.getLocation()
                 + "Weapon :" + criminal.getWeapon();
         for(Long memberId : group){
-            Optional<ReactGroup> groupMember = reactGroupRepository.findById(memberId);
-            if(groupMember.isPresent()){
-                int chatId = groupMember.get().getTelegramId();
-                telegramBotService.sendMessage(chatId, message);
-                CriminalToReactGroup arrestAssignment = new CriminalToReactGroup();
-                arrestAssignment.setCriminal(criminal);
-                arrestAssignment.setReactGroup(groupMember.get());
-                criminalToReactGroupRepository.save(arrestAssignment);
-            }
+            ReactGroup groupMember = findGroupMemberById(id);
+            int chatId = groupMember.getTelegramId();
+            telegramBotService.sendMessage(chatId, message);
+            CriminalToReactGroup arrestAssignment = new CriminalToReactGroup();
+            arrestAssignment.setCriminal(criminal);
+            arrestAssignment.setReactGroup(groupMember);
+            criminalToReactGroupRepository.save(arrestAssignment);
         }
     }
 

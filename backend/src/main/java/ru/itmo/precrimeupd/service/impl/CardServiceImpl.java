@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.CrimeCardInDto;
 import ru.itmo.precrimeupd.dto.CrimeCardOutDto;
 import ru.itmo.precrimeupd.dto.CriminalOutDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.*;
 import ru.itmo.precrimeupd.repository.*;
 import ru.itmo.precrimeupd.security.SecurityUtil;
@@ -15,7 +16,6 @@ import ru.itmo.precrimeupd.service.TelegramBotService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static ru.itmo.precrimeupd.mapper.CardMapper.mapToCrimeCard;
 import static ru.itmo.precrimeupd.mapper.CardMapper.mapToCrimeCardOutDto;
@@ -71,8 +71,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void updateCard(Long id, CrimeCardInDto crimeCardInDto) {
-
-        CrimeCard cardToUpdate = cardRepository.findById(id).get();
+        CrimeCard cardToUpdate = findCardById(id);
         Criminal criminalToUpdate = criminalRepository.findByCrimeCard(cardToUpdate);
         cardToUpdate.setVictimName(crimeCardInDto.getVictimName());
         cardToUpdate.setCriminalName(crimeCardInDto.getCriminalName());
@@ -93,10 +92,8 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void deleteCard(Long id) {
-        Optional<CrimeCard> cardToDelete = cardRepository.findById(id);
-        if(cardToDelete.isPresent()){
-            cardRepository.deleteById(id);
-        }
+        CrimeCard cardToDelete = findCardById(id);
+        cardRepository.delete(cardToDelete);
     }
 
     @Override
@@ -125,19 +122,13 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CrimeCardOutDto getCardById(Long id) {
-        Optional<CrimeCard> cardOpt = cardRepository.findById(id);
-        if(cardOpt.isPresent()){
-            CrimeCard card = cardOpt.get();
-            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
-            return crimeCardOutDto;
-        }
-        return null;
+        CrimeCard crimeCard = findCardById(id);
+        return prepareCardForOutput(crimeCard);
     }
 
     @Override
     public CrimeCard findCardById(Long id) {
-        Optional<CrimeCard> cardOpt = cardRepository.findById(id);
-        return cardOpt.orElse(null);
+        return cardRepository.findById(id).orElseThrow(()->new NotFoundException("Card not found: " + id));
     }
 
     @Override
@@ -153,28 +144,18 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CriminalOutDto getCriminalById(Long id) {
-        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
-        if(criminalOpt.isPresent()) {
-            Criminal criminal =  criminalOpt.get();
-            CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);
-            return criminalOutDto;
-        }
-        return null;
+        Criminal criminal = findCriminalById(id);
+        return prepareCriminalForOutput(criminal);
     }
 
     @Override
     public Criminal findCriminalById(Long id) {
-        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
-        if(criminalOpt.isPresent()) {
-            Criminal criminal =  criminalOpt.get();
-            return criminal;
-        }
-        return null;
+        return criminalRepository.findById(id).orElseThrow(()-> new NotFoundException("Criminal not found: " + id));
     }
 
     @Override
     public void updateCriminalStatus(Long id, CriminalStatus status) {
-        Criminal criminal = criminalRepository.findById(id).get();
+        Criminal criminal = findCriminalById(id);
         if(status == CriminalStatus.ESCAPED){
             criminal.setStatus(CriminalStatus.ESCAPED);
             statisticService.criminalEscaped(criminal);
@@ -191,7 +172,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void reportCardMistake(Long id, String message) {
-        CrimeCard card = cardRepository.findById(id).get();
+        CrimeCard card = findCardById(id);
         String informMessage = "the auditor found an error in the card №"
                 + id +
                 "\nMake corrections in accordance with the auditor’s recommendations\n"
@@ -203,16 +184,14 @@ public class CardServiceImpl implements CardService {
 
     private CrimeCardOutDto prepareCardForOutput(CrimeCard card){
         if(card != null){
-            CrimeCardOutDto crimeCardOutDto = mapToCrimeCardOutDto(card);
-            return crimeCardOutDto;
+            return mapToCrimeCardOutDto(card);
         }
         return null;
     }
 
     private CriminalOutDto prepareCriminalForOutput(Criminal criminal){
         if(criminal != null){
-            CriminalOutDto criminalOutDto = mapToCriminalOutDto(criminal);
-            return criminalOutDto;
+            return mapToCriminalOutDto(criminal);
         }
         return null;
     }

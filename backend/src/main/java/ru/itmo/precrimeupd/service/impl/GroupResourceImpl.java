@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.ResourceDto;
 import ru.itmo.precrimeupd.dto.TransportDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.GroupResource;
 import ru.itmo.precrimeupd.model.GroupResourceType;
 import ru.itmo.precrimeupd.model.Transport;
@@ -42,8 +43,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public GroupResource findResourceById(Long id) {
-        Optional<GroupResource> resource = groupResourceRepository.findById(id);
-        return resource.orElse(null);
+        return groupResourceRepository.findById(id).orElseThrow(() -> new NotFoundException("Resource not found: " + id));
     }
 
     @Override
@@ -102,7 +102,7 @@ public class GroupResourceImpl implements GroupResourceService {
         String login = SecurityUtil.getSessionUser();
         UserEntity user = userRepository.findByLogin(login);
 
-        GroupResource resourceToOrder = groupResourceRepository.findById(id).get();
+        GroupResource resourceToOrder = findResourceById(id);
         int maxPossibleAmount = resourceToOrder.getMaxPossibleAmount();
         int currentAmount = resourceToOrder.getAmount();
         int newAmount = currentAmount + amount;
@@ -121,8 +121,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public Transport findTransportById(Long id) {
-        Optional<Transport> transport = transportRepository.findById(id);
-        return transport.orElse(null);
+        return transportRepository.findById(id).orElseThrow(() -> new NotFoundException("Transport not found: " + id));
     }
 
     @Override
@@ -137,7 +136,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public void retireTransport(Long id) {
-        Transport transportToRetire = transportRepository.findById(id).get();
+        Transport transportToRetire = findTransportById(id);
         transportToRetire.setInOperation(false);
         transportRepository.save(transportToRetire);
 
@@ -145,16 +144,14 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public void rehabilitateTransport(Long id) {
-        Transport transportToRehabilitate = transportRepository.findById(id).get();
+        Transport transportToRehabilitate = findTransportById(id);
         transportToRehabilitate.setInOperation(true);
         transportRepository.save(transportToRehabilitate);
     }
 
     @Override
     public void deleteTransport(Long id) {
-        Optional<Transport> transport = transportRepository.findById(id);
-        if(transport.isPresent()){
-            transportRepository.deleteById(id);
-        }
+        Transport transport = findTransportById(id);
+        transportRepository.delete(transport);
     }
 }

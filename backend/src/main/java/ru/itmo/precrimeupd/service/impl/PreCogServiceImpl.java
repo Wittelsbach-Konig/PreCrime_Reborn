@@ -3,6 +3,7 @@ package ru.itmo.precrimeupd.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.precrimeupd.dto.PreCogDto;
+import ru.itmo.precrimeupd.exceptions.NotFoundException;
 import ru.itmo.precrimeupd.model.PreCog;
 import ru.itmo.precrimeupd.model.UserEntity;
 import ru.itmo.precrimeupd.repository.PreCogRepository;
@@ -12,7 +13,6 @@ import ru.itmo.precrimeupd.service.PreCogService;
 import ru.itmo.precrimeupd.service.StatisticService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -33,14 +33,12 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public List<PreCog> getAllPreCogs() {
-        List<PreCog> preCogs = preCogRepository.findAll();
-        return preCogs;
+        return preCogRepository.findAll();
     }
 
     @Override
     public PreCog getPreCog(Long id) {
-        Optional<PreCog> preCog = preCogRepository.findById(id);
-        return preCog.orElse(null);
+        return preCogRepository.findById(id).orElseThrow(() -> new NotFoundException("PreCog not found: " + id));
     }
 
     @Override
@@ -53,15 +51,13 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void deletePreCog(Long id) {
-        Optional<PreCog> preCogToDelete = preCogRepository.findById(id);
-        if (preCogToDelete.isPresent()){
-            preCogRepository.deleteById(id);
-        }
+        PreCog preCogToDelete = getPreCog(id);
+        preCogRepository.delete(preCogToDelete);
     }
 
     @Override
     public void updatePreCogInfo(Long id, PreCogDto preCogDto) {
-        PreCog preCogToUpdate = preCogRepository.findById(id).get();
+        PreCog preCogToUpdate = getPreCog(id);
         preCogToUpdate.setPreCogName(preCogDto.getPreCogName());
         preCogToUpdate.setAge(preCogDto.getAge());
         preCogRepository.save(preCogToUpdate);
@@ -69,14 +65,14 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void retirePreCog(Long id) {
-        PreCog preCogToRetire = preCogRepository.findById(id).get();
+        PreCog preCogToRetire = getPreCog(id);
         preCogToRetire.setWork(false);
         preCogRepository.save(preCogToRetire);
     }
 
     @Override
     public void rehabilitatePreCog(Long id) {
-        PreCog preCogToRetire = preCogRepository.findById(id).get();
+        PreCog preCogToRetire = getPreCog(id);
         preCogToRetire.setWork(true);
         preCogRepository.save(preCogToRetire);
     }
@@ -105,7 +101,7 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void enterDopamine(Long id, int amount) throws IllegalArgumentException {
-        PreCog preCogToService = preCogRepository.findById(id).get();
+        PreCog preCogToService = getPreCog(id);
         int maxPossibleAmount = 100;
         int currentAmount = preCogToService.getDopamineLevel();
         int newAmount = currentAmount + amount;
@@ -121,7 +117,7 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void enterSerotonine(Long id, int amount) throws IllegalArgumentException {
-        PreCog preCogToService = preCogRepository.findById(id).get();
+        PreCog preCogToService = getPreCog(id);
         int maxPossibleAmount = 100;
         int currentAmount = preCogToService.getSerotoninLevel();
         int newAmount = currentAmount + amount;
@@ -137,7 +133,7 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public void enterDepressant(Long id, int amount) throws IllegalArgumentException {
-        PreCog preCogToService = preCogRepository.findById(id).get();
+        PreCog preCogToService = getPreCog(id);
         int minPossibleAmount = 0;
         int currentAmount = preCogToService.getStressLevel();
         int newAmount = currentAmount - amount;
