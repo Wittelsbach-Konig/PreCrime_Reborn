@@ -1,0 +1,12 @@
+package ru.itmo.precrimeupd.dto;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class VisionOutDto {
+    private Long id;
+    String videoUrl;
+    Boolean accepted;
+}
