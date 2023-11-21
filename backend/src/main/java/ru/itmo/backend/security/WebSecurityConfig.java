@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).permitAll()
+                .antMatchers("/api/v1/credits").permitAll()
                 .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAnyAuthority("ADMIN")
                 .antMatchers("/api/v1/me").authenticated()
                 .antMatchers("/actuator").hasAuthority("ADMIN")

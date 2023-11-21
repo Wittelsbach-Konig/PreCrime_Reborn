@@ -18,6 +18,7 @@ import ru.itmo.backend.dto.LoginDto;
 import ru.itmo.backend.dto.RegistrationDto;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.exceptions.AppError;
+import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.security.CustomUserDetailService;
 import ru.itmo.backend.security.JwtTokenUtils;
 import ru.itmo.backend.service.UserService;
@@ -50,8 +51,6 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong login or password"), HttpStatus.UNAUTHORIZED);
         }
-//        UserDetails userDetails = customUserDetailService.loadUserByUsername(loginDto.getLogin());
-//        String token = jwtTokenUtils.generateToken(userDetails);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenUtils.generateToken(authentication);
         return ResponseEntity.ok(new JwtResponseDto(token));
@@ -60,6 +59,9 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity<UserOutDto> register(@Valid @RequestBody RegistrationDto user,
                            BindingResult result) {
+        if (user == null) {
+            throw new NotValidArgumentException("Registration data is missing");
+        }
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

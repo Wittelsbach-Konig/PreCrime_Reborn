@@ -19,16 +19,13 @@ public class JwtTokenUtils {
 		String username = authentication.getName();
 		Date currentDate = new Date();
 		Date expireDate = new Date(currentDate.getTime() + SecurityLiterals.JWT_EXPIRATION);
-		
-		String token = Jwts.builder()
+
+        return Jwts.builder()
 				.setSubject(username)
 				.setIssuedAt( new Date())
 				.setExpiration(expireDate)
 				.signWith(key,SignatureAlgorithm.HS512)
 				.compact();
-		System.out.println("New token :");
-		System.out.println(token);
-		return token;
 	}
 	public String getUsernameFromJWT(String token){
 		Claims claims = Jwts.parserBuilder()

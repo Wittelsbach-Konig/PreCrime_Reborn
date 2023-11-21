@@ -34,7 +34,7 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<UserOutDto> updateUserInfo(@PathVariable Long id
-                                                , @RequestParam RegistrationDto updatedUser) {
+                                                , @RequestBody RegistrationDto updatedUser) {
         UserOutDto userAfterUpdate = userService.updateUser(id, updatedUser);
         return new ResponseEntity<>(userAfterUpdate, HttpStatus.OK);
     }

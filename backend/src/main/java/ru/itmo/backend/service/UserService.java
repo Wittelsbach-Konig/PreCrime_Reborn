@@ -15,4 +15,6 @@ public interface UserService {
     UserEntity findUserByLogin(String login);
     UserEntity findUserById(Long id);
     UserOutDto getUserById(Long id);
+
+    UserOutDto getUserByLogin(String login);
 }

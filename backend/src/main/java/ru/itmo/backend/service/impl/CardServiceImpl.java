@@ -66,7 +66,7 @@ public class CardServiceImpl implements CardService {
             crimeCard.setTypeOfCrime(CrimeType.UNINTENTIONAL);
         }
         Vision crimeVision = visionRepository.findById(crimeCardInDto.getVisionId())
-                .orElseThrow(() -> new NoSuchElementException("Vision not found"));
+                .orElseThrow(() -> new NotFoundException("Vision not found"));
         crimeCard.setVision(crimeVision);
         Criminal criminal = new Criminal();
         CrimeCard newCard = cardRepository.save(crimeCard);
@@ -161,12 +161,8 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CriminalOutDto getCriminalById(Long id) {
-        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
-        if(criminalOpt.isPresent()) {
-            Criminal criminal =  criminalOpt.get();
-            return prepareCriminalForOutput(criminal);
-        }
-        return null;
+        Criminal criminal = findCriminalById(id);
+        return prepareCriminalForOutput(criminal);
     }
 
     @Override

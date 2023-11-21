@@ -138,6 +138,13 @@ public class UserServiceImpl implements UserService {
         return prepareUserForOutput(user);
     }
 
+    @Override
+    public UserOutDto getUserByLogin(String login) {
+        UserEntity user = findUserByLogin(login);
+        return prepareUserForOutput(user);
+    }
+
+
     private UserOutDto prepareUserForOutput(UserEntity userEntity){
         if(userEntity != null){
             UserOutDto tempUserDto = mapToUserOutDto(userEntity);
