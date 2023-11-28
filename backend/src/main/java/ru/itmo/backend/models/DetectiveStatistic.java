@@ -15,7 +15,7 @@ public class DetectiveStatistic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name = "detective_id", nullable = false)
+    @JoinColumn(name = "detective_id", unique = true, nullable = false)
     private UserEntity detective;
     @Builder.Default
     private int investigationCount = 0;

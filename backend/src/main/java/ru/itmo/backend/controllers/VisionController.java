@@ -2,6 +2,7 @@ package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.VisionDto;
@@ -28,7 +29,7 @@ public class VisionController {
         return new ResponseEntity<>(visions, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/accept")
+    @PostMapping(path = "/{id}/accept", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> acceptVision(@PathVariable Long id){
         visionService.approveVision(id);
         return new ResponseEntity<>("Vision successfully accepted", HttpStatus.OK);
@@ -36,12 +37,12 @@ public class VisionController {
 
     // only for ADMIN
     @PostMapping("/add")
-    public ResponseEntity<VisionOutDto> addNewVision(@RequestParam VisionDto vision) {
+    public ResponseEntity<VisionOutDto> addNewVision(@RequestBody VisionDto vision) {
         VisionOutDto addedVision = visionService.saveVision(vision);
         return new ResponseEntity<>(addedVision, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path = "/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> deleteVision(@PathVariable Long id) {
         visionService.deleteVision(id);
         return new ResponseEntity<>("Vision successfully deleted", HttpStatus.NO_CONTENT);

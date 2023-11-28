@@ -2,6 +2,7 @@ package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.CrimeCardOutDto;
@@ -9,7 +10,6 @@ import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.dto.UserStatisticInfo;
 import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.StatisticService;
-import ru.itmo.backend.service.UserService;
 
 import java.util.List;
 
@@ -18,15 +18,12 @@ import java.util.List;
 public class AuditorController {
 
     private final StatisticService statisticService;
-    private final UserService userService;
     private final CardService cardService;
 
     @Autowired
     public AuditorController(StatisticService statisticService
-                            , UserService userService
                             , CardService cardService) {
         this.statisticService = statisticService;
-        this.userService = userService;
         this.cardService = cardService;
     }
 
@@ -60,8 +57,8 @@ public class AuditorController {
         return new ResponseEntity<>(crimeCardOutDto, HttpStatus.OK);
     }
 
-    @PostMapping("/cards/{id}")
-    public ResponseEntity<String> reportMistakeInCard(@PathVariable Long id, @RequestBody String message) {
+    @PostMapping(path = "/cards/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public ResponseEntity<String> reportMistakeInCard(@PathVariable Long id, @RequestParam String message) {
         cardService.reportCardMistake(id, message);
         return new ResponseEntity<>("Report successfully send",HttpStatus.OK);
     }

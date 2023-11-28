@@ -5,12 +5,14 @@ import ru.itmo.backend.models.UserEntity;
 
 public class UserEntitiyMapper {
     public static UserOutDto mapToUserOutDto(UserEntity userEntity){
-        return UserOutDto.builder()
+        UserOutDto userOutDto = UserOutDto.builder()
                 .id(userEntity.getId())
+                .login(userEntity.getLogin())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
                 .email(userEntity.getEmail())
                 .telegramId(userEntity.getTelegramId())
                 .build();
+        return userOutDto;
     }
 }

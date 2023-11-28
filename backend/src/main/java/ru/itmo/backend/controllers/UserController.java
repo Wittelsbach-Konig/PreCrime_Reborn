@@ -3,17 +3,13 @@ package ru.itmo.backend.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.models.SystemInfo;
-import ru.itmo.backend.models.UserEntity;
 import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.UserService;
 

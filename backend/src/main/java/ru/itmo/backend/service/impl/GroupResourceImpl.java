@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.ResourceDto;
 import ru.itmo.backend.dto.TransportDto;
+import ru.itmo.backend.dto.TransportOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.models.GroupResource;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static ru.itmo.backend.mapper.TransportMapper.mapToTransportOutDto;
 
 @Service
 public class GroupResourceImpl implements GroupResourceService {
@@ -96,13 +99,14 @@ public class GroupResourceImpl implements GroupResourceService {
             default -> throw new NotValidArgumentException("Unknown resource type: " + resourceType);
         }
         GroupResource newResource = groupResourceRepository.save(resourceToAdd);
-        return ResourceDto.builder()
+        ResourceDto result = ResourceDto.builder()
                 .id(newResource.getId())
                 .resourceName(newResource.getResourceName())
                 .amount(newResource.getAmount())
                 .maxPossibleAmount(newResource.getMaxPossibleAmount())
                 .type(newResource.getType().name())
                 .build();
+        return result;
     }
 
     @Override
@@ -151,34 +155,39 @@ public class GroupResourceImpl implements GroupResourceService {
     }
 
     @Override
-    public TransportDto addNewTransport(TransportDto transportDto) {
+    public TransportOutDto addNewTransport(TransportDto transportDto) {
         Transport transportToAdd = new Transport();
         transportToAdd.setBrand(transportDto.getBrand());
         transportToAdd.setModel(transportDto.getModel());
         transportToAdd.setMaximum_fuel(transportDto.getMaximum_fuel());
         transportToAdd.setRemaining_fuel(transportDto.getMaximum_fuel());
         Transport newTransport = transportRepository.save(transportToAdd);
-        return TransportDto.builder()
+        TransportOutDto result = TransportOutDto.builder()
                 .id(newTransport.getId())
                 .brand(newTransport.getBrand())
                 .model(newTransport.getModel())
                 .maximum_fuel(newTransport.getMaximum_fuel())
+                .current_fuel(newTransport.getRemaining_fuel())
+                .status(newTransport.getInOperation())
+                .condition(newTransport.getCondition())
                 .build();
+        return result;
     }
 
     @Override
-    public void retireTransport(Long id) {
+    public TransportOutDto retireTransport(Long id) {
         Transport transportToRetire = findTransportById(id);
         transportToRetire.setInOperation(false);
-        transportRepository.save(transportToRetire);
-
+        Transport savedTransport = transportRepository.save(transportToRetire);
+        return mapToTransportOutDto(savedTransport);
     }
 
     @Override
-    public void rehabilitateTransport(Long id)  {
+    public TransportOutDto rehabilitateTransport(Long id)  {
         Transport transportToRehabilitate = findTransportById(id);
         transportToRehabilitate.setInOperation(true);
-        transportRepository.save(transportToRehabilitate);
+        Transport savedTransport = transportRepository.save(transportToRehabilitate);
+        return mapToTransportOutDto(savedTransport);
     }
 
     @Override

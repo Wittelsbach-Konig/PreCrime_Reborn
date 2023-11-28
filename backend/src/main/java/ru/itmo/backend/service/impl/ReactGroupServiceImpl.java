@@ -15,6 +15,8 @@ import ru.itmo.backend.repository.UserRepository;
 import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.ReactGroupService;
 import ru.itmo.backend.service.StatisticService;
+import ru.itmo.backend.service.TelegramBotService;
+//import ru.itmo.precrimesyst.service.TelegramBotService;
 
 import java.util.List;
 
@@ -24,17 +26,17 @@ import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroupDto;
 @Service
 public class ReactGroupServiceImpl implements ReactGroupService {
     private final ReactGroupRepository reactGroupRepository;
-    //private final TelegramBotService telegramBotService;
+    private final TelegramBotService telegramBotService;
     private final CriminalRepository criminalRepository;
     private final StatisticService statisticService;
     private final UserRepository userRepository;
     private final CriminalToReactGroupRepository criminalToReactGroupRepository;
 
-    private final SecurityUtil securityUtil;
+    private SecurityUtil securityUtil;
 
     @Autowired
     public ReactGroupServiceImpl(ReactGroupRepository reactGroupRepository
-                                //, TelegramBotService telegramBotService
+                                , TelegramBotService telegramBotService
                                 , CriminalRepository criminalRepository
                                 , StatisticService statisticService
                                 , UserRepository userRepository
@@ -42,7 +44,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
                                 , SecurityUtil securityUtil) {
         this.reactGroupRepository = reactGroupRepository;
-        //this.telegramBotService = telegramBotService;
+        this.telegramBotService = telegramBotService;
         this.criminalRepository = criminalRepository;
         this.statisticService = statisticService;
         this.userRepository = userRepository;
@@ -71,7 +73,8 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
     @Override
     public List<ReactGroup> getAllMembers() {
-        return reactGroupRepository.findAll();
+        List<ReactGroup> reactGroups = reactGroupRepository.findAll();
+        return reactGroups;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         for(Long memberId : group){
             ReactGroup groupMember = findGroupMemberById(memberId);
             int chatId = groupMember.getTelegramId();
-            //telegramBotService.sendMessage(chatId, message);
+            telegramBotService.sendMessage(chatId, message);
             CriminalToReactGroup arrestAssignment = new CriminalToReactGroup();
             arrestAssignment.setCriminal(criminal);
             arrestAssignment.setReactGroup(groupMember);

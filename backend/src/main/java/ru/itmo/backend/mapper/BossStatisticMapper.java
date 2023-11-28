@@ -5,7 +5,7 @@ import ru.itmo.backend.models.BossReactGroupStatistic;
 
 public class BossStatisticMapper {
     public static BossReactGroupStatisticDto mapToBossStatisticDto(BossReactGroupStatistic bossReactGroupStatistic){
-        return BossReactGroupStatisticDto.builder()
+        BossReactGroupStatisticDto bossReactGroupStatisticDto = BossReactGroupStatisticDto.builder()
                 .id(bossReactGroupStatistic.getId())
                 .ammoOrdered(bossReactGroupStatistic.getAmmoOrdered())
                 .arresstAppointed(bossReactGroupStatistic.getArresstAppointed())
@@ -14,5 +14,6 @@ public class BossStatisticMapper {
                 .weaponOrdered(bossReactGroupStatistic.getWeaponOrdered())
                 .fuelSpent(bossReactGroupStatistic.getFuelSpent())
                 .build();
+        return bossReactGroupStatisticDto;
     }
 }

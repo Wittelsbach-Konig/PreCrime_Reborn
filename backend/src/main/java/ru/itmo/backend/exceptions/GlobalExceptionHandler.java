@@ -35,17 +35,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorObject, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorObject> handleGlobalException(Exception ex, WebRequest request) {
-        ErrorObject errorObject = new ErrorObject();
-        errorObject.setMessage("Internal Server Error");
-        errorObject.setPath(request.getDescription(false));
-        errorObject.setTimestamp(new Date());
-        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        errorObject.setMethodName(getMethodName(ex));
-
-        return new ResponseEntity<>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorObject> handleGlobalException(Exception ex, WebRequest request) {
+//        ErrorObject errorObject = new ErrorObject();
+//        errorObject.setMessage("Internal Server Error user");
+//        errorObject.setPath(request.getDescription(false));
+//        errorObject.setTimestamp(new Date());
+//        errorObject.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//        errorObject.setMethodName(getMethodName(ex));
+//
+//        return new ResponseEntity<>(errorObject, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 
     private String getMethodName(Exception ex) {

@@ -21,8 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthEntryPoint authEntryPoint;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomUserDetailService userDetailService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Autowired
     public WebSecurityConfig(CustomUserDetailService userDetailsService
             , JwtAuthEntryPoint authEntryPoint
@@ -46,9 +47,8 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                 .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).permitAll()
                 .antMatchers("/api/v1/credits").permitAll()
-                .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAnyAuthority("ADMIN")
+                .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAuthority("ADMIN")
                 .antMatchers("/api/v1/me").authenticated()
-                .antMatchers("/actuator").hasAuthority("ADMIN")
                 .antMatchers(SecurityLiterals.SWAGGER_ENDPOINTS).permitAll()
                 .antMatchers(SecurityLiterals.APIDOCS_ENDPOINTS).permitAll()
                 .antMatchers(SecurityLiterals.AUDITOR_ENDPOINTS).hasAuthority("AUDITOR")

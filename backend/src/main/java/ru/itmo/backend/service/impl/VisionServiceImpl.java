@@ -51,11 +51,12 @@ public class VisionServiceImpl implements VisionService {
         Vision newVision = new Vision();
         newVision.setVideoUrl(visionDto.getVideoUrl());
         Vision savedVision = visionRepository.save(newVision);
-        return VisionOutDto.builder()
+        VisionOutDto result = VisionOutDto.builder()
                 .id(savedVision.getId())
                 .videoUrl(savedVision.getVideoUrl())
                 .accepted(savedVision.isAccepted())
                 .build();
+        return result;
     }
 
     @Override

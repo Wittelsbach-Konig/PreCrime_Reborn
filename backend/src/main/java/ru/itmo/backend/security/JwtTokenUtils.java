@@ -1,31 +1,37 @@
 package ru.itmo.backend.security;
 
-import io.jsonwebtoken.Claims;
+import java.util.Date;
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+//import java.security.KeyPair;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
-
 @Component
 public class JwtTokenUtils {
+	//private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
 	private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 	
 	public String generateToken(Authentication authentication) {
 		String username = authentication.getName();
 		Date currentDate = new Date();
 		Date expireDate = new Date(currentDate.getTime() + SecurityLiterals.JWT_EXPIRATION);
-
-        return Jwts.builder()
+		
+		String token = Jwts.builder()
 				.setSubject(username)
 				.setIssuedAt( new Date())
 				.setExpiration(expireDate)
 				.signWith(key,SignatureAlgorithm.HS512)
 				.compact();
+		System.out.println("New token :");
+		System.out.println(token);
+		return token;
 	}
 	public String getUsernameFromJWT(String token){
 		Claims claims = Jwts.parserBuilder()

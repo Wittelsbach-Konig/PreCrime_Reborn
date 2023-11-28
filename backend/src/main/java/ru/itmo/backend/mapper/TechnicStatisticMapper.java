@@ -5,7 +5,7 @@ import ru.itmo.backend.models.TechnicStatistic;
 
 public class TechnicStatisticMapper {
     public static TechnicStatisticDto mapToTechnicStatisticDto(TechnicStatistic technicStatistic){
-        return TechnicStatisticDto.builder()
+        TechnicStatisticDto technicStatisticDto = TechnicStatisticDto.builder()
                 .id(technicStatistic.getId())
                 .depressantEntered(technicStatistic.getDepressantEntered())
                 .dopamineEntered(technicStatistic.getDopamineEntered())
@@ -13,5 +13,6 @@ public class TechnicStatisticMapper {
                 .visionsAccepted(technicStatistic.getVisionsAccepted())
                 .visionsRejected(technicStatistic.getVisionsRejected())
                 .build();
+        return technicStatisticDto;
     }
 }

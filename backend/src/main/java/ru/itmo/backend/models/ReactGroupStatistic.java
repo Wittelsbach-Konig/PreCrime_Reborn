@@ -15,11 +15,14 @@ public class ReactGroupStatistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", unique = true, nullable = false)
     private ReactGroup member;
+
     @Builder.Default
     private int criminalsCaught = 0;
+
     @Builder.Default
     private int criminalsEscaped = 0;
 }

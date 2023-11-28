@@ -5,7 +5,7 @@ import ru.itmo.backend.models.UserEntity;
 
 public class UserInfoMapper {
     public static UserInfoDto mapToUserInfo(UserEntity userEntity){
-        return UserInfoDto.builder()
+        UserInfoDto userInfo = UserInfoDto.builder()
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
@@ -13,5 +13,6 @@ public class UserInfoMapper {
                 .email(userEntity.getEmail())
                 .telegramId(userEntity.getTelegramId())
                 .build();
+        return userInfo;
     }
 }

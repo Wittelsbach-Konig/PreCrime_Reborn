@@ -5,10 +5,11 @@ import ru.itmo.backend.models.DetectiveStatistic;
 
 public class DetectiveStatisticMapper {
     public static DetectiveStatisticDto mapToDetectiveStatisticDto(DetectiveStatistic detectiveStatistic){
-        return DetectiveStatisticDto.builder()
+        DetectiveStatisticDto detectiveStatisticDto = DetectiveStatisticDto.builder()
                 .id(detectiveStatistic.getId())
                 .errorsInCards(detectiveStatistic.getErrorsInCards())
                 .investigationCount(detectiveStatistic.getInvestigationCount())
                 .build();
+        return detectiveStatisticDto;
     }
 }

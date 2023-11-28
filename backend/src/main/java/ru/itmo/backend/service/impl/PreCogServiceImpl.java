@@ -37,7 +37,8 @@ public class PreCogServiceImpl implements PreCogService {
 
     @Override
     public List<PreCog> getAllPreCogs() {
-        return preCogRepository.findAll();
+        List<PreCog> preCogs = preCogRepository.findAll();
+        return preCogs;
     }
 
     @Override
@@ -55,7 +56,8 @@ public class PreCogServiceImpl implements PreCogService {
         PreCog newPreCog = new PreCog();
         newPreCog.setPreCogName(preCogDto.getPreCogName());
         newPreCog.setAge(preCogDto.getAge());
-        return preCogRepository.save(newPreCog);
+        PreCog savedPreCog = preCogRepository.save(newPreCog);
+        return savedPreCog;
     }
 
     @Override
@@ -69,21 +71,24 @@ public class PreCogServiceImpl implements PreCogService {
         PreCog preCogToUpdate = findPreCogById(id);
         preCogToUpdate.setPreCogName(preCogDto.getPreCogName());
         preCogToUpdate.setAge(preCogDto.getAge());
-        return preCogRepository.save(preCogToUpdate);
+        PreCog updatedPreCog = preCogRepository.save(preCogToUpdate);
+        return updatedPreCog;
     }
 
     @Override
     public PreCog retirePreCog(Long id) {
         PreCog preCogToRetire = findPreCogById(id);
         preCogToRetire.setWork(false);
-        return preCogRepository.save(preCogToRetire);
+        PreCog updatedPreCog = preCogRepository.save(preCogToRetire);
+        return updatedPreCog;
     }
 
     @Override
     public PreCog rehabilitatePreCog(Long id) {
         PreCog preCogToRetire = findPreCogById(id);
         preCogToRetire.setWork(true);
-        return preCogRepository.save(preCogToRetire);
+        PreCog updatedPreCog = preCogRepository.save(preCogToRetire);
+        return updatedPreCog;
     }
 
     @Override

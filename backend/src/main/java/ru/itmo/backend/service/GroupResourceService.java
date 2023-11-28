@@ -2,6 +2,7 @@ package ru.itmo.backend.service;
 
 import ru.itmo.backend.dto.ResourceDto;
 import ru.itmo.backend.dto.TransportDto;
+import ru.itmo.backend.dto.TransportOutDto;
 import ru.itmo.backend.models.GroupResource;
 import ru.itmo.backend.models.Transport;
 
@@ -16,8 +17,8 @@ public interface GroupResourceService {
     void refuelCar(Long id, int amount);
     List<Transport> getAllTransport();
     Transport findTransportById(Long id);
-    TransportDto addNewTransport(TransportDto transportDto);
-    void retireTransport(Long id);
-    void rehabilitateTransport(Long id);
+    TransportOutDto addNewTransport(TransportDto transportDto);
+    TransportOutDto retireTransport(Long id);
+    TransportOutDto rehabilitateTransport(Long id);
     void deleteTransport(Long id);
 }

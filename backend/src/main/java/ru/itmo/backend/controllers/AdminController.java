@@ -3,15 +3,18 @@ package ru.itmo.backend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.RegistrationDto;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
+@Validated
 public class AdminController {
     private final UserService userService;
 
@@ -34,7 +37,7 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<UserOutDto> updateUserInfo(@PathVariable Long id
-                                                , @RequestBody RegistrationDto updatedUser) {
+                                                    , @Valid @RequestBody RegistrationDto updatedUser) {
         UserOutDto userAfterUpdate = userService.updateUser(id, updatedUser);
         return new ResponseEntity<>(userAfterUpdate, HttpStatus.OK);
     }

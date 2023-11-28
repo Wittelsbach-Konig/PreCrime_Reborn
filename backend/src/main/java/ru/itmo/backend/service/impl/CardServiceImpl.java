@@ -12,6 +12,8 @@ import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.PreCogService;
 import ru.itmo.backend.service.StatisticService;
+import ru.itmo.backend.service.TelegramBotService;
+//import ru.itmo.precrimesyst.service.TelegramBotService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final CriminalRepository criminalRepository;
     private final UserRepository userRepository;
-    //private final TelegramBotService telegramBotService;
+    private final TelegramBotService telegramBotService;
     private final StatisticService statisticService;
     private final PreCogService preCogService;
     private final VisionRepository visionRepository;
@@ -37,7 +39,7 @@ public class CardServiceImpl implements CardService {
     public CardServiceImpl(CardRepository cardRepository
                             , UserRepository userRepository
                             , CriminalRepository criminalRepository
-                            //, TelegramBotService telegramBotService
+                            , TelegramBotService telegramBotService
                             , StatisticService statisticService
                             , PreCogService preCogService
                             , VisionRepository visionRepository
@@ -46,7 +48,7 @@ public class CardServiceImpl implements CardService {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
         this.criminalRepository = criminalRepository;
-        //this.telegramBotService = telegramBotService;
+        this.telegramBotService = telegramBotService;
         this.statisticService = statisticService;
         this.preCogService = preCogService;
         this.visionRepository = visionRepository;
@@ -66,7 +68,7 @@ public class CardServiceImpl implements CardService {
             crimeCard.setTypeOfCrime(CrimeType.UNINTENTIONAL);
         }
         Vision crimeVision = visionRepository.findById(crimeCardInDto.getVisionId())
-                .orElseThrow(() -> new NotFoundException("Vision not found"));
+                .orElseThrow(() -> new NoSuchElementException("Vision not found"));
         crimeCard.setVision(crimeVision);
         Criminal criminal = new Criminal();
         CrimeCard newCard = cardRepository.save(crimeCard);
@@ -161,8 +163,13 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CriminalOutDto getCriminalById(Long id) {
-        Criminal criminal = findCriminalById(id);
-        return prepareCriminalForOutput(criminal);
+        Optional<Criminal> criminalOpt = criminalRepository.findById(id);
+        if(criminalOpt.isPresent()) {
+            Criminal criminal =  criminalOpt.get();
+            CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);
+            return criminalOutDto;
+        }
+        return null;
     }
 
     @Override
@@ -203,7 +210,7 @@ public class CardServiceImpl implements CardService {
                 "\nMake corrections in accordance with the auditor’s recommendations\n"
                 + message;
         UserEntity detectiveToInform = card.getResponsibleDetective();
-        //telegramBotService.sendMessage(detectiveToInform.getTelegramId(), informMessage);
+        telegramBotService.sendMessage(detectiveToInform.getTelegramId(), informMessage);
         statisticService.foundErrorInCard(detectiveToInform);
     }
 

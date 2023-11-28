@@ -1,17 +1,21 @@
 package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.PreCogDto;
 import ru.itmo.backend.models.PreCog;
 import ru.itmo.backend.service.PreCogService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/api/v1/precogs")
 @RestController
+@Validated
 public class PreCogController {
     private final PreCogService preCogService;
 
@@ -36,33 +40,33 @@ public class PreCogController {
     }
 
     @PostMapping("/newprecog")
-    public ResponseEntity<PreCog> addNewPreCog(@RequestBody PreCogDto preCogDto) {
+    public ResponseEntity<PreCog> addNewPreCog(@Valid @RequestBody PreCogDto preCogDto) {
         PreCog newPreCog = preCogService.addNewPreCog(preCogDto);
         return new ResponseEntity<>(newPreCog, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PreCog> updatePreCogInfo(@PathVariable Long id
-                                                    , @RequestBody PreCogDto preCogDto) {
+                                                    , @Valid @RequestBody PreCogDto preCogDto) {
         PreCog updatedPreCog = preCogService.updatePreCogInfo(id, preCogDto);
         return new ResponseEntity<>(updatedPreCog, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/enterdopamine")
-    public ResponseEntity<String> enterDopamineToPreCog(@PathVariable Long id, @RequestBody int amount) {
+    public ResponseEntity<String> enterDopamineToPreCog(@PathVariable Long id, @RequestParam int amount) {
         preCogService.enterDopamine(id, amount);
         return new ResponseEntity<>("Dopamine successfully added", HttpStatus.OK);
     }
 
     @PutMapping("/{id}/enterserotonin")
     public ResponseEntity<String> enterSerotoninToPreCog(@PathVariable Long id
-                                                        , @RequestBody int amount){
+                                                        , @RequestParam int amount){
         preCogService.enterSerotonine(id, amount);
         return new ResponseEntity<>("Serotonine successfully added", HttpStatus.OK);
     }
 
     @PutMapping("/{id}/enterdepressant")
-    public ResponseEntity<String> enterDepressantToPreCog(@PathVariable Long id, @RequestBody int amount){
+    public ResponseEntity<String> enterDepressantToPreCog(@PathVariable Long id, @RequestParam int amount){
         preCogService.enterDepressant(id, amount);
         return new ResponseEntity<>("Depressant successfully added", HttpStatus.OK);
     }

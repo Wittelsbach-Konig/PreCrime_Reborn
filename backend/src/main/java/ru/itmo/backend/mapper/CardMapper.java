@@ -6,7 +6,7 @@ import ru.itmo.backend.models.CrimeCard;
 
 public class CardMapper {
     public static CrimeCard mapToCrimeCard(CrimeCardInDto cardDto){
-        return CrimeCard.builder()
+        CrimeCard card = CrimeCard.builder()
                 .id(cardDto.getId())
                 .victimName(cardDto.getVictimName())
                 .criminalName(cardDto.getCriminalName())
@@ -14,10 +14,11 @@ public class CardMapper {
                 .weapon(cardDto.getWeapon())
                 .crimeTime(cardDto.getCrimeTime())
                 .build();
+        return card;
     }
 
     public static CrimeCardOutDto mapToCrimeCardOutDto(CrimeCard crimeCard) {
-        return CrimeCardOutDto.builder()
+        CrimeCardOutDto card = CrimeCardOutDto.builder()
                 .id(crimeCard.getId())
                 .crimeTime(crimeCard.getCrimeTime())
                 .placeOfCrime(crimeCard.getPlaceOfCrime())
@@ -31,5 +32,6 @@ public class CardMapper {
                 .isCriminalCaught(crimeCard.getIsCriminalCaught())
                 .visionUrl(crimeCard.getVision().getVideoUrl())
                 .build();
+        return card;
     }
 }

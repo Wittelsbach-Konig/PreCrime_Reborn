@@ -2,21 +2,22 @@ package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.backend.dto.CriminalOutDto;
-import ru.itmo.backend.dto.ReactGroupDto;
-import ru.itmo.backend.dto.ResourceDto;
-import ru.itmo.backend.dto.TransportDto;
+import ru.itmo.backend.dto.*;
 import ru.itmo.backend.models.*;
 import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.GroupResourceService;
 import ru.itmo.backend.service.ReactGroupService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/reactiongroup")
+@Validated
 public class ReactGroupController {
     private final ReactGroupService reactGroupService;
     private final CardService cardService;
@@ -98,24 +99,24 @@ public class ReactGroupController {
     }
 
     @PostMapping("/supply/new")
-    public ResponseEntity<ResourceDto> addNewResource(@RequestBody ResourceDto resourceDto) {
+    public ResponseEntity<ResourceDto> addNewResource(@Valid @RequestBody ResourceDto resourceDto) {
         ResourceDto addedResource = groupResourceService.addNewResource(resourceDto);
         return new ResponseEntity<>(addedResource, HttpStatus.CREATED);
     }
 
     @PostMapping("/newman")
-    public ResponseEntity<ReactGroupDto> addNewMan(@RequestBody ReactGroupDto reactGroupDto){
+    public ResponseEntity<ReactGroupDto> addNewMan(@Valid @RequestBody ReactGroupDto reactGroupDto){
         ReactGroupDto newGroupMember = reactGroupService.createNewGroupMember(reactGroupDto);
         return new ResponseEntity<>(newGroupMember, HttpStatus.CREATED);
     }
 
     @PostMapping("/transport/new")
-    public ResponseEntity<TransportDto> addNewTransport(@RequestBody TransportDto transportDto) {
-        TransportDto addedTransport = groupResourceService.addNewTransport(transportDto);
+    public ResponseEntity<TransportOutDto> addNewTransport(@Valid @RequestBody TransportDto transportDto) {
+        TransportOutDto addedTransport = groupResourceService.addNewTransport(transportDto);
         return new ResponseEntity<>(addedTransport, HttpStatus.CREATED);
     }
 
-    @PostMapping("/criminal/{id}")
+    @PostMapping(path = "/criminal/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> appointGroup(@PathVariable Long id, @RequestBody List<Long> peopleIds){
         if(peopleIds.isEmpty()) {
             return new ResponseEntity<>("React group cannot be empty", HttpStatus.BAD_REQUEST);
@@ -125,7 +126,7 @@ public class ReactGroupController {
     }
 
     @PutMapping("/criminal/{id}")
-    public ResponseEntity<CriminalOutDto> updateCriminalStatus (@PathVariable Long id, @RequestBody String status){
+    public ResponseEntity<CriminalOutDto> updateCriminalStatus (@PathVariable Long id, @RequestParam String status){
         CriminalStatus criminalStatus = null;
         if(status.equals("CAUGHT")){
             criminalStatus = CriminalStatus.CAUGHT;
@@ -142,43 +143,43 @@ public class ReactGroupController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ReactGroupDto> updateGroupMemberInfo(@PathVariable Long id
-                                                , @RequestBody ReactGroupDto reactGroupDto) {
+                                                , @Valid @RequestBody ReactGroupDto reactGroupDto) {
         ReactGroupDto updatedGroupMember = reactGroupService.updateGroupMember(id, reactGroupDto);
         return new ResponseEntity<>(updatedGroupMember, HttpStatus.OK);
     }
 
-    @PutMapping("/supply/{id}")
-    public ResponseEntity<String> orderResource(@PathVariable Long id, @RequestBody int amount){
+    @PutMapping(path = "/supply/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public ResponseEntity<String> orderResource(@PathVariable Long id, @RequestParam int amount){
         groupResourceService.orderResource(id, amount);
         return new ResponseEntity<>("Resource successfully ordered", HttpStatus.OK);
     }
 
     @PutMapping("/transport/{id}/retire")
-    public ResponseEntity<String> retireTransport(@PathVariable Long id){
-        groupResourceService.retireTransport(id);
-        return new ResponseEntity<>("Transport retired successfully", HttpStatus.OK);
+    public ResponseEntity<TransportOutDto> retireTransport(@PathVariable Long id){
+        TransportOutDto retiredTransport = groupResourceService.retireTransport(id);
+        return new ResponseEntity<>(retiredTransport, HttpStatus.OK);
     }
 
     @PutMapping("/transport/{id}/rehabilitate")
-    public ResponseEntity<String> rehabilitateTransport(@PathVariable Long id){
-        groupResourceService.rehabilitateTransport(id);
-        return new ResponseEntity<>("Transport rehabilitated successfully", HttpStatus.OK);
+    public ResponseEntity<TransportOutDto> rehabilitateTransport(@PathVariable Long id){
+        TransportOutDto rehabilitatedTransport = groupResourceService.rehabilitateTransport(id);
+        return new ResponseEntity<>(rehabilitatedTransport, HttpStatus.OK);
     }
 
-    @PutMapping("/transport/{id}/refuel")
-    public ResponseEntity<String> refuelTransport(@PathVariable Long id, @RequestBody int amount){
+    @PutMapping(path ="/transport/{id}/refuel", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public ResponseEntity<String> refuelTransport(@PathVariable Long id, @RequestParam int amount){
         groupResourceService.refuelCar(id, amount);
         return new ResponseEntity<>("Transport refueled successfully",HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(path ="/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
         reactGroupService.deleteGroupMember(id);
         return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/transport/{id}")
+    @DeleteMapping(path = "/transport/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> deleteTransport (@PathVariable Long id) {
         groupResourceService.deleteTransport(id);
         return new ResponseEntity<>("Transport deleted successfully", HttpStatus.NO_CONTENT);
