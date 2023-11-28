@@ -8,7 +8,6 @@ public class UserEntitiyMapper {
         UserOutDto userOutDto = UserOutDto.builder()
                 .id(userEntity.getId())
                 .login(userEntity.getLogin())
-                .password(userEntity.getPassword())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
                 .email(userEntity.getEmail())

@@ -71,7 +71,7 @@ public class UserServiceTests {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(registrationDto.getLogin(), result.getLogin());
-        Assertions.assertEquals(registrationDto.getPassword(), result.getPassword());
+        Assertions.assertEquals(registrationDto.getPassword(), userEntity.getPassword());
     }
 
     @Test

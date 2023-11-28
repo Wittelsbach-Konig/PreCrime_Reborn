@@ -15,6 +15,7 @@ import ru.itmo.backend.repository.UserRepository;
 import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.UserService;
 
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,13 +45,13 @@ public class UserServiceImpl implements UserService {
     public UserOutDto saveUser(RegistrationDto registrationDto) {
         UserEntity existingUserLogin = findUserByLogin(registrationDto.getLogin());
 
-//        if(existingUserLogin != null
-//                && existingUserLogin.getLogin() != null
-//                && !existingUserLogin.getLogin().isEmpty()) {
-//            throw new NotValidArgumentException("Registration failed. User with login:\""
-//                                                + registrationDto.getLogin()
-//                                                + "\" already exists");
-//        }
+        if(existingUserLogin != null
+                && existingUserLogin.getLogin() != null
+                && !existingUserLogin.getLogin().isEmpty()) {
+            throw new NotValidArgumentException("Registration failed. User with login:\""
+                                                + registrationDto.getLogin()
+                                                + "\" already exists");
+        }
 
         UserEntity user = new UserEntity();
         user.setLogin(registrationDto.getLogin());
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(userRole);
         UserEntity savedUser = userRepository.save(user);
         statisticService.createNewStatisticRecordRegistration(user.getLogin());
-        return mapToUserOutDto(savedUser);
+        return prepareUserForOutput(savedUser);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
             userToUpdate.setRoles(userRole);
         }
         UserEntity updatedUser = userRepository.save(userToUpdate);
-        return mapToUserOutDto(updatedUser);
+        return prepareUserForOutput(updatedUser);
     }
 
     // For ADMIN
@@ -148,7 +149,7 @@ public class UserServiceImpl implements UserService {
         if(userEntity != null){
             UserOutDto tempUserDto = mapToUserOutDto(userEntity);
             tempUserDto.setLogin(userEntity.getLogin());
-            tempUserDto.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+//            tempUserDto.setPassword(passwordEncoder.encode(userEntity.getPassword()));
             Set<Role> roles = userEntity.getRoles();
             List<String> userRoles = new ArrayList<>();
             for(Role role : roles){
@@ -159,4 +160,15 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+//    public UserOutDto securePasswordSingle(UserOutDto userOutDto) {
+//        userOutDto.setPassword("Null");
+//        return userOutDto;
+//    }
+//    public List<UserOutDto> securePasswordList(List<UserOutDto> userOutDtos) {
+//        for (UserOutDto userOutDto : userOutDtos) {
+//            userOutDto.setPassword("Null");
+//        }
+//        return userOutDtos;
+//    }
 }
