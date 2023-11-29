@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).permitAll()
+                .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).anonymous()
                 .antMatchers("/api/v1/credits").permitAll()
                 .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAuthority("ADMIN")
                 .antMatchers("/api/v1/me").authenticated()
