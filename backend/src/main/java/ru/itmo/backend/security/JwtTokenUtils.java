@@ -15,7 +15,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -53,15 +52,7 @@ public class JwtTokenUtils {
 	public List<String> getRolesFromJWT(String token) {
 		return getAllClaimsFromToken(token).get("roles", List.class);
 	}
-//	public String getUsernameFromJWT(String token){
-//		Claims claims = Jwts.parserBuilder()
-//				.setSigningKey(key)
-//				.build()
-//				.parseClaimsJws(token)
-//				.getBody();
-//		return claims.getSubject();
-//	}
-	
+
 	public boolean validateToken(String token) {
 		try {
 			Jwts.parserBuilder()
