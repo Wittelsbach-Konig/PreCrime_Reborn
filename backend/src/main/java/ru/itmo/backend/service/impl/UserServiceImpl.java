@@ -44,7 +44,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserOutDto saveUser(RegistrationDto registrationDto) {
         UserEntity existingUserLogin = findUserByLogin(registrationDto.getLogin());
-
+        if(!registrationDto.getPassword().equals(registrationDto.getConfirmPassword())) {
+            throw new NotValidArgumentException("Passwords don't matches!");
+        }
         if(existingUserLogin != null
                 && existingUserLogin.getLogin() != null
                 && !existingUserLogin.getLogin().isEmpty()) {

@@ -99,14 +99,13 @@ public class GroupResourceImpl implements GroupResourceService {
             default -> throw new NotValidArgumentException("Unknown resource type: " + resourceType);
         }
         GroupResource newResource = groupResourceRepository.save(resourceToAdd);
-        ResourceDto result = ResourceDto.builder()
+        return ResourceDto.builder()
                 .id(newResource.getId())
                 .resourceName(newResource.getResourceName())
                 .amount(newResource.getAmount())
                 .maxPossibleAmount(newResource.getMaxPossibleAmount())
                 .type(newResource.getType().name())
                 .build();
-        return result;
     }
 
     @Override
@@ -160,9 +159,9 @@ public class GroupResourceImpl implements GroupResourceService {
         transportToAdd.setBrand(transportDto.getBrand());
         transportToAdd.setModel(transportDto.getModel());
         transportToAdd.setMaximum_fuel(transportDto.getMaximum_fuel());
-        transportToAdd.setRemaining_fuel(transportDto.getMaximum_fuel());
+        transportToAdd.setRemaining_fuel(0);
         Transport newTransport = transportRepository.save(transportToAdd);
-        TransportOutDto result = TransportOutDto.builder()
+        return TransportOutDto.builder()
                 .id(newTransport.getId())
                 .brand(newTransport.getBrand())
                 .model(newTransport.getModel())
@@ -171,7 +170,6 @@ public class GroupResourceImpl implements GroupResourceService {
                 .status(newTransport.getInOperation())
                 .condition(newTransport.getCondition())
                 .build();
-        return result;
     }
 
     @Override
