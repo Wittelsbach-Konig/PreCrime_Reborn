@@ -7,7 +7,7 @@ import ru.itmo.backend.models.ReactGroup;
 public class ReactGroupMapper {
     public static ReactGroup mapToReactGroup(ReactGroupInDto groupDto){
         ReactGroup group = ReactGroup.builder()
-                .id(groupDto.getId())
+                //.id(groupDto.getId())
                 .memberName(groupDto.getMemberName())
                 .telegramId(groupDto.getTelegramId())
                 .build();

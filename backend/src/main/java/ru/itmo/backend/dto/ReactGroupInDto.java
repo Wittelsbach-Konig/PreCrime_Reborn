@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class ReactGroupInDto {
-    private Long id;
+    //private Long id;
 
     @NotEmpty
     @NotNull

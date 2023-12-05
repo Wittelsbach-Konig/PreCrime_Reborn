@@ -1,6 +1,7 @@
 package ru.itmo.backend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.ResourceDto;
 import ru.itmo.backend.dto.TransportDto;
@@ -49,7 +50,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public List<GroupResource> getAllResources() {
-        return groupResourceRepository.findAll();
+        return groupResourceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
@@ -145,7 +146,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public List<Transport> getAllTransport() {
-        return transportRepository.findAll();
+        return transportRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override
