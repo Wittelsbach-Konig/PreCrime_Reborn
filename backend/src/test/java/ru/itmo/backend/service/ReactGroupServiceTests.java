@@ -8,7 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.itmo.backend.dto.ReactGroupDto;
+import org.springframework.data.domain.Sort;
+import ru.itmo.backend.dto.ReactGroupInDto;
+import ru.itmo.backend.dto.ReactGroupOutDto;
 import ru.itmo.backend.models.CrimeCard;
 import ru.itmo.backend.models.Criminal;
 import ru.itmo.backend.models.CriminalStatus;
@@ -70,14 +72,14 @@ public class ReactGroupServiceTests {
 
     @Test
     public void ReactGroupService_CreateNewGroupMember_ReturnReactGroupDto(){
-        ReactGroupDto memberToCreate = new ReactGroupDto();
+        ReactGroupInDto memberToCreate = new ReactGroupInDto();
         memberToCreate.setMemberName("Jack Black");
         memberToCreate.setTelegramId(47692);
 
         when(reactGroupRepository.save(Mockito.any(ReactGroup.class))).thenReturn(member1);
         doNothing().when(statisticService).createNewStatisticRecordReactGroup(member1.getTelegramId());
 
-        ReactGroupDto returnValue = reactGroupService.createNewGroupMember(memberToCreate);
+        ReactGroupOutDto returnValue = reactGroupService.createNewGroupMember(memberToCreate);
 
         Assertions.assertNotNull(returnValue);
         Assertions.assertEquals(memberToCreate.getMemberName(),returnValue.getMemberName());
@@ -96,33 +98,33 @@ public class ReactGroupServiceTests {
     @Test
     public void ReactGroupService_GetAllMembers_ReturnListOfReactGroup(){
         List<ReactGroup> reactGroups = Arrays.asList(member1, member2, member3);
-        when(reactGroupRepository.findAll()).thenReturn(reactGroups);
+        when(reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"))).thenReturn(reactGroups);
         List<ReactGroup> returnValue = reactGroupService.getAllMembers();
 
         Assertions.assertNotNull(returnValue);
         Assertions.assertEquals(reactGroups.size(), returnValue.size());
     }
 
-    @Test
-    public void ReactGroupService_DeleteMember_ReturnVoid(){
-        Long memberId = 2L;
-        when(reactGroupRepository.findById(memberId)).thenReturn(Optional.ofNullable(member2));
-        doNothing().when(reactGroupRepository).delete(member2);
-        Assertions.assertAll(()->{
-            reactGroupService.deleteGroupMember(memberId);
-        });
-
-    }
+//    @Test
+//    public void ReactGroupService_DeleteMember_ReturnVoid(){
+//        Long memberId = 2L;
+//        when(reactGroupRepository.findById(memberId)).thenReturn(Optional.ofNullable(member2));
+//        doNothing().when(reactGroupRepository).delete(member2);
+//        Assertions.assertAll(()->{
+//            reactGroupService.deleteGroupMember(memberId);
+//        });
+//
+//    }
 
     @Test
     public void ReactGroupService_UpdateGroupMember_ReturnReactGroupDto(){
-        ReactGroupDto memberToUpdate = new ReactGroupDto();
+        ReactGroupInDto memberToUpdate = new ReactGroupInDto();
         memberToUpdate.setMemberName("Sam Fisher");
         memberToUpdate.setTelegramId(99999);
         Long memberId = 3L;
         when(reactGroupRepository.findById(memberId)).thenReturn(Optional.ofNullable(member3));
         when(reactGroupRepository.save(member3)).thenReturn(member3);
-        ReactGroupDto returnValue = reactGroupService.updateGroupMember(memberId, memberToUpdate);
+        ReactGroupOutDto returnValue = reactGroupService.updateGroupMember(memberId, memberToUpdate);
 
         Assertions.assertNotNull(returnValue);
         Assertions.assertEquals(memberToUpdate.getMemberName(), member3.getMemberName());

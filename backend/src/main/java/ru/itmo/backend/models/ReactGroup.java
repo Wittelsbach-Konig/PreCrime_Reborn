@@ -25,4 +25,7 @@ public class ReactGroup {
 
     @Column(unique = true)
     private int telegramId;
+
+    @Builder.Default
+    private boolean inOperation = true;
 }

@@ -1,8 +1,10 @@
 package ru.itmo.backend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.itmo.backend.dto.ReactGroupDto;
+import ru.itmo.backend.dto.ReactGroupInDto;
+import ru.itmo.backend.dto.ReactGroupOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.models.Criminal;
 import ru.itmo.backend.models.CriminalToReactGroup;
@@ -21,7 +23,7 @@ import ru.itmo.backend.service.TelegramBotService;
 import java.util.List;
 
 import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroup;
-import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroupDto;
+import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroupOutDto;
 
 @Service
 public class ReactGroupServiceImpl implements ReactGroupService {
@@ -54,11 +56,11 @@ public class ReactGroupServiceImpl implements ReactGroupService {
     }
 
     @Override
-    public ReactGroupDto createNewGroupMember(ReactGroupDto reactGroupDto) {
-        ReactGroup reactGroup = mapToReactGroup(reactGroupDto);
+    public ReactGroupOutDto createNewGroupMember(ReactGroupInDto reactGroupInDto) {
+        ReactGroup reactGroup = mapToReactGroup(reactGroupInDto);
         ReactGroup savedGroup = reactGroupRepository.save(reactGroup);
         statisticService.createNewStatisticRecordReactGroup(reactGroup.getTelegramId());
-        return mapToReactGroupDto(savedGroup);
+        return mapToReactGroupOutDto(savedGroup);
     }
 
     @Override
@@ -73,23 +75,37 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
     @Override
     public List<ReactGroup> getAllMembers() {
-        List<ReactGroup> reactGroups = reactGroupRepository.findAll();
+        List<ReactGroup> reactGroups = reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"));
         return reactGroups;
     }
 
     @Override
-    public void deleteGroupMember(Long id) {
-        ReactGroup reactGroupMember = findGroupMemberById(id);
-        reactGroupRepository.delete(reactGroupMember);
+    public List<ReactGroup> getAllWorkingMembers() {
+        List<ReactGroup> workingReactGroups = reactGroupRepository.findAllByInOperationIsTrue();
+        return workingReactGroups;
     }
 
     @Override
-    public ReactGroupDto updateGroupMember(Long id, ReactGroupDto reactGroupDto) {
+    public ReactGroupOutDto retireGroupMember(Long id) {
+        ReactGroup memberToRetire = findGroupMemberById(id);
+        memberToRetire.setInOperation(false);
+        ReactGroup retiredMember = reactGroupRepository.save(memberToRetire);
+        return mapToReactGroupOutDto(retiredMember);
+    }
+
+//    @Override
+//    public void deleteGroupMember(Long id) {
+//        ReactGroup reactGroupMember = findGroupMemberById(id);
+//        reactGroupRepository.delete(reactGroupMember);
+//    }
+
+    @Override
+    public ReactGroupOutDto updateGroupMember(Long id, ReactGroupInDto reactGroupInDto) {
         ReactGroup groupToUpdate = findGroupMemberById(id);
-        groupToUpdate.setMemberName(reactGroupDto.getMemberName());
-        groupToUpdate.setTelegramId(reactGroupDto.getTelegramId());
+        groupToUpdate.setMemberName(reactGroupInDto.getMemberName());
+        groupToUpdate.setTelegramId(reactGroupInDto.getTelegramId());
         ReactGroup updatedMember = reactGroupRepository.save(groupToUpdate);
-        return mapToReactGroupDto(updatedMember);
+        return mapToReactGroupOutDto(updatedMember);
     }
 
     @Override

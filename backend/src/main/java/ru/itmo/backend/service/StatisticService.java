@@ -1,5 +1,6 @@
 package ru.itmo.backend.service;
 
+import ru.itmo.backend.dto.ReactGroupStatisticDto;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.dto.UserStatisticInfo;
 import ru.itmo.backend.models.Criminal;
@@ -28,4 +29,5 @@ public interface StatisticService {
     void enteredDepressant(UserEntity technic, int amount);
 
     UserStatisticInfo getUserStatistic(Long id);
+    ReactGroupStatisticDto getGroupMemberStatistic(Long id);
 }

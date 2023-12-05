@@ -11,6 +11,7 @@ import ru.itmo.backend.models.*;
 import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.GroupResourceService;
 import ru.itmo.backend.service.ReactGroupService;
+import ru.itmo.backend.service.StatisticService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,26 +23,41 @@ public class ReactGroupController {
     private final ReactGroupService reactGroupService;
     private final CardService cardService;
     private final GroupResourceService groupResourceService;
+    private final StatisticService statisticService;
 
     @Autowired
     public ReactGroupController(ReactGroupService reactGroupService
                                 , CardService cardService
-                                , GroupResourceService groupResourceService) {
+                                , GroupResourceService groupResourceService
+                                , StatisticService statisticService) {
         this.reactGroupService = reactGroupService;
         this.cardService = cardService;
         this.groupResourceService = groupResourceService;
+        this.statisticService = statisticService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ReactGroup>> getAllGroups(){
         List<ReactGroup> reactGroups = reactGroupService.getAllMembers();
         return new ResponseEntity<>(reactGroups, HttpStatus.OK);
+    }
+
+    @GetMapping("/allworking")
+    public ResponseEntity<List<ReactGroup>> getAllWorkingGroup(){
+        List<ReactGroup> workingReactGroup = reactGroupService.getAllWorkingMembers();
+        return new ResponseEntity<>(workingReactGroup, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ReactGroup> getReactGroup(@PathVariable Long id){
         ReactGroup reactGroup = reactGroupService.findGroupMemberById(id);
         return new ResponseEntity<>(reactGroup, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/statistic")
+    public ResponseEntity<ReactGroupStatisticDto> getMemberStatistic(@PathVariable Long id){
+        ReactGroupStatisticDto reactGroupStatisticDto = statisticService.getGroupMemberStatistic(id);
+        return new ResponseEntity<>(reactGroupStatisticDto, HttpStatus.OK);
     }
 
     @GetMapping("/criminal")
@@ -105,8 +121,8 @@ public class ReactGroupController {
     }
 
     @PostMapping("/newman")
-    public ResponseEntity<ReactGroupDto> addNewMan(@Valid @RequestBody ReactGroupDto reactGroupDto){
-        ReactGroupDto newGroupMember = reactGroupService.createNewGroupMember(reactGroupDto);
+    public ResponseEntity<ReactGroupOutDto> addNewMan(@Valid @RequestBody ReactGroupInDto reactGroupInDto){
+        ReactGroupOutDto newGroupMember = reactGroupService.createNewGroupMember(reactGroupInDto);
         return new ResponseEntity<>(newGroupMember, HttpStatus.CREATED);
     }
 
@@ -142,9 +158,9 @@ public class ReactGroupController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReactGroupDto> updateGroupMemberInfo(@PathVariable Long id
-                                                , @Valid @RequestBody ReactGroupDto reactGroupDto) {
-        ReactGroupDto updatedGroupMember = reactGroupService.updateGroupMember(id, reactGroupDto);
+    public ResponseEntity<ReactGroupOutDto> updateGroupMemberInfo(@PathVariable Long id
+                                                , @Valid @RequestBody ReactGroupInDto reactGroupInDto) {
+        ReactGroupOutDto updatedGroupMember = reactGroupService.updateGroupMember(id, reactGroupInDto);
         return new ResponseEntity<>(updatedGroupMember, HttpStatus.OK);
     }
 
@@ -173,10 +189,15 @@ public class ReactGroupController {
     }
 
 
-    @DeleteMapping(path ="/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-    public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
-        reactGroupService.deleteGroupMember(id);
-        return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
+//    @DeleteMapping(path ="/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+//    public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
+//        reactGroupService.deleteGroupMember(id);
+//        return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
+//    }
+    @PutMapping("/{id}/retire")
+    public ResponseEntity<ReactGroupOutDto> retireGroupMember(@PathVariable Long id) {
+        ReactGroupOutDto retiredMember = reactGroupService.retireGroupMember(id);
+        return new ResponseEntity<>(retiredMember, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/transport/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")

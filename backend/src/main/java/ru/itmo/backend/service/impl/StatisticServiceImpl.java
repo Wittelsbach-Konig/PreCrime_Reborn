@@ -265,4 +265,19 @@ public class StatisticServiceImpl implements StatisticService {
         }
         return userStatisticInfo;
     }
+
+    @Override
+    public ReactGroupStatisticDto getGroupMemberStatistic(Long id) {
+        ReactGroupStatisticDto reactGroupStatisticDto = new ReactGroupStatisticDto();
+        ReactGroup reactGroup = reactGroupRepository.findById(id)
+                                        .orElseThrow(()-> new NotFoundException("Group member not found: "+id));
+        ReactGroupStatistic reactGroupStatistic = reactGroupStatisticRepository.findByMember(reactGroup);
+        reactGroupStatisticDto.setId(reactGroup.getId());
+        reactGroupStatisticDto.setMemberName(reactGroup.getMemberName());
+        reactGroupStatisticDto.setTelegramId(reactGroup.getTelegramId());
+        reactGroupStatisticDto.setInOperation(reactGroup.isInOperation());
+        reactGroupStatisticDto.setCriminalsCaught(reactGroupStatistic.getCriminalsCaught());
+        reactGroupStatisticDto.setCriminalsEscaped(reactGroupStatistic.getCriminalsEscaped());
+        return reactGroupStatisticDto;
+    }
 }

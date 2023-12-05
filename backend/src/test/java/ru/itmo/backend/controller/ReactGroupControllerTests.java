@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,8 @@ import ru.itmo.backend.models.*;
 import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.GroupResourceService;
 import ru.itmo.backend.service.ReactGroupService;
+import ru.itmo.backend.service.StatisticService;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +51,9 @@ public class ReactGroupControllerTests {
     @MockBean
     private GroupResourceService groupResourceService;
 
+    @MockBean
+    private StatisticService statisticService;
+
     @Test
     public void ReactGroupController_GetAllGroups_ReturnsListReactGroup() throws Exception{
         ReactGroup member1 = ReactGroup.builder()
@@ -71,7 +73,7 @@ public class ReactGroupControllerTests {
                 .build();
         List<ReactGroup> groupList = Arrays.asList(member1, member2, member3);
         when(reactGroupService.getAllMembers()).thenReturn(groupList);
-        ResultActions resultActions = mockMvc.perform(get("/api/v1/reactiongroup")
+        ResultActions resultActions = mockMvc.perform(get("/api/v1/reactiongroup/all")
                 .contentType(MediaType.APPLICATION_JSON));
         resultActions.andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
@@ -79,10 +81,11 @@ public class ReactGroupControllerTests {
 
     @Test
     public void ReactGroupController_AddNewMan_ReturnsReactGroupDto() throws Exception{
-        ReactGroupDto memberToCreate = new ReactGroupDto();
+        ReactGroupOutDto memberToCreate = new ReactGroupOutDto();
         memberToCreate.setMemberName("Jack Black");
         memberToCreate.setTelegramId(47692);
-        when(reactGroupService.createNewGroupMember(Mockito.any(ReactGroupDto.class))).thenReturn(memberToCreate);
+        memberToCreate.setInOperation(true);
+        when(reactGroupService.createNewGroupMember(Mockito.any(ReactGroupInDto.class))).thenReturn(memberToCreate);
 
         ResultActions resultActions = mockMvc.perform(post("/api/v1/reactiongroup/newman")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -109,23 +112,46 @@ public class ReactGroupControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.memberName", CoreMatchers.is(member1.getMemberName())));
     }
 
+//    @Test
+//    public void ReactGroupController_DeleteGroupMember_ReturnsString() throws Exception {
+//        Long memberId = 1L;
+//        doNothing().when(reactGroupService).deleteGroupMember(memberId);
+//        ResultActions resultActions = mockMvc.perform(delete("/api/v1/reactiongroup/{id}", memberId));
+//        resultActions.andExpect(MockMvcResultMatchers.status().isNoContent())
+//                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"))
+//                .andExpect(MockMvcResultMatchers.content().string("Group member successfully deleted"));
+//    }
+
     @Test
-    public void ReactGroupController_DeleteGroupMember_ReturnsString() throws Exception {
-        Long memberId = 1L;
-        doNothing().when(reactGroupService).deleteGroupMember(memberId);
-        ResultActions resultActions = mockMvc.perform(delete("/api/v1/reactiongroup/{id}", memberId));
-        resultActions.andExpect(MockMvcResultMatchers.status().isNoContent())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"))
-                .andExpect(MockMvcResultMatchers.content().string("Group member successfully deleted"));
+    public void ReactGroupController_RetireGroupMember_ReturnsReactGroupDto() throws Exception {
+        Long memberId = 3L;
+        ReactGroupOutDto memberToRetire = new ReactGroupOutDto();
+        memberToRetire.setMemberName("Sam Fisher");
+        memberToRetire.setTelegramId(99999);
+        memberToRetire.setInOperation(false);
+        when(reactGroupService.retireGroupMember(memberId)).thenReturn(memberToRetire);
+        ResultActions resultActions = mockMvc.perform(put("/api/v1/reactiongroup/{id}/retire", memberId)
+                .contentType(MediaType.APPLICATION_JSON));
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.inOperation", CoreMatchers.is(memberToRetire.isInOperation())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.inOperation").value(false));
     }
 
     @Test
     public void ReactGroupController_UpdateGroupMemberInfo_ReturnsReactGroupDto() throws Exception {
-        ReactGroupDto memberToUpdate = new ReactGroupDto();
+
+        ReactGroupInDto memberToUpdate = new ReactGroupInDto();
         memberToUpdate.setMemberName("Sam Fisher");
         memberToUpdate.setTelegramId(99999);
+
+
+        ReactGroupOutDto memberToUpdateRes = new ReactGroupOutDto();
+        memberToUpdateRes.setMemberName("Sam Fisher");
+        memberToUpdateRes.setTelegramId(99999);
+        memberToUpdateRes.setInOperation(true);
         Long memberId = 3L;
-        when(reactGroupService.updateGroupMember(memberId, memberToUpdate)).thenReturn(memberToUpdate);
+        when(reactGroupService.updateGroupMember(memberId, memberToUpdate)).thenReturn(memberToUpdateRes);
         ResultActions resultActions = mockMvc.perform(put("/api/v1/reactiongroup/{id}", memberId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(memberToUpdate))
@@ -188,24 +214,6 @@ public class ReactGroupControllerTests {
 
     @Test
     public void ReactGroupController_GetAllCriminals_ReturnsListOfCriminals() throws Exception {
-//        Vision vision = Vision.builder()
-//                .id(1L)
-//                .videoUrl("link")
-//                .accepted(true)
-//                .build();
-//        CrimeCard crimeCard = CrimeCard.builder()
-//                .id(1L)
-//                .crimeTime(LocalDateTime.now())
-//                .placeOfCrime("City")
-//                .criminalName("Criminal1")
-//                .victimName("victim")
-//                .isCriminalCaught(false)
-//                .weapon("Gun")
-//                .typeOfCrime(CrimeType.INTENTIONAL)
-//                .responsibleDetective(null)
-//                .vision(vision)
-//                .build();
-
         CriminalOutDto criminal1 = CriminalOutDto.builder()
                 .id(1L)
                 .name("Criminal1")
@@ -235,7 +243,6 @@ public class ReactGroupControllerTests {
 
         resultActions.andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-
     }
 
     @Test
@@ -247,6 +254,25 @@ public class ReactGroupControllerTests {
                 .contentType(MediaType.APPLICATION_JSON));
 
         resultActions.andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    public void ReactGroupController_GetGroupStatistic_ReturnsGroupStatisticDto() throws Exception {
+        Long memberId =1L;
+        ReactGroupStatisticDto expectedStatistic = new ReactGroupStatisticDto();
+        expectedStatistic.setCriminalsEscaped(1);
+        expectedStatistic.setCriminalsCaught(5);
+        expectedStatistic.setMemberName("Jack Black");
+        expectedStatistic.setId(1L);
+        expectedStatistic.setTelegramId(15142);
+        expectedStatistic.setInOperation(true);
+        when(statisticService.getGroupMemberStatistic(memberId)).thenReturn(expectedStatistic);
+        ResultActions resultActions = mockMvc.perform(get("/api/v1/reactiongroup/{id}/statistic", memberId)
+                .contentType(MediaType.APPLICATION_JSON));
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.criminalsCaught",
+                                                            CoreMatchers.is(expectedStatistic.getCriminalsCaught())));
     }
 
     @Test
