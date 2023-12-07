@@ -1,0 +1,47 @@
+/* CrimeTable.css */
+
+.crime-content-container {
+    position: absolute;
+    left :28.5%;
+    top : 15%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 65%;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.crime-table-container {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    z-index: 1;
+    position: relative;;
+}
+
+th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+    color: #fff;
+}
+
+th, tr {
+    background-color: #333;
+}
+
+tr:hover {
+    background-color: #555;
+}
+
+.selected-row {
+    background-color: #777 !important;
+}
