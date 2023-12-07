@@ -1,0 +1,42 @@
+.text-block{
+    position: absolute;
+    left: 4%;
+    top: 22%;
+    text-align: center;
+    font-size: 18px;
+    z-index: 1;
+}
+
+.allsides-7 {
+    background:
+            linear-gradient(to top, currentColor 0%, currentColor 100%) top,
+            linear-gradient(to right, currentColor 0%, currentColor 100%) right,
+            linear-gradient(to bottom, currentColor 0%, currentColor 100%) bottom,
+            linear-gradient(to left, currentColor 0%, currentColor 100%) left;
+    background-size: var(--p, 50%) 2px, 2px var(--d, 0);
+    background-repeat: no-repeat;
+    transition: 0.5s;
+}
+.allsides-7:hover {
+    --d: 100%;
+    --p: 0%;
+
+}
+.br-class {
+    margin: 5px;
+    padding: 0;
+}
+.sides-8 {
+    --b:2px;
+    --w:0px;
+    padding: 10px;
+    border:var(--b) solid var(--c,#fff);
+    box-shadow: 0 0 0 100px var(--c,#fff);
+    clip-path: polygon(0 var(--w),var(--b) var(--w),var(--b) 0,calc(100% - var(--w)) 0,calc(100% - var(--w)) var(--b),100% var(--b),100% calc(100% - var(--w)),calc(100% - var(--b)) calc(100% - var(--w)),calc(100% - var(--b)) 100%,var(--w) 100%,var(--w) calc(100% - var(--b)),0 calc(100% - var(--b)));
+    transition: 0.3s 0.3s,clip-path 0.3s;
+}
+.sides-8:hover {
+    --c:#fff;
+    --w:-50px;
+    transition: 0.3s,clip-path 0.3s 0.3s;
+}

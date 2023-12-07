@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body{
+    background-color: #333;
+    color: #fafaaf;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 300;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+
+.container {
+    position: relative;
+    background-size: cover;
+    width: 100%;
+    /*float: left;*/
+}
+
+aside {
+    position: absolute;
+    width: 20%;
+    margin-left: 65%;
+    float: right;
+}
+
+/*main .user{
+    margin-bottom: 50px;
+    background-color: #3e8fa0;
+    padding: 20px;
+}
+
+
+main .delete-icon {
+    float: right;
+    color: #134b57;
+cursor: pointer;
+transform: scale(2);
+}
+
+main .edit-icon {
+    float: right;
+    margin-right: 25px;
+    color: #165664;
+    cursor: pointer;
+    transform: scale(2);
+}
+
+main .delete-icon:hover,
+main .edit-icon:hover
+{
+    opacity: 0.5;
+}*/
+
+ form input:not([type="checkbox"]),
+ form textarea,
+ form button{
+    width: 90%;
+    padding: 15px 5%;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 300;
+    margin-bottom: 10px;
+    border: 0;
+    background: #222;
+    color: #fff;
+    outline: none;
+    font-size: 15px;
+     border-radius: 5px;
+}
+
+form input[type="checkbox"] {
+    margin: 10px;
+}
+
+form button {
+    width: 100%;
+    cursor: pointer;
+    transition: transform 500ms ease;
+}
+
+form button:hover {
+    transform: scale(1.1);
+}
+
+.user form {
+    margin-top: 20px;
+}
+
+.user form input,
+.user form textarea,
+.user form button{
+    background: #134b57;
+
+}
+
+.user form button:hover {
+    transform: scale(1.01);
+}
+
+img {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+aside img {
+        position: relative;
+        display: block;
+        left: 10%;
+        width: 80%;
+}
+
+ul button {
+    width: 50%;
+    font-size: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+ul li::before {
+    content: "";
+}
+
+.chip-container button{
+    width: 50%;
+    font-size: 10px;
+}
+
+.selected-chips-container {
+    max-height: 30%;
+    height: 30%;
+    overflow: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.error{
+    font-size: 10px;
+}
+
+
+.header {
+    background-color: #222;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container button {
+    margin: 0.5%;
+    padding: 0.5% 5%;
+    background-color: #222;
+    font-family: 'Kanit', sans-serif;
+    color: #fafaaf;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-container button:hover{
+    background-color: #333;
+}
+
+.button-logout {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    padding: 0.5% 2%;
+    background-color: #222;
+    font-family: 'Kanit', sans-serif;
+    color: #fafaaf;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-logout:hover{
+    background-color: #333;
+}
+
+.detective {
+
+}
+
+.button-area-det {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.man-statistic {
+    z-index: 1;
+    position: absolute;
+    left: 70.3%;
+    top: 12%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+.man-statistic h3 {
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.man-statistic p {
+    margin: 5px 0;
+}
+
+.message {
+    font-size: 16px;
+    width: 90%;
+    height: 20%;
+}
