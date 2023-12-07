@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import ru.itmo.backend.dto.ResourceDto;
 import ru.itmo.backend.dto.TransportDto;
 import ru.itmo.backend.dto.TransportOutDto;
@@ -99,7 +100,7 @@ public class GroupResourceServiceTests {
     @Test
     public void GroupResourceService_GetAllResources_ReturnListOfGroupResource() {
         List<GroupResource> groupResources = Arrays.asList(resource1, resource2, resource3);
-        when(groupResourceRepository.findAll()).thenReturn(groupResources);
+        when(groupResourceRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))).thenReturn(groupResources);
         List<GroupResource> result = groupResourceService.getAllResources();
         Assertions.assertNotNull(result);
         Assertions.assertEquals(groupResources.size(), result.size());
@@ -203,7 +204,7 @@ public class GroupResourceServiceTests {
     @Test
     public void GroupResourceService_GetAllTransport_ReturnsListOfTransport() {
         List<Transport> transportList = Arrays.asList(transport1, transport2, transport3);
-        when(transportRepository.findAll()).thenReturn(transportList);
+        when(transportRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(transportList);
         List<Transport> result = groupResourceService.getAllTransport();
 
         Assertions.assertNotNull(result);
