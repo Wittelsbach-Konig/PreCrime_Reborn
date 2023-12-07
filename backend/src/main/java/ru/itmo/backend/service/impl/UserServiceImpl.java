@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.RegistrationDto;
 import ru.itmo.backend.dto.UserOutDto;
+import ru.itmo.backend.exceptions.InvalidRoleException;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.models.Role;
@@ -15,11 +16,7 @@ import ru.itmo.backend.repository.UserRepository;
 import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.UserService;
 
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ru.itmo.backend.mapper.UserEntitiyMapper.mapToUserOutDto;
 
@@ -41,6 +38,10 @@ public class UserServiceImpl implements UserService {
         this.statisticService = statisticService;
     }
 
+    private boolean isValidRole(Role role) {
+        return Objects.equals(role.getName(), "ADMIN");
+    }
+
     @Override
     public UserOutDto saveUser(RegistrationDto registrationDto) {
         UserEntity existingUserLogin = findUserByLogin(registrationDto.getLogin());
@@ -54,7 +55,6 @@ public class UserServiceImpl implements UserService {
                                                 + registrationDto.getLogin()
                                                 + "\" already exists");
         }
-
         UserEntity user = new UserEntity();
         user.setLogin(registrationDto.getLogin());
         user.setFirstName(registrationDto.getFirstName());
@@ -68,6 +68,9 @@ public class UserServiceImpl implements UserService {
         for (String roleName : registrationDto.getRoles()) {
             Role role = roleRepository.findByName(roleName);
             if (role != null){
+                if (isValidRole(role)){
+                    throw new InvalidRoleException("Role ADMIN can't be taken.");
+                }
                 userRole.add(role);
             }
         }
@@ -95,6 +98,9 @@ public class UserServiceImpl implements UserService {
         for (String roleName : updatedUserDto.getRoles()) {
             Role role = roleRepository.findByName(roleName);
             if (role != null){
+                if (isValidRole(role)){
+                    throw new InvalidRoleException("Role ADMIN can't be taken.");
+                }
                 userRole.add(role);
             }
         }
@@ -151,7 +157,6 @@ public class UserServiceImpl implements UserService {
         if(userEntity != null){
             UserOutDto tempUserDto = mapToUserOutDto(userEntity);
             tempUserDto.setLogin(userEntity.getLogin());
-//            tempUserDto.setPassword(passwordEncoder.encode(userEntity.getPassword()));
             Set<Role> roles = userEntity.getRoles();
             List<String> userRoles = new ArrayList<>();
             for(Role role : roles){
@@ -162,15 +167,4 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
-
-//    public UserOutDto securePasswordSingle(UserOutDto userOutDto) {
-//        userOutDto.setPassword("Null");
-//        return userOutDto;
-//    }
-//    public List<UserOutDto> securePasswordList(List<UserOutDto> userOutDtos) {
-//        for (UserOutDto userOutDto : userOutDtos) {
-//            userOutDto.setPassword("Null");
-//        }
-//        return userOutDtos;
-//    }
 }
