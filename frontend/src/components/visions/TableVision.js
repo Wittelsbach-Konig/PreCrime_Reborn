@@ -9,21 +9,6 @@ class TableVision extends Component {
         };
     }
 
-    handleRowsClick = (id) => {
-        const { selectedRows } = this.state;
-        const isSelected = selectedRows.includes(id);
-
-        if (isSelected) {
-            this.setState({
-                selectedRows: selectedRows.filter(selectedId => selectedId !== id),
-            });
-        } else {
-            this.setState({
-                selectedRows: [...selectedRows, id],
-            });
-        }
-
-    };
 
     handleRowClick = (index, url) => {
         this.setState({ selectedRow: index }, ()=>{
