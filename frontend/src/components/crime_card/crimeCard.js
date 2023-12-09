@@ -8,9 +8,7 @@ class CrimeCard extends Component {
         super(props);
         this.state = {
             isEditing: false,
-            message: {
-                message:"",
-            },
+            message:"",
             editedCrimeData: {
                 victimName: this.props.crimeCard.victimName,
                 criminalName: this.props.crimeCard.criminalName,
@@ -39,7 +37,8 @@ class CrimeCard extends Component {
             },
         }))}
         else
-        {this.setState({message:e})}
+        {   const { name, value } = e.target;
+            this.setState({message:value})}
     };
 
     handleSaveClick = () => {
@@ -73,16 +72,24 @@ class CrimeCard extends Component {
         {
             const FormData = require('form-data');
             const form = new FormData();
-            form.append('message', this.state.message.message);
-            fetch(`http://localhost:8028/api/v1/auditor/cards/${this.state.editedCrimeData.id}`, {
+            form.append('message', this.state.message);
+            console.log(this.state.message)
+            fetch(`http://localhost:8028/api/v1/auditor/cards/${this.props.crimeCard.id}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: form,
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        // Если статус ответа не 2xx (успех), бросаем ошибку
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    // Возвращаем response.text(), так как мы не ожидаем JSON
+                    return response.text();
+                })
                 .then(data => {
                     console.log(data);
                     this.props.onRenew();
@@ -116,7 +123,7 @@ class CrimeCard extends Component {
                                     className="message"
                                     type="text"
                                     name="message"
-                                    value={message.message}
+                                    value={message}
                                     onChange={this.handleInputChange}
                                 />
                             </label>
@@ -200,6 +207,8 @@ class CrimeCard extends Component {
                             <p>Place of Crime: {crimeCard.placeOfCrime}</p>
                             <p>Weapon: {crimeCard.weapon}</p>
                             <p>Crime Time: {crimeCard.crimeTime}</p>
+                            <p>Responsible Detective: {crimeCard.responsibleDetective}</p>
+                            <p>Is Criminal Caught: {crimeCard.isCriminalCaught ? 'Yes':'No'}</p>
                             <p>Crime Type: {crimeCard.crimeType}</p>
                             <p>Vision ID: {crimeCard.visionId}</p>
                             <button onClick={this.handleEditClick}>Edit</button>

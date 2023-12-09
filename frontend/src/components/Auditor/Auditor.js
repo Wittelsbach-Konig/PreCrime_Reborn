@@ -5,6 +5,7 @@ import ListCards from "../crime_card/ListCards";
 import BurgerMenu from "../BurgerMenu";
 import HeaderCards from "../crime_card/HeaderCards";
 import CrimeForm from "../crime_card/CreateCard";
+import Users from "./Users"
 class DetectiveMain extends React.Component {
     constructor(props) {
 
@@ -12,14 +13,16 @@ class DetectiveMain extends React.Component {
         this.state = {
             showModal: false,
             showBurger: false,
-            showCard:false,
-            cards:null
+            showUsers:false,
+            cards:null,
+            users:null
         }
 
     }
 
     openModal = () => {
         this.setState({ showModal: true });
+        this.setState({ showUsers: false});
         const token = localStorage.getItem('jwtToken');
 
         fetch('http://localhost:8028/api/v1/auditor/cards', {
@@ -36,6 +39,7 @@ class DetectiveMain extends React.Component {
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
             });
+
     };
 
     closeModal = () => {
@@ -43,12 +47,31 @@ class DetectiveMain extends React.Component {
         this.props.renew();
     };
 
-    CreateCarted = (e) => {
-        this.setState({showCard: e})
+    showUsers = () => {
+        this.setState({showUsers: true})
+        this.setState({showModal: false});
+        const token = localStorage.getItem('jwtToken');
+
+        fetch('http://localhost:8028/api/v1/auditor/users', {
+            method: 'GET', // или другой метод
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+            },
+        })
+            .then(responses => responses.json())
+            .then(data => {
+                this.setState({users:data})
+                console.log(this.state.users)
+            })
+            .catch(error => {
+                console.error('Ошибка при запросе к серверу:', error);
+            });
+
     }
 
-    CloseCarted = () => {
-        this.setState({showCard: false})
+    closeUsers = () => {
+        this.setState({showUsers: false})
     }
 
     openBurger = () => {
@@ -79,7 +102,12 @@ class DetectiveMain extends React.Component {
                 </div>)
                 }
 
-                
+                {this.state.showUsers && (
+                    <div>
+                        <h1 className="card-text">User List</h1>
+                        <Users onClose={this.closeUsers} usersList={this.state.users} onRenew={this.showUsers} role={"AUDITOR"}/>
+                    </div>
+                )}
 
                 {this.state.showModal && (
                     <div>
@@ -91,7 +119,7 @@ class DetectiveMain extends React.Component {
                 <div className="frame-but">
                     <div className="rectangle-but" />
                     <button className="card-list" onClick={this.openModal}>Cards List</button>
-                    <button onClick={()=>{this.CreateCarted(true)}} className="create-card">Users</button>
+                    <button onClick={()=>{this.showUsers()}} className="create-card">Users</button>
                 </div>
                 <div className="frame-2">
                     <div className="rectangle-2" />

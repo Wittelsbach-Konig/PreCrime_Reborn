@@ -28,16 +28,22 @@ class Refuel extends Component {
             },
             body: form,
         })
-            .then(response => response.json())
-            .then(updatedData => {
-                console.log('Данные успешно обновлены:', updatedData);
-                // this.setState({ transport: updatedData });
-                this.props.onRenew()
+            .then(response => {
+                if (!response.ok) {
+                    // Если статус ответа не 2xx (успех), бросаем ошибку
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                // Возвращаем response.text(), так как мы не ожидаем JSON
+                return response.text();
+            })
+            .then(data => {
+                console.log(data);
+                this.props.onRenew();
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
-                this.props.onRenew()
-            })
+            });
         }
 
         if (this.props.amm)
@@ -49,16 +55,22 @@ class Refuel extends Component {
                 },
                 body: form,
             })
-                .then(response => response.json())
-                .then(updatedData => {
-                    console.log('Данные успешно обновлены:', updatedData);
-                    // this.setState({ transport: updatedData });
-                    this.props.onRenew()
+                .then(response => {
+                    if (!response.ok) {
+                        // Если статус ответа не 2xx (успех), бросаем ошибку
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    // Возвращаем response.text(), так как мы не ожидаем JSON
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    this.props.onRenew();
                 })
                 .catch(error => {
                     console.error('Ошибка при запросе к серверу:', error);
-                    this.props.onRenew()
-                })
+                });
         }
 
         this.props.onClose();
