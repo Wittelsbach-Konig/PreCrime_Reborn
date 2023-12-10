@@ -1,0 +1,388 @@
+.car-text {
+    position: absolute;
+    top:-34%;
+    left: 50%;
+    z-index: 1;
+}
+
+.card-text {
+    position: absolute;
+    top:10%;
+    left: 57%;
+    z-index: 1;
+}
+
+.content-container {
+    position: absolute;
+    left :27%;
+    top : -28%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 60%;
+    overflow-y: auto;
+    z-index: 1;
+
+}
+
+.table-container {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    z-index: 1;
+    position: relative;
+
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 2;
+}
+
+th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+    color: #000000;
+}
+
+th, tr {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: currentColor;
+}
+
+.selected-row {
+    background-color: #a0d3ff;
+}
+
+.new-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 17%;
+    z-index: 1;
+}
+.new-transport:hover{
+    transform: scale(1.1);
+}
+
+.reh-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 35%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 7%;
+    z-index: 1;
+}
+.reh-transport:hover{
+    transform: scale(1.1);
+}
+
+.ret-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 27%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 7%;
+    z-index: 1;
+}
+.ret-transport:hover{
+    transform: scale(1.1);
+}
+
+.ref-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 59.2%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 10%;
+    z-index: 1;
+}
+.ref-transport:hover{
+    transform: scale(1.1);
+}
+
+.del-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 46%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 10%;
+    z-index: 1;
+}
+.del-transport:hover{
+    transform: scale(1.1);
+}
+
+
+.content-container-group {
+    position: absolute;
+    left :27%;
+    top : -28%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 30%;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.table-container-group {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+}
+
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #555;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 2; /* Устанавливаем z-index выше затененного фона, но ниже таблицы */
+}
+
+/* Добавляем стили для затененного фона */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Затененный фон */
+    z-index: 2; /* Устанавливаем нижний z-index */
+}
+
+.content-container-group-cr {
+    position: absolute;
+    left: 15%;
+    top: 10%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 70%;
+    overflow-y: auto;
+    z-index: 3;
+}
+
+.table-container-group-cr {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 3; /* Устанавливаем более высокий z-index, чтобы таблица находилась над затененным фоном */
+}
+
+/* Стиль для выделенной строки */
+.selected-row {
+    background-color: #e0e0e0;
+}
+
+
+
+
+.new-group {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -25%;
+    width: 17%;
+    z-index: 1;
+}
+.new-group:hover{
+    transform: scale(1.1);
+}
+
+.del-man {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -15%;
+    width: 17%;
+    z-index: 1;
+}
+.del-man:hover{
+    transform: scale(1.1);
+}
+
+.work-man {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 5%;
+    width: 17%;
+    z-index: 1;
+}
+.work-man:hover{
+    transform: scale(1.1);
+}
+
+.corr-group {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -5%;
+    width: 17%;
+    z-index: 1;
+}
+.corr-group:hover{
+    transform: scale(1.1);
+}
+
+
+
+.content-container-supply {
+    position: absolute;
+    left :27%;
+    top : -28%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 60%;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.table-container-supply {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+}
+
+.modal-buttons {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    margin-top: 20px;
+    top: 80%;
+    left:35%;
+}
+
+.containerStyle {
+    border:1px solid #ccc;
+    padding: 20px;
+    borderRadius: 8px;
+    maxWidth: 300px;
+    margin: 0 auto;
+    position: fixed;
+    left: 35%;
+    top: 20%;
+}
+
+.inputStyle{
+    margin-bottom: 10px;
+    margin-left: 10px;
+    width: 10%;
+    padding: 8px;
+
+}
+
+.buttonStyle{
+    width: 20%;
+    padding: 10px;
+    margin-left: 10px;
+    backgroundColor: #4CAF50;
+    border: none;
+    borderRadius: 4px;
+    cursor: pointer;
+}
+
+.buttonStyle:hover{
+    transform: scale(1.1);
+}
