@@ -16,16 +16,12 @@ class Header extends React.Component {
     }
 
     render() {
-        const keys = Object.keys(this.props.pullRole);
         const {onChange} = this.props
         return (
             <header className="header">
                 <button className="button-logout" onClick={()=>{this.props.isLogged(false)}}>logout</button>
                 <div className="button-container">
-                    {this.props.rol.map((role) => (
-                        <button>{role}</button>
-                            ))}
-
+                    <button className="button-profile" onClick={()=>{this.props.isLogged(false)}}>profile</button>
                         </div>
 
                         </header>

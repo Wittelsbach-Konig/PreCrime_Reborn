@@ -1,11 +1,14 @@
 // CrimeForm.js
 import React, { Component } from 'react';
 import '../../css/CardCreate.css';
+import TableVision from "../visions/TableVision";
 
 class CrimeForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selectedRow: null,
+            selectedVideoUrl: null,
             crimeTime: null,
             criminalName: null,
             victimName: null,
@@ -22,6 +25,15 @@ class CrimeForm extends Component {
         };
 
     }
+
+    handleRowClick = (index, url) => {
+        this.setState({ selectedRow: index }, ()=>{
+            this.props.updateUrl(url)
+            this.props.updateId(index)
+            console.log(url)
+        });
+
+    };
 
     handleGetCrimeTime = () => {
         const token = localStorage.getItem('jwtToken');
@@ -151,10 +163,11 @@ class CrimeForm extends Component {
             visionId,
             crimeTimeClicked,
             criminalNameClicked,
-            victimNameClicked
+            victimNameClicked,
+            selectedRow
         } = this.state;
 
-        const { onClose } = this.props;
+        const { onClose, visions } = this.props;
         return (
             <div className="modal">
 
@@ -201,9 +214,43 @@ class CrimeForm extends Component {
                     </label>
                     <br />
                     <label>
-                        Vision ID:
-                        <input type="number" name="visionId" value={visionId} onChange={this.handleChangeVision} className="form-input" />
+                        Visions:
+                            <div className="content-detective-vision">
+                                <div className="table-detective-vision">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Video</th>
+                                            <th>Accepted</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {visions ? (
+                                            visions.map((vision) => (
+                                                <tr
+                                                    key={vision.id}
+                                                    className={vision.id === selectedRow ? 'selected-row' : ''}
+                                                    onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
+                                                >
+                                                    <td>{vision.id}</td>
+                                                    <td>
+                                                        Vision {vision.id}
+                                                    </td>
+                                                    <td>{vision.accepted ? 'Yes' : 'No'}</td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="3">No vision data available</td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
                     </label>
+
                     <br />
                     <button type="button-tr" onClick={this.handleSubmit} className="form-button">Submit</button>
                 </form>

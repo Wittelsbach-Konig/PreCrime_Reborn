@@ -1,4 +1,5 @@
 import React from "react";
+import CriminalTable from "./CriminalTable";
 
 class Criminal extends React.Component {
     constructor(props) {
@@ -22,11 +23,14 @@ class Criminal extends React.Component {
     };
 
     render() {
-        const {onChange, me} = this.props
+        const {criminals, renew} = this.props
         const {showReactionGroup, showTransport, showAmmunition, showCriminal} = this.state
         return ( <div>
-                Criminal
-            </div>
+                <h1 className="car-text">Criminal info</h1>
+                <CriminalTable criminalList={criminals} idTr={this.updateState} onRenew={renew}/>
+
+
+        </div>
         )
     }
 }

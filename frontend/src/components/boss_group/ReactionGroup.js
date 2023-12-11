@@ -116,7 +116,7 @@ class ReactionGroup extends React.Component {
 
                 {manData && (
                     <div className="man-statistic">
-                        <h3>Man Statistic</h3>
+                        <h3>Criminal info</h3>
                         <p>ID: {manData.id}</p>
                         <p>Member Name: {manData.memberName}</p>
                         <p>In Operation: {manData.inOperation ? 'Yes':'No'}</p>

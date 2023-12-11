@@ -20,6 +20,7 @@ class main_list_boss extends React.Component {
             transport:[],
             groupList:[],
             ammunition:[],
+            criminals:null,
             pullRole: {"DETECTIVE": false,
                 "TECHNIC": false,
                 "AUDITOR": false,
@@ -122,10 +123,28 @@ class main_list_boss extends React.Component {
     };
 
     showCr = () => {
+        const token = localStorage.getItem('jwtToken');
         this.setState({showReactionGroup: false})
         this.setState({showTransport: false})
         this.setState({showAmmunition: false})
         this.setState({showCriminal:true})
+
+
+        fetch('http://localhost:8028/api/v1/reactiongroup/criminal', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+            },
+        })
+            .then(responses => responses.json())
+            .then(data => {
+                this.setState({criminals:data})
+                console.log(this.state.criminals)
+            })
+            .catch(error => {
+                console.error('Ошибка при запросе к серверу:', error);
+            });
     };
 
     updateState = (newValue) => {
@@ -175,7 +194,7 @@ class main_list_boss extends React.Component {
                     <button className="accept" type="button" onClick={this.showCr}>Criminal Info</button>
                     {showCriminal ? (
                         <div>
-                            <Criminal />
+                            <Criminal criminals={this.state.criminals} renew={this.showCr} onChange={this.updateState}/>
                         </div>
                     ) : (
                         <div>

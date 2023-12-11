@@ -154,7 +154,7 @@ class Registration extends React.Component {
 
                         <input
                             placeholder="confirmPassword"
-                            type="confirmPassword"
+                            type="password"
                             name="confirmPassword"
                             value={user.confirmPassword}
                             onChange={this.handleInputChange}
