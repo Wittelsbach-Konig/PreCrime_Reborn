@@ -71,7 +71,7 @@ public class CardServiceImpl implements CardService {
         Vision crimeVision = visionRepository.findById(crimeCardInDto.getVisionId())
                 .orElseThrow(() -> new NoSuchElementException("Vision not found"));
         if (!crimeVision.isAccepted()) {
-            throw new NotValidArgumentException("Vision " + crimeVision.getId() + "is not accepted! Please contact to your technic.");
+            throw new NotValidArgumentException("Vision " + crimeVision.getId() + " is not accepted! Please contact to your technic.");
         }
         crimeCard.setVision(crimeVision);
         Criminal criminal = new Criminal();
