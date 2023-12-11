@@ -13,6 +13,7 @@ import ru.itmo.backend.models.Role;
 import ru.itmo.backend.models.UserEntity;
 import ru.itmo.backend.repository.RoleRepository;
 import ru.itmo.backend.repository.UserRepository;
+import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.UserService;
 
@@ -25,17 +26,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityUtil securityUtil;
     private final StatisticService statisticService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository
             , RoleRepository roleRepository
             , PasswordEncoder passwordEncoder
-            , StatisticService statisticService) {
+            , StatisticService statisticService
+            , SecurityUtil securityUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.statisticService = statisticService;
+        this.securityUtil = securityUtil;
     }
 
     private boolean isValidRole(Role role) {
@@ -114,7 +118,13 @@ public class UserServiceImpl implements UserService {
     // For ADMIN
     @Override
     public void deleteUser(Long userId) {
+        String login = securityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
+        if (Objects.equals(user.getId(), userId)) {
+            throw new NotValidArgumentException("You can't delete yourself!");
+        }
         UserEntity userToDelete = findUserById(userId);
+
         userRepository.delete(userToDelete);
     }
 

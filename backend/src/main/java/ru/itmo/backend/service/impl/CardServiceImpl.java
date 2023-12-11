@@ -6,6 +6,7 @@ import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
 import ru.itmo.backend.dto.CriminalOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
+import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.models.*;
 import ru.itmo.backend.repository.*;
 import ru.itmo.backend.security.SecurityUtil;
@@ -69,6 +70,9 @@ public class CardServiceImpl implements CardService {
         }
         Vision crimeVision = visionRepository.findById(crimeCardInDto.getVisionId())
                 .orElseThrow(() -> new NoSuchElementException("Vision not found"));
+        if (!crimeVision.isAccepted()) {
+            throw new NotValidArgumentException("Vision " + crimeVision.getId() + " is not accepted! Please contact to your technic.");
+        }
         crimeCard.setVision(crimeVision);
         Criminal criminal = new Criminal();
         CrimeCard newCard = cardRepository.save(crimeCard);

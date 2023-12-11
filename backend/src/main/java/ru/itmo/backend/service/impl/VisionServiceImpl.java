@@ -67,9 +67,14 @@ public class VisionServiceImpl implements VisionService {
     @Override
     public void deleteVision(Long id) {
         Vision visionToDelete = findById(id);
+
         String login = securityUtil.getSessionUser();
         UserEntity user = userRepository.findByLogin(login);
+        if (visionToDelete.isAccepted()) {
+            throw new NotValidArgumentException("You can't delete accepted vision!");
+        }
         visionRepository.delete(visionToDelete);
+
         statisticService.visionRejected(user);
     }
 

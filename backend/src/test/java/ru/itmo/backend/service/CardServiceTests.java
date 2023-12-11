@@ -79,6 +79,7 @@ public class CardServiceTests {
 
         vision = new Vision();
         vision.setVideoUrl("http://www.youtube.com/");
+        vision.setAccepted(true);
         vision.setId(1L);
         crimeCard = CrimeCard.builder()
                 .id(1L)

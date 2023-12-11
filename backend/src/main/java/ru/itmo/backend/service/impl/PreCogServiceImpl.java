@@ -156,7 +156,7 @@ public class PreCogServiceImpl implements PreCogService {
             throw new NotValidArgumentException("Too much depressants. Minimum possible level is: "
                     + minPossibleAmount);
         }
-        preCogToService.setDopamineLevel(newAmount);
+        preCogToService.setStressLevel(newAmount);
         preCogRepository.save(preCogToService);
         String login = securityUtil.getSessionUser();
         UserEntity user = userRepository.findByLogin(login);

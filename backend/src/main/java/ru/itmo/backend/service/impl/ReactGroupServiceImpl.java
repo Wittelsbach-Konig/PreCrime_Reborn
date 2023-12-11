@@ -121,6 +121,9 @@ public class ReactGroupServiceImpl implements ReactGroupService {
                 + "Weapon :" + criminal.getWeapon();
         for(Long memberId : group){
             ReactGroup groupMember = findGroupMemberById(memberId);
+            if (!groupMember.isInOperation()) {
+                groupMember.setInOperation(true);
+            }
             int chatId = groupMember.getTelegramId();
             telegramBotService.sendMessage(chatId, message);
             CriminalToReactGroup arrestAssignment = new CriminalToReactGroup();
