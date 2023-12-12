@@ -54,11 +54,9 @@ class CriminalTable extends Component {
         const confirmation = window.confirm(`Вы уверены, что хотите изменить статус на ${newStatus}?`);
 
         if (confirmation) {
-            // Вызовите метод для изменения статуса на сервере
             this.updateStatusOnServer(newStatus);
             this.props.onRenew()
         } else {
-            // Если пользователь отказался от изменения статуса, сбросьте выбор в выпадающем меню
             this.setState({ newStatus: '' });
         }
     };

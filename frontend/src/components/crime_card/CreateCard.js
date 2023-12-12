@@ -28,8 +28,7 @@ class CrimeForm extends Component {
 
     handleRowClick = (index, url) => {
         this.setState({ selectedRow: index }, ()=>{
-            this.props.updateUrl(url)
-            this.props.updateId(index)
+            this.setState({selectedVideoUrl:url})
             console.log(url)
         });
 
@@ -124,14 +123,14 @@ class CrimeForm extends Component {
     };
 
     handleSubmit = () => {
-        const { placeOfCrime, weapon, crimeType, visionId } = this.state;
+        const { placeOfCrime, weapon, crimeType, selectedRow } = this.state;
         const parsedDate = new Date(this.state.crimeTime);
         console.log(parsedDate)
         const postData = {
-            placeOfCrime,
-            weapon,
-            crimeType,
-            visionId,
+            placeOfCrime: placeOfCrime,
+            weapon: weapon,
+            crimeType: crimeType,
+            visionId: selectedRow,
             crimeTime: parsedDate,
             criminalName: this.state.criminalName,
             victimName: this.state.victimName,
@@ -164,7 +163,8 @@ class CrimeForm extends Component {
             crimeTimeClicked,
             criminalNameClicked,
             victimNameClicked,
-            selectedRow
+            selectedRow,
+            selectedVideoUrl,
         } = this.state;
 
         const { onClose, visions } = this.props;
@@ -215,12 +215,22 @@ class CrimeForm extends Component {
                     <br />
                     <label>
                         Visions:
+                        <div className="video-and-table-container">
+                            <div className="video-container-card">
+                            {selectedVideoUrl && (
+
+                                <iframe
+                                    title="Vision Video"
+                                    src={selectedVideoUrl}
+                                    frameBorder="0"
+                                    allowFullScreen
+                                ></iframe>)}
+                            </div>
                             <div className="content-detective-vision">
                                 <div className="table-detective-vision">
                                     <table>
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Video</th>
                                             <th>Accepted</th>
                                         </tr>
@@ -233,7 +243,6 @@ class CrimeForm extends Component {
                                                     className={vision.id === selectedRow ? 'selected-row' : ''}
                                                     onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
                                                 >
-                                                    <td>{vision.id}</td>
                                                     <td>
                                                         Vision {vision.id}
                                                     </td>
@@ -248,6 +257,10 @@ class CrimeForm extends Component {
                                         </tbody>
                                     </table>
                                 </div>
+                                <div className="remaining-content">
+                                </div>
+                            </div>
+
                         </div>
                     </label>
 

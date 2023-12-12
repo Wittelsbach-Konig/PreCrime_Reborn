@@ -60,32 +60,43 @@ class Registration extends React.Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
+        const {login,
+                pass,
+                confirmPassword,
+                user
+        } = this.state
         this.state.user.roles = this.state.selectedRole
         console.log('Отправленные данные:', this.state.user);
-        fetch('http://localhost:8028/api/v1/auth/registration', {
-            method: 'POST', // или другой метод
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer`
-            },
-            body: JSON.stringify(this.state.user),
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.setState({transport: data});
-                console.log(data);
-                this.props.onReg()
+        if (!login || !pass || !confirmPassword || user.roles ===[] || !user.firstName || !user.lastName || !user.email || !user.telegramId)
+        {
+            window.alert(`Please, input all fields`);
+
+        }
+        else {
+            fetch('http://localhost:8028/api/v1/auth/registration', {
+                method: 'POST', // или другой метод
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer`
+                },
+                body: JSON.stringify(this.state.user),
             })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    this.props.onReg()
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе к серверу:', error);
+                });
+        }
     };
 
     render() {
         const { user } = this.state;
         const { selectedRole, pass, confirmPassword, passwordsMatch  } = this.state;
         return (
-            <div>
+            <div className="scroll-bar">
                 <h2>Registration</h2>
                 <h6>Choosing role:</h6>
                 <div className="chip-container">
@@ -159,6 +170,14 @@ class Registration extends React.Component {
                             value={user.confirmPassword}
                             onChange={this.handleInputChange}
                         />
+
+                <input
+                    placeholder="telegramID"
+                    type="text"
+                    name="telegramID"
+                    value={user.telegramId}
+                    onChange={this.handleInputChange}
+                />
                     <button type="button" onClick={this.handleSubmit}>Registration</button>
                     <button type="button" onClick={this.onReg}>Back</button>
                 </div>
