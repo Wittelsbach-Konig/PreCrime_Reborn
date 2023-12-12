@@ -16,7 +16,9 @@ body{
     overflow: hidden;
 }
 
-
+.scroll-bar{
+    height: 100%;
+}
 
 .container {
     position: relative;

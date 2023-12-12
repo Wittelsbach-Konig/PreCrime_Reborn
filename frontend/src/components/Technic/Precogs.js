@@ -11,8 +11,8 @@ class Precogs extends Component {
         this.state = {
             showModal: false,
             showModal_2: false,
-            psychics: [],
-            visions:[],
+            psychics: null,
+            visions:null,
             selectedPsychic: null,
 
         };
@@ -70,7 +70,12 @@ class Precogs extends Component {
                 'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
             },
         })
-            .then(responses => responses.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 this.setState({ psychics: data });
             })
@@ -79,24 +84,6 @@ class Precogs extends Component {
             });
     };
 
-    fetchVisions = () => {
-        const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/visions', {
-            method: 'GET', // или другой метод
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({ visions: data });
-                console.log(this.state.visions)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
-    };
 
     render() {
         const { selectedPsychic } = this.state;

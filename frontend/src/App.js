@@ -84,33 +84,18 @@ class App extends React.Component  {
         try {
             const response = await axios.post('http://localhost:8028/api/v1/auth/login', this.state.log);
             console.log('Ответ сервера:', response.data);
-            //const data = await axios.get('http://localhost:8028/api/v1/me')
 
             if (response.data.accessToken) {
                 localStorage.setItem('jwtToken', response.data.accessToken);
                 console.log('Token:', response.data.accessToken);
-                // Отправка запроса с токеном в заголовке Authorization
-                fetch('http://localhost:8028/api/v1/me', {
-                    method: 'GET', // или другой метод
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${response.data.accessToken}`, // Добавляем токен в заголовок
-                    },
-                })
-                    .then(responses => responses.json())
-                    .then(data => {
-                        this.state.me = data;
-                        console.log(this.state.me)
-                        this.chekRole(this.state.pullRole)
-                    })
-                    .catch(error => {
-                        console.error('Ошибка при запросе к серверу:', error);
-                    });
+                this.fetchRole(response.data.accessToken)
             }
         } catch (error) {
             console.error('Ошибка при запросе:', error);
         }
     };
+
+
 
     handleChange = (newValue) => {
         this.setState({currentRole:newValue});
@@ -119,6 +104,7 @@ class App extends React.Component  {
         const {pullRole} = this.state
         this.setState({ isLoggedIn: newValue });
         this.setState({adm:false})
+        localStorage.setItem('jwtToken', null)
         const rolesToDisplay = ["DETECTIVE", "TECHNIC", "AUDITOR", "REACTIONGROUP"];
         rolesToDisplay.map((lrole) => {
             pullRole[lrole] = false
@@ -129,6 +115,64 @@ class App extends React.Component  {
     updateRole = (newValue) => {
         this.setState({ pullRole: newValue });
     };
+
+    async componentDidMount() {
+        const jwtToken = localStorage.getItem('jwtToken');
+
+        if (jwtToken) {
+            await this.setRoles();
+        }
+    }
+
+    async setRoles() {
+        const rolesToDisplay = ["DETECTIVE", "TECHNIC", "AUDITOR", "REACTIONGROUP"];
+        const curRole = localStorage.getItem('curRole');
+        const { pullRole } = this.state;
+
+        rolesToDisplay.forEach((lrole) => {
+            pullRole[lrole] = lrole === curRole;
+        });
+
+        // Если ни одна роль не совпала, устанавливаем значение по умолчанию
+        if (!rolesToDisplay.includes(curRole)) {
+            this.setState({ isLoggedIn: false });
+        } else {
+            //this.setState({ isLoggedIn: true });
+            await this.fetchRole();
+        }
+        console.log(curRole)
+        console.log(this.state.isLoggedIn)
+        console.log(pullRole);
+    }
+
+    async fetchRole() {
+        const jwtToken = localStorage.getItem('jwtToken');
+
+        try {
+            const response = await fetch('http://localhost:8028/api/v1/me', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwtToken}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.setState({ me: data }, () => {
+                console.log(this.state.me);
+                this.chekRole(this.state.pullRole);
+            });
+
+        } catch (error) {
+            console.error('Ошибка при запросе к серверу:', error);
+        }
+    }
+
+
 
     render() {
         const {pullRole, log, me, adm} = this.state;
@@ -227,9 +271,8 @@ class App extends React.Component  {
 
     };
 
-    chekRole(role){
+    async chekRole(){
         const { me } = this.state
-        const key = me.roles[0]
         if(me)
         {
             this.setState({isLoggedIn:!this.state.isLoggedIn})

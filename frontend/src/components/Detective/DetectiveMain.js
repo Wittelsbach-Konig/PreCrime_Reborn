@@ -13,7 +13,8 @@ class DetectiveMain extends React.Component {
             showModal: false,
             showBurger: false,
             showCard:false,
-            cards:null
+            cards:null,
+            visions:null
         }
 
     }
@@ -45,6 +46,7 @@ class DetectiveMain extends React.Component {
 
     CreateCarted = (e) => {
         this.setState({showCard: e})
+        this.fetchVisions()
     }
 
     CloseCarted = () => {
@@ -60,9 +62,26 @@ class DetectiveMain extends React.Component {
         this.props.renew();
     };
 
-    showAm = () => {
-
+    fetchVisions = () => {
+        const token = localStorage.getItem('jwtToken');
+        fetch('http://localhost:8028/api/v1/visions', {
+            method: 'GET', // или другой метод
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+            },
+        })
+            .then(responses => responses.json())
+            .then(data => {
+                this.setState({ visions: data });
+                console.log(this.state.visions)
+            })
+            .catch(error => {
+                console.error('Ошибка при запросе к серверу:', error);
+            });
     };
+
+
 
 
     render() {
@@ -70,7 +89,7 @@ class DetectiveMain extends React.Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return (<div>
-                <HeaderCards isLogged={this.props.isLogged} showCr={this.CreateCarted} />
+                <Header isLogged={this.props.isLogged}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
                 {!this.state.showModal && (<div>
 
@@ -82,7 +101,7 @@ class DetectiveMain extends React.Component {
 
                 {this.state.showCard && (
                     <div>
-                        <CrimeForm onClose={this.CloseCarted}/>
+                        <CrimeForm onClose={this.CloseCarted} visions={this.state.visions}/>
                     </div>
                 )}
 

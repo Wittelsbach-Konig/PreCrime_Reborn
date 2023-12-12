@@ -1,11 +1,14 @@
 // CrimeForm.js
 import React, { Component } from 'react';
 import '../../css/CardCreate.css';
+import TableVision from "../visions/TableVision";
 
 class CrimeForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            selectedRow: null,
+            selectedVideoUrl: null,
             crimeTime: null,
             criminalName: null,
             victimName: null,
@@ -22,6 +25,14 @@ class CrimeForm extends Component {
         };
 
     }
+
+    handleRowClick = (index, url) => {
+        this.setState({ selectedRow: index }, ()=>{
+            this.setState({selectedVideoUrl:url})
+            console.log(url)
+        });
+
+    };
 
     handleGetCrimeTime = () => {
         const token = localStorage.getItem('jwtToken');
@@ -112,14 +123,14 @@ class CrimeForm extends Component {
     };
 
     handleSubmit = () => {
-        const { placeOfCrime, weapon, crimeType, visionId } = this.state;
+        const { placeOfCrime, weapon, crimeType, selectedRow } = this.state;
         const parsedDate = new Date(this.state.crimeTime);
         console.log(parsedDate)
         const postData = {
-            placeOfCrime,
-            weapon,
-            crimeType,
-            visionId,
+            placeOfCrime: placeOfCrime,
+            weapon: weapon,
+            crimeType: crimeType,
+            visionId: selectedRow,
             crimeTime: parsedDate,
             criminalName: this.state.criminalName,
             victimName: this.state.victimName,
@@ -151,10 +162,12 @@ class CrimeForm extends Component {
             visionId,
             crimeTimeClicked,
             criminalNameClicked,
-            victimNameClicked
+            victimNameClicked,
+            selectedRow,
+            selectedVideoUrl,
         } = this.state;
 
-        const { onClose } = this.props;
+        const { onClose, visions } = this.props;
         return (
             <div className="modal">
 
@@ -201,9 +214,56 @@ class CrimeForm extends Component {
                     </label>
                     <br />
                     <label>
-                        Vision ID:
-                        <input type="number" name="visionId" value={visionId} onChange={this.handleChangeVision} className="form-input" />
+                        Visions:
+                        <div className="video-and-table-container">
+                            <div className="video-container-card">
+                            {selectedVideoUrl && (
+
+                                <iframe
+                                    title="Vision Video"
+                                    src={selectedVideoUrl}
+                                    frameBorder="0"
+                                    allowFullScreen
+                                ></iframe>)}
+                            </div>
+                            <div className="content-detective-vision">
+                                <div className="table-detective-vision">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Video</th>
+                                            <th>Accepted</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {visions ? (
+                                            visions.map((vision) => (
+                                                <tr
+                                                    key={vision.id}
+                                                    className={vision.id === selectedRow ? 'selected-row' : ''}
+                                                    onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
+                                                >
+                                                    <td>
+                                                        Vision {vision.id}
+                                                    </td>
+                                                    <td>{vision.accepted ? 'Yes' : 'No'}</td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="3">No vision data available</td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="remaining-content">
+                                </div>
+                            </div>
+
+                        </div>
                     </label>
+
                     <br />
                     <button type="button-tr" onClick={this.handleSubmit} className="form-button">Submit</button>
                 </form>

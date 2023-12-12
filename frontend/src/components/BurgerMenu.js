@@ -24,6 +24,7 @@ class BurgerMenu extends Component {
         rolesToDisplay.map((lrole) => {
             if (lrole === role) {
                 pullRole[lrole] = true
+                localStorage.setItem('curRole',lrole)
             }
             else{
                 pullRole[lrole] = false
