@@ -68,11 +68,8 @@ class Registration extends React.Component {
         } = this.state
         this.state.user.roles = this.state.selectedRole
         console.log('Отправленные данные:', this.state.user);
-        if (!login || !pass || !confirmPassword || user.roles ===[] || !user.firstName || !user.lastName || !user.email || !user.telegramId)
-        {
-            window.alert(`Please, input all fields`);
-
-        }
+        if (user.roles === [] || !user.login || !user.password)
+        {window.alert("There's no good idea)")}
         else {
             fetch('http://localhost:8028/api/v1/auth/registration', {
                 method: 'POST', // или другой метод

@@ -16,7 +16,7 @@ class CrimeCard extends Component {
                 weapon: this.props.crimeCard.weapon,
                 crimeTime: this.props.crimeCard.crimeTime,
                 crimeType: this.props.crimeCard.crimeType,
-                visionId: this.props.crimeCard.visionId,
+                visionUrl: this.props.crimeCard.visionUrl,
             },
         };
     }
@@ -187,8 +187,8 @@ class CrimeCard extends Component {
                                 Vision Id:
                                 <input
                                     type="text"
-                                    name="visionId"
-                                    value={editedCrimeData.visionId}
+                                    name="visionUrl"
+                                    value={editedCrimeData.visionUrl}
                                     onChange={this.handleInputChange}
                                 />
                             </label>
@@ -210,7 +210,7 @@ class CrimeCard extends Component {
                             <p>Responsible Detective: {crimeCard.responsibleDetective}</p>
                             <p>Is Criminal Caught: {crimeCard.isCriminalCaught ? 'Yes':'No'}</p>
                             <p>Crime Type: {crimeCard.crimeType}</p>
-                            <p>Vision ID: {crimeCard.visionId}</p>
+                            <p>Vision URL: {crimeCard.visionUrl}</p>
                             <button onClick={this.handleEditClick}>Edit</button>
                         </div>
                     }
