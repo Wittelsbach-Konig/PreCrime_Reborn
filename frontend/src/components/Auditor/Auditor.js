@@ -1,10 +1,7 @@
 import React from "react";
 import Header from "../Header";
-import Profile from "../profile";
 import ListCards from "../crime_card/ListCards";
 import BurgerMenu from "../BurgerMenu";
-import HeaderCards from "../crime_card/HeaderCards";
-import CrimeForm from "../crime_card/CreateCard";
 import Users from "./Users"
 class DetectiveMain extends React.Component {
     constructor(props) {
@@ -93,7 +90,7 @@ class DetectiveMain extends React.Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return (<div>
-                <HeaderCards isLogged={this.props.isLogged} showCr={this.CreateCarted} />
+                <Header isLogged={this.props.isLogged} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
                 {!this.state.showModal && (<div>
 

@@ -3,7 +3,6 @@ import Header from "../Header";
 import Profile from "../profile";
 import ListCards from "../crime_card/ListCards";
 import BurgerMenu from "../BurgerMenu";
-import HeaderCards from "../crime_card/HeaderCards";
 import CrimeForm from "../crime_card/CreateCard";
 class DetectiveMain extends React.Component {
     constructor(props) {
@@ -89,7 +88,7 @@ class DetectiveMain extends React.Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return (<div>
-                <Header isLogged={this.props.isLogged}/>
+                <Header isLogged={this.props.isLogged} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
                 {!this.state.showModal && (<div>
 

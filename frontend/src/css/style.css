@@ -8,12 +8,12 @@
 
 body{
     background-color: #333;
-    color: #fafaaf;
     font-family: 'Kanit', sans-serif;
     font-weight: 300;
     height: 100%;
     margin: 0;
     overflow: hidden;
+    color: #a0d3ff;
 }
 
 .scroll-bar{
@@ -34,35 +34,6 @@ aside {
     float: right;
 }
 
-/*main .user{
-    margin-bottom: 50px;
-    background-color: #3e8fa0;
-    padding: 20px;
-}
-
-
-main .delete-icon {
-    float: right;
-    color: #134b57;
-cursor: pointer;
-transform: scale(2);
-}
-
-main .edit-icon {
-    float: right;
-    margin-right: 25px;
-    color: #165664;
-    cursor: pointer;
-    transform: scale(2);
-}
-
-main .delete-icon:hover,
-main .edit-icon:hover
-{
-    opacity: 0.5;
-}*/
-
- form input:not([type="checkbox"]),
  form textarea,
  form button{
     width: 90%;
@@ -132,14 +103,31 @@ ul li::before {
     content: "";
 }
 
-.chip-container button{
-    width: 50%;
+.chip-container button {
+    width: 5%;
+    font-size: 10px;
+    display: inline-block; /* Добавлено свойство display */
+}
+
+.selected-chips-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.selected-chips-container li {
+    display: inline-block; /* Добавлено свойство display */
+    margin-right: 5px; /* Регулирует расстояние между кнопками */
+}
+
+.selected-chips-container button {
+    width: auto; /* Ширина на auto, чтобы кнопки занимали только необходимое пространство */
     font-size: 10px;
 }
 
 .selected-chips-container {
-    max-height: 30%;
-    height: 30%;
+    max-height: 10%;
+    height: 10%;
     overflow: auto;
     border: 1px solid #ccc;
     padding: 10px;
@@ -237,3 +225,6 @@ ul li::before {
     width: 90%;
     height: 20%;
 }
+
+/*FORMING*/
+

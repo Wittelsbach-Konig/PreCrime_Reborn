@@ -1,5 +1,5 @@
 .psychic-container {
-    left:200%;
+    left:150%;
     top: -38%;
     position: relative;
     font-family: Arial, sans-serif;
@@ -329,7 +329,12 @@ td {
     z-index: 1;
 }
 
-
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+}
 
 
 

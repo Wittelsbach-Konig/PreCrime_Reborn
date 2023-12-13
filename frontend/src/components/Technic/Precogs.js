@@ -91,8 +91,7 @@ class Precogs extends Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return (<div>
-                <Profile me={me}/>
-                <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles}/>
+                <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
 
             <div className="frame-but">
