@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/Reg_style.css"
 class Registration extends React.Component {
     constructor(props){
         super(props)
@@ -11,7 +12,7 @@ class Registration extends React.Component {
             firstName: "",
             lastName: "",
             roles: [],
-            telegramId: 345678
+            telegramId: 0
         },
             login: "",
             pass: '',
@@ -96,33 +97,16 @@ class Registration extends React.Component {
         const { user } = this.state;
         const { selectedRole, pass, confirmPassword, passwordsMatch  } = this.state;
         return (
-            <div className="scroll-bar">
-                <h2>Registration</h2>
-                <h6>Choosing role:</h6>
-                <div className="chip-container">
-                    {this.chips.map((chip) => (
-                        <button
-                            type="button"
-                            key={chip}
-                            className={`chip ${selectedRole.includes(chip) ? 'selected' : ''}`}
-                            onClick={() => this.toggleChip(chip)}
-                        >
-                            {chip}
-                        </button>
-                    ))}
-                </div>
-                <div className="selected-chips-container">
+              <div className="local-body">
+                <div className="container">
+                                    <header>Registration</header>
 
-                    <h6>Approved roles:</h6>
-                    <ul>
-                        {selectedRole.map((chip) => (
-                            <a key={chip}>
-                                <button onClick={() => this.removeChip(chip)}>{chip}</button>
-                            </a>
-                        ))}
-                    </ul>
-                </div>
-
+                                    <form action="#">
+                                        <div className="form first">
+                                            <div className="details personal">
+                                                <span className="title">Personal Details</span>
+                                                <div className="fields">
+                        <div className="input-field">
                         <input
                             placeholder="Firstname"
                             type="text"
@@ -130,7 +114,8 @@ class Registration extends React.Component {
                             value={user.firstName}
                             onChange={this.handleInputChange}
                         />
-
+                        </div>
+                        <div className="input-field">
                         <input
                             placeholder="Lastname"
                             type="text"
@@ -138,7 +123,8 @@ class Registration extends React.Component {
                             value={user.lastName}
                             onChange={this.handleInputChange}
                         />
-
+                        </div>
+                        <div className="input-field">
                         <input
                             placeholder="Login"
                             type="text"
@@ -146,7 +132,8 @@ class Registration extends React.Component {
                             value={user.login}
                             onChange={this.handleInputChange}
                         />
-
+                        </div>
+                        <div className="input-field">
                         <input
                             placeholder="email"
                             type="email"
@@ -154,7 +141,9 @@ class Registration extends React.Component {
                             value={user.email}
                             onChange={this.handleInputChange}
                         />
-
+                        </div>
+                        <div className="input-field">
+                        <i className="fas fa-user"></i>
                         <input
                             placeholder="password"
                             type="password"
@@ -162,7 +151,8 @@ class Registration extends React.Component {
                             value={user.password}
                             onChange={this.handleInputChange}
                         />
-
+                        </div>
+                        <div className="input-field">
                         <input
                             placeholder="confirmPassword"
                             type="password"
@@ -170,17 +160,58 @@ class Registration extends React.Component {
                             value={user.confirmPassword}
                             onChange={this.handleInputChange}
                         />
+                        </div>
 
+                        <div className="input-field">
                 <input
                     placeholder="telegramID"
                     type="text"
-                    name="telegramID"
+                    name="telegramId"
                     value={user.telegramId}
                     onChange={this.handleInputChange}
                 />
-                    <button type="button" onClick={this.handleSubmit}>Registration</button>
-                    <button type="button" onClick={this.onReg}>Back</button>
-                </div>
+                                            </div>
+                                                    <div className="input-field">
+                                                    <label> Role:</label>
+                                                    <div className="chip-container">
+                                                        {this.chips.map((chip) => (
+                                                            <button
+                                                                type="button"
+                                                                key={chip}
+                                                                className={`chip ${selectedRole.includes(chip) ? 'selected' : ''}`}
+                                                                onClick={() => this.toggleChip(chip)}
+                                                            >
+                                                                {chip}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                    </div>
+
+                                                    <div className="selected-chips-container">
+
+                                                        <label>Choosing roles:</label>
+                                                        <ul>
+                                                            {selectedRole.map((chip) => (
+                                                                <a key={chip}>
+                                                                    <button onClick={() => this.removeChip(chip)}>{chip}</button>
+                                                                </a>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        <button className="sumbit" onClick={this.handleSubmit}>
+                            <span className="btnText">Submit</span>
+                            <i className="uil uil-navigator"></i>
+                        </button>
+                    <div className="text sign-up-text" >Already have an account? <label
+                        htmlFor="flip" onClick={this.onReg}>Login now</label>
+                    </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+              </div>
         )
     }
 

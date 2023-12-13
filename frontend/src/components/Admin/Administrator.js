@@ -36,7 +36,6 @@ class Administrator extends Component {
         const { selectedPsychic } = this.state;
         const { onChange, me } = this.props
         return (<div>
-                <Profile me={me}/>
                 <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles}/>
 
                 <div className="frame-but">

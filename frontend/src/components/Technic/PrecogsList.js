@@ -229,6 +229,7 @@ class PrecogsList extends Component {
                         )}
                     </div>
                 </div>
+            <div className="psyc">
                 <button className="new-precog" onClick={this.openModal}>New Precog</button>
                 {this.state.showModal && <RegPrecogs onClose={this.closeModal} onRenew={this.fetchPsychics} />}
                 {this.state.showModal_2 && <UpdatePrecogs onClose={this.closeModal_2} pre={this.state.selectedPsychic} />}
@@ -236,7 +237,7 @@ class PrecogsList extends Component {
                 <button className="reh-precog" onClick={this.fetchRehabilitate}>Rehabilitate</button>
                 <button className="del-precog" onClick={this.fetchDel}>Delete Precog</button>
                 <button className="upd-precog" onClick={this.openModal_2}>Update Info Precog</button></div>)}
-
+            </div>
                 {this.state.selectedPsychic && ( <div className="containerStyle">
                     <div>
                         <h2>Prescribe Medications</h2>

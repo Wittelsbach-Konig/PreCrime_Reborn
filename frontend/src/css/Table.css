@@ -204,6 +204,7 @@ tr:hover {
     z-index: 2; /* Устанавливаем z-index выше затененного фона, но ниже таблицы */
 }
 
+
 /* Добавляем стили для затененного фона */
 .overlay {
     position: fixed;
@@ -361,14 +362,14 @@ tr:hover {
     maxWidth: 300px;
     margin: 0 auto;
     position: fixed;
-    left: 35%;
+    left: 30%;
     top: 20%;
 }
 
 .inputStyle{
     margin-bottom: 10px;
     margin-left: 10px;
-    width: 10%;
+    width: 16%;
     padding: 8px;
 
 }

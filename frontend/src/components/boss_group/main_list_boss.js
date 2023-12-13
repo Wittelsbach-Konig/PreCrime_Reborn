@@ -159,9 +159,8 @@ class main_list_boss extends React.Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return ( <div>
-                <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles}/>
+                <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
-                <Profile me={me} />
                 <div className="frame-but">
                     <div className="rectangle-but" />
                     <button className="accept-ammun" type="button" onClick={this.showAm}>Ammunition</button>
