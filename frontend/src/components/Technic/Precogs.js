@@ -94,19 +94,24 @@ class Precogs extends Component {
                 <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
 
-            <div className="frame-but">
-                <div className="rectangle-but" />
-                <button className="check-vision" onClick={this.openModal}>Visions</button>
-                {this.state.showModal && <VisionList onClose={this.closeModal} visions={this.state.visions} onRenew={this.openModal}/>}
-                <button className="check-precogs" onClick={this.openModal_2}>Precogs</button>
-                {this.state.showModal_2 && <PrecogsList onClose={this.closeModal_2} onRenew={this.fetchPsychics} />}
-            </div>
-
-
 
                 <div className="frame-2">
-                    <div className="rectangle-2" />
+                    <div className="rectangle-2">
+                        {this.state.showModal && <VisionList onClose={this.closeModal} visions={this.state.visions} onRenew={this.openModal}/>}
+                        {this.state.showModal_2 &&
+                            (<div>
+                                <PrecogsList onClose={this.closeModal_2} onRenew={this.fetchPsychics} />
+                            </div>)}
+                    </div>
+
                 </div>
+                <div className="frame-but">
+                    <div className="rectangle-but">
+                        <button className="check-vision" onClick={this.openModal}>Visions</button>
+                        <button className="check-precogs" onClick={this.openModal_2}>Precogs</button>
+                    </div>
+                </div>
+
             </div>
         );
     }

@@ -13,10 +13,6 @@ class Header extends React.Component {
         this.props.showCr(true)
     };
 
-    closeModal = () => {
-        this.setState({showCard: false});
-        this.props.renew();
-    };
 
     render() {
         return (

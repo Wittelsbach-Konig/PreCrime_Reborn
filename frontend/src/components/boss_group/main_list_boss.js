@@ -159,49 +159,98 @@ class main_list_boss extends React.Component {
         const visibleRoles = ["DETECTIVE", "AUDITOR", "REACTIONGROUP","TECHNIC"];
         const rolesToDisplay = visibleRoles.filter(role => me.roles.includes(role));
         return ( <div>
-                <Header pullRole={this.props.pullRole} isLogged={this.props.isLogged} onChange={onChange} rol={me.roles} me={me}/>
-                <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
+                <Header
+                    pullRole={this.props.pullRole}
+                    isLogged={this.props.isLogged}
+                    onChange={onChange}
+                    rol={me.roles}
+                    me={me}
+                />
+                <BurgerMenu
+                    onClose={this.closeBurger}
+                    roles={rolesToDisplay}
+                    updatePull={this.props.pullRole}
+                />
                 <div className="frame-but">
-                    <div className="rectangle-but" />
-                    <button className="accept-ammun" type="button" onClick={this.showAm}>Ammunition</button>
-                    {showAmmunition ? (
-                        <div>
-                            <Ammunition ammun={this.state.ammunition} renew={this.showAm} onChange={this.updateState}/>
-                        </div>
-                    ) : (
-                        <div>
-                        </div>
-                    )}
-                    <button className="accept-react" type="button" onClick={this.showGR}>Reaction Group</button>
-                    {showReactionGroup ? (
-                        <div>
-                            <ReactionGroup group={this.state.groupList} renew={this.showGR} onChange={this.updateState}/>
-                        </div>
-                    ) : (
-                        <div>
-                        </div>
-                    )}
-                    <button className="accept-transport" type="button" onClick={this.showTr}>Transport</button>
-                    {showTransport ? (
-                        <div>
-                            <Transport trans={this.state.transport} renew={this.showTr}/>
-                        </div>
-                    ) : (
-                        <div>
-                        </div>
-                    )}
-                    <button className="accept" type="button" onClick={this.showCr}>Criminal Info</button>
-                    {showCriminal ? (
-                        <div>
-                            <Criminal criminals={this.state.criminals} renew={this.showCr} onChange={this.updateState}/>
-                        </div>
-                    ) : (
-                        <div>
-                        </div>
-                    )}
+                    <div className="rectangle-but">
+                    <button
+                        className="card-list"
+                        type="button"
+                        onClick={this.showAm}>
+                        Ammunition
+                    </button>
+                    <button
+                        className="card-list"
+                        type="button"
+                        onClick={this.showGR}>
+                        Reaction Group
+                    </button>
+                    <button
+                        className="card-list"
+                        type="button"
+                        onClick={this.showTr}>
+                        Transport
+                    </button>
+                    <button
+                        className="card-list"
+                        type="button"
+                        onClick={this.showCr}>
+                        Criminal Info
+                    </button>
+                    </div>
                 </div>
                 <div className="frame-2">
-                    <div className="rectangle-2" />
+                    <div className="rectangle-2">
+                        {showAmmunition ? (
+                            <div>
+                                <Ammunition
+                                    ammun={this.state.ammunition}
+                                    renew={this.showAm}
+                                    onChange={this.updateState}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                            </div>
+                        )}
+
+                        {showReactionGroup ? (
+                            <div>
+                                <ReactionGroup
+                                    group={this.state.groupList}
+                                    renew={this.showGR}
+                                    onChange={this.updateState}/>
+                            </div>
+                        ) : (
+                            <div>
+                            </div>
+                        )}
+
+                        {showTransport ? (
+                            <div>
+                                <Transport
+                                    trans={this.state.transport}
+                                    renew={this.showTr}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                            </div>
+                        )}
+
+                        {showCriminal ? (
+                            <div>
+                                <Criminal
+                                    criminals={this.state.criminals}
+                                    renew={this.showCr}
+                                    onChange={this.updateState}
+                                />
+                            </div>
+                        ) : (
+                            <div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         )

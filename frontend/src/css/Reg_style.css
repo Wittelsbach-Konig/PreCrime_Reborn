@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: center;
     background: #888;
+
 }
 .container{
     position: relative;
@@ -22,6 +23,7 @@
     margin: 0 15px;
     background-color: #fff;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+
 }
 .container header{
     position: relative;
@@ -37,29 +39,19 @@
     height: 3px;
     width: 27px;
     border-radius: 8px;
-    background-color: #4070f4;
+    background-color: #134b57;
 }
 .container form{
     position: relative;
     margin-top: 16px;
     min-height: 490px;
     background-color: #fff;
-    overflow: auto;
+    overflow: hidden;
 }
 .container form .form{
     position: absolute;
     background-color: #fff;
     transition: 0.3s ease;
-}
-.container form .form.second{
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(100%);
-}
-form.secActive .form.second{
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(0);
 }
 form.secActive .form.first{
     opacity: 0;
@@ -125,7 +117,7 @@ form .fields .input-field{
     color: #fff;
     border-radius: 5px;
     margin: 25px 0;
-    background-color: #4070f4;
+    background-color: #134b57;
     transition: all 0.3s linear;
     cursor: pointer;
 }
@@ -141,12 +133,21 @@ form .fields .input-field{
     margin-bottom: 10px;
 }
 
+.telegram-input{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    left: 70.3%;
+    width: 64.5%;
+}
+
 .container form .btnText{
     font-size: 14px;
     font-weight: 400;
 }
 form button:hover{
-    background-color: #265df2;
+    background-color: #134b57;
 }
 form button i,
 form .backBtn i{
@@ -163,12 +164,65 @@ form .buttons button , .backBtn{
     margin-right: 14px;
 }
 
-text .sign-up-text label{
+.Login-now{
     color: #5b13b9;
     cursor: pointer;
 }
-text .sign-up-text label:hover{
+.Login-now:hover{
     text-decoration: underline;
+}
+
+/* Стили для флажков и их текста */
+.chip label {
+    font-size: 14px;
+    display: inline-block;
+    text-align: center; /* Выравнивание текста по центру */
+    width: 100%; /* Занимать 100% ширины контейнера */
+}
+
+.chip-container {
+    display: flex;
+    flex-direction: row; /* Изменил направление на горизонтальное */
+    align-items: center; /* Центрирование по вертикали */
+    position: relative;
+    left: 14%;
+}
+
+.chip {
+    margin-right: 5%; /* Добавил отступ между чекбоксами */
+}
+
+/* Стили для флажков */
+.chip input {
+    margin-top: 5px; /* Добавил отступ сверху */
+}
+
+.align-chip {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    position: relative;
+    left: -25%;
+}
+
+/* Убираем маргины у последнего элемента в строке */
+.chip:last-child {
+    margin-right: -200px;
+}
+
+.text-roles {
+    position: relative;
+    left: 47%;
+}
+
+.sumbit {
+    position: relative;
+    left: 37%;
+}
+
+.already-log{
+    position: relative;
+    left: 31%;
 }
 
 @media (max-width: 750px) {
@@ -181,7 +235,21 @@ text .sign-up-text label:hover{
     form .fields .input-field{
         width: calc(100% / 2 - 15px);
     }
-    .form .input-field {
+    form .fields .already-log{
+        width: calc(100% / 2 - 15px);
+    }
+
+    form .fields .sumbit{
+        width: calc(100% / 2 - 15px);
+    }
+
+    form .fields .chip-container{
+        width: calc(100% / 2 - 15px);
+    }
+    .form .input-field,
+    .form .sumbit,
+    .form .chip-container,
+    .form .already-log{
         width: 100%; /* При уменьшении экрана делаем элементы формы на всю ширину */
     }
 }

@@ -1,15 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
 .car-text {
-    position: absolute;
-    top:-34%;
-    left: 50%;
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    color: #e0e0e0;
     z-index: 1;
+    font-size: 24px;
 }
 
 .card-text {
-    position: absolute;
-    top:10%;
-    left: 57%;
+    position: relative;
+    left: 44%;
     z-index: 1;
+    color: #e0e0e0;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    font-size:28px;
 }
 
 .content-container {
@@ -44,7 +51,6 @@ table {
 thead {
     position: sticky;
     top: 0;
-    background-color: #f2f2f2;
     z-index: 2;
 }
 
@@ -55,13 +61,6 @@ th, td {
     color: #000000;
 }
 
-th, tr {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: currentColor;
-}
 
 .selected-row {
     background-color: #a0d3ff;
@@ -71,7 +70,7 @@ tr:hover {
     cursor: pointer;
     border-radius: 10px;
     color: #000000;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 18px;
     font-weight: 400;
     height: 5%;
@@ -92,7 +91,7 @@ tr:hover {
     cursor: pointer;
     border-radius: 10px;
     color: #000000;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 18px;
     font-weight: 400;
     height: 5%;
@@ -174,14 +173,22 @@ tr:hover {
 
 
 .content-container-group {
-    position: absolute;
-    left :27%;
-    top : -28%;
+    position: relative;
+    left :5%;
     display: flex;
     flex-direction: column;
-    height: 60%;
-    width: 30%;
-    overflow-y: auto;
+    height: 10%;
+    width: 50%;
+    z-index: 1;
+}
+
+.content-container-criminal {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 60%;
     z-index: 1;
 }
 
@@ -329,21 +336,20 @@ tr:hover {
 
 
 .content-container-supply {
-    position: absolute;
-    left :27%;
-    top : -28%;
+    position: relative;
+    left :5%;
     display: flex;
     flex-direction: column;
-    height: 60%;
-    width: 60%;
-    overflow-y: auto;
+    height: 10%;
+    width: 90%;
     z-index: 1;
 }
 
 .table-container-supply {
-    max-height: 100%;
+    max-height: 10%;
     max-width: 100%;
     z-index: 1;
+    border-radius: 10px;
 }
 
 .modal-buttons {
@@ -356,34 +362,58 @@ tr:hover {
 }
 
 .containerStyle {
-    border:1px solid #ccc;
-    padding: 20px;
-    borderRadius: 8px;
-    maxWidth: 300px;
-    margin: 0 auto;
-    position: fixed;
-    left: 30%;
-    top: 20%;
-}
-
-.inputStyle{
-    margin-bottom: 10px;
-    margin-left: 10px;
-    width: 16%;
-    padding: 8px;
-
-}
-
-.buttonStyle{
-    width: 20%;
+    position: relative;
+    top: 30%;
+    border: 1px solid #ccc;
     padding: 10px;
-    margin-left: 10px;
-    backgroundColor: #4CAF50;
-    border: none;
-    borderRadius: 4px;
-    cursor: pointer;
+    border-radius: 8px;
+    max-width: 50%;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
-.buttonStyle:hover{
-    transform: scale(1.1);
+.row {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.labelStyle {
+    width: 33%;
+    padding-right: 10px;
+    margin-top: 7px;
+}
+
+.inputStyle {
+    flex: 1;
+    padding: 8px;
+}
+
+.buttonStyle {
+    width: 33%;
+    height: 28%;
+    padding: 10px;
+    margin-left: 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;;
+}
+
+.buttonStyle:hover {
+    transform: scale(1.01);
+    background-color: #000;
+    color: #fff;
+}
+
+.draggableContainer {
+    font-weight: 600;
+    font-family: "Poppins" , sans-serif;
+    color: #e0e0e0;
+    position: absolute;
+    width: 105%;
+    top: 65%;
+    left: 3%;
 }

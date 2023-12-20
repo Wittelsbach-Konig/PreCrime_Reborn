@@ -17,6 +17,8 @@ class RegMans extends Component {
     handleSubmit = () => {
 
         const token = localStorage.getItem('jwtToken');
+        if(this.state.memberName !== '' && this.state.telegramId !== 0 )
+        {
         fetch('http://localhost:8028/api/v1/reactiongroup/newman', {
             method: 'POST', // или другой метод
             headers: {
@@ -38,9 +40,15 @@ class RegMans extends Component {
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
-            });
+            })
+            this.props.onClose();
+        }
+        else
+        {
+            window.alert("input all fields")
+        }
 
-        this.props.onClose();
+
     };
 
     render() {
@@ -49,20 +57,39 @@ class RegMans extends Component {
 
         return (<div>
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-precog">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2>Add New Man</h2>
+                        <h2 className="h-style">Add New Man</h2>
                         <form className="form-tr">
-                            <label>
-                                Member Name:
-                                <input type="text" name="memberName" value={memberName} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
-                            <label>
-                                telegram ID:
-                                <input type="text" name="telegramId" value={telegramId} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+                                    <td className="table-label-pr">Member Name:</td>
+                                    <td className="table-label-edit">
+                                        <input
+                                            maxLength="20"
+                                            type="text"
+                                            name="memberName"
+                                            value={memberName}
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">telegram ID:</td>
+                                    <td className="table-label-edit">
+                                        <input
+                                            maxLength="30"
+                                            type="text"
+                                            name="telegramId"
+                                            value={telegramId}
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br/>
                             <button className="button-tr" type="button" onClick={this.handleSubmit}>Submit</button>
                         </form>
                     </div>

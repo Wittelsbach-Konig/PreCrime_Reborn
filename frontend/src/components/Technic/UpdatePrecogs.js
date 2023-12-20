@@ -12,14 +12,15 @@ class UpdatePrecogs extends Component {
 
     handleInputChange = (event) => {
         const { name, value } = event.target;
-        this.setState({ [name]: value });
+        (name === "age") && (value>=0) && value<1000 && this.setState({ [name]: value });
+        (name === "preCogName") && this.setState({ [name]: value });
     };
 
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
         const url = `http://localhost:8028/api/v1/precogs/${this.props.pre.id}`;
-
-        fetch(url, {
+        if(this.state.preCogName !== '' && this.state.age !== 0 )
+        {fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,8 +40,11 @@ class UpdatePrecogs extends Component {
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
-            });
-
+            })}
+        else
+        {
+            window.alert("don't input all fields")
+        }
 
     };
 
@@ -50,20 +54,27 @@ class UpdatePrecogs extends Component {
 
         return (<div>
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-precog">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2>Update Precog</h2>
+                        <h2 className="h-style">Update Precog</h2>
                         <form className="form-tr">
-                            <label>
-                                Precog Name:
-                                <input type="text" name="preCogName" value={preCogName} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
-                            <label>
-                                Age:
-                                <input type="number" name="age" value={age} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+                                    <td className="table-label-pr">PreCog Name:</td>
+                                    <td className="table-label-pr">
+                                        <input maxLength="20" type="text" name="preCogName" value={preCogName} onChange={this.handleInputChange} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Age:</td>
+                                    <td className="table-label-pr">
+                                        <input type="number" name="age" value={age} onChange={this.handleInputChange} />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br/>
                             <button className="button-tr" type="button" onClick={this.handleSubmit}>Submit</button>
                         </form>
                     </div>

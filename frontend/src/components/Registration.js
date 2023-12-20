@@ -12,13 +12,13 @@ class Registration extends React.Component {
             firstName: "",
             lastName: "",
             roles: [],
-            telegramId: 0
+            telegramId: ''
         },
             login: "",
             pass: '',
             selectedRole: [],
             confirmPassword: '',
-            passwordsMatch: true,
+            passwordsMatch: true
         }
         this.chips = ['DETECTIVE', 'TECHNIC', 'AUDITOR', 'REACTIONGROUP'];
     }
@@ -33,6 +33,8 @@ class Registration extends React.Component {
         }));
     };
 
+
+
     toggleChip = (chip) => {
         const { selectedRole, user } = this.state;
         if (selectedRole.includes(chip)) {
@@ -44,12 +46,6 @@ class Registration extends React.Component {
                 selectedRole: [...selectedRole, chip],
             });
         }
-    };
-
-    removeChip = (chip) => {
-        this.setState({
-            selectedRole: this.state.selectedRole.filter((selectedChip) => selectedChip !== chip),
-        });
     };
 
 
@@ -68,11 +64,9 @@ class Registration extends React.Component {
         } = this.state
         this.state.user.roles = this.state.selectedRole
         console.log('Отправленные данные:', this.state.user);
-        if (!login || !pass || !confirmPassword || user.roles ===[] || !user.firstName || !user.lastName || !user.email || !user.telegramId)
-        {
-            window.alert(`Please, input all fields`);
-
-        }
+        if (this.state.selectedRole.length===0 || !user.login || !user.password || !user.confirmPassword || !user.firstName
+        || !user.lastName || !user.telegramId)
+        {window.alert("There's no good idea)")}
         else {
             fetch('http://localhost:8028/api/v1/auth/registration', {
                 method: 'POST', // или другой метод
@@ -88,7 +82,6 @@ class Registration extends React.Component {
                     this.props.onReg()
                 })
                 .catch(error => {
-                    console.error('Ошибка при запросе к серверу:', error);
                 });
         }
     };
@@ -108,106 +101,113 @@ class Registration extends React.Component {
                                                 <div className="fields">
                         <div className="input-field">
                         <input
+                            maxLength="20"
                             placeholder="Firstname"
                             type="text"
                             name="firstName"
                             value={user.firstName}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
                         <div className="input-field">
                         <input
+                            maxLength="20"
                             placeholder="Lastname"
                             type="text"
                             name="lastName"
                             value={user.lastName}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
                         <div className="input-field">
                         <input
+                            maxLength="30"
                             placeholder="Login"
                             type="text"
                             name="login"
                             value={user.login}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
                         <div className="input-field">
                         <input
-                            placeholder="email"
+                            maxLength="30"
+                            placeholder="Email"
                             type="email"
                             name="email"
                             value={user.email}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
                         <div className="input-field">
                         <i className="fas fa-user"></i>
                         <input
-                            placeholder="password"
+                            maxLength="25"
+                            placeholder="Password"
                             type="password"
                             name="password"
                             value={user.password}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
                         <div className="input-field">
                         <input
-                            placeholder="confirmPassword"
+                            maxLength="25"
+                            placeholder="Confirm password"
                             type="password"
                             name="confirmPassword"
                             value={user.confirmPassword}
                             onChange={this.handleInputChange}
+                            required
                         />
                         </div>
 
-                        <div className="input-field">
-                <input
-                    placeholder="telegramID"
-                    type="text"
-                    name="telegramId"
-                    value={user.telegramId}
-                    onChange={this.handleInputChange}
-                />
-                                            </div>
-                                                    <div className="input-field">
-                                                    <label> Role:</label>
-                                                    <div className="chip-container">
-                                                        {this.chips.map((chip) => (
-                                                            <button
-                                                                type="button"
-                                                                key={chip}
-                                                                className={`chip ${selectedRole.includes(chip) ? 'selected' : ''}`}
-                                                                onClick={() => this.toggleChip(chip)}
-                                                            >
-                                                                {chip}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                    </div>
+                        </div>
+                                                <div className="input-field">
 
-                                                    <div className="selected-chips-container">
+                                                    <input
+                                                        maxLength="40"
+                                                        className="telegram-input"
+                                                        placeholder="Telegram ID"
+                                                        type="text"
+                                                        name="telegramId"
+                                                        value={user.telegramId}
+                                                        onChange={this.handleInputChange}
+                                                    />
+                                                </div>
+                                                <label className="text-roles">Roles</label>
+                                                        <div className="chip-container">
+                                                            {this.chips.map((chip) => (
+                                                                <label key={chip} className={`chip ${selectedRole && selectedRole.includes(chip) ? 'selected' : ''}`}>
+                                                                    {chip}
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={selectedRole.includes(chip)}
+                                                                        onChange={() => this.toggleChip(chip)}
+                                                                    />
 
-                                                        <label>Choosing roles:</label>
-                                                        <ul>
-                                                            {selectedRole.map((chip) => (
-                                                                <a key={chip}>
-                                                                    <button onClick={() => this.removeChip(chip)}>{chip}</button>
-                                                                </a>
+                                                                </label>
+
                                                             ))}
-                                                        </ul>
-                                                    </div>
+
                                                 </div>
                                             </div>
-                        <button className="sumbit" onClick={this.handleSubmit}>
+                        <div className="sumbit">
+                            <button onClick={this.handleSubmit}>
                             <span className="btnText">Submit</span>
                             <i className="uil uil-navigator"></i>
                         </button>
+                        </div>
+                                            <div className="already-log">
                     <div className="text sign-up-text" >Already have an account? <label
-                        htmlFor="flip" onClick={this.onReg}>Login now</label>
+                        htmlFor="flip" className="Login-now" onClick={this.onReg}>Login now</label>
                     </div>
-
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

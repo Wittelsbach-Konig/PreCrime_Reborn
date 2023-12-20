@@ -11,9 +11,9 @@ class PrecogsList extends Component {
             showModal_2: false,
             psychics: null,
             selectedPsychic: null,
-            serotonin: 0,
-            dopamine: 0,
-            depressant: 0,
+            serotoninLevel: 0,
+            dopamineLevel: 0,
+            stressLevel: 0,
             url:''
 
         };
@@ -73,6 +73,10 @@ class PrecogsList extends Component {
     };
 
     handleNumberChange = (fieldName, event) => {
+        const medic = fieldName==="stressLevel" ? this.state.selectedPsychic[fieldName]:(100 - this.state.selectedPsychic[fieldName])
+        console.log(medic)
+        parseInt(event.target.value, 10) <= medic &&
+        parseInt(event.target.value, 10) >= 0 &&
         this.setState({ [fieldName]: parseInt(event.target.value, 10) });
     };
 
@@ -140,13 +144,17 @@ class PrecogsList extends Component {
     fetchDel = () =>
     {
         const token = localStorage.getItem('jwtToken');
-        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'DELETE')
+        const confirmation = window.confirm(`Are you sure delete this precog?`);
+
+        if (confirmation) {
+        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'DELETE')}
 
     }
 
     fetchRenew = (url, token, method) =>
     {
         console.log(url)
+
         fetch(url, {
             method: `${method}`,
             headers: {
@@ -180,7 +188,18 @@ class PrecogsList extends Component {
 
     render() {
         const { selectedPsychic, psychics } = this.state;
-        return (<div>
+        return (<div className="psyc">
+                <header className="header-pr">
+                    {this.state.showModal && <RegPrecogs onClose={this.closeModal} onRenew={this.fetchPsychics} />}
+                    {this.state.showModal_2 && <UpdatePrecogs onClose={this.closeModal_2} pre={this.state.selectedPsychic} />}
+                    {this.state.selectedPsychic ? (<div>
+                        <button className="new-precog" onClick={this.openModal}>New Precog</button>
+                        <button className="ret-precog" onClick={this.fetchRetire}>Retire</button>
+                        <button className="reh-precog" onClick={this.fetchRehabilitate}>Rehabilitate</button>
+                        <button className="del-precog" onClick={this.fetchDel}>Delete Precog</button>
+                        <button className="upd-precog" onClick={this.openModal_2}>Update Precog</button></div>):
+                        ( <button className="new-precog" onClick={this.openModal}>New Precog</button>)}
+                </header>
                 <div className="psychic-container">
                     <div className="psychic-dropdown-container">
                         <label htmlFor="psychicDropdown" className="ch-pr">Choose Precogs</label>
@@ -192,36 +211,37 @@ class PrecogsList extends Component {
                         </select>
                         {selectedPsychic && this.state.selectedPsychic && (
                             <div className="psychic-info">
-                                <h2>Information about precogs {this.state.selectedPsychic.preCogName}</h2>
-                                <table>
+                                <h2 className="name-precog">Information about precogs</h2>
+                                <h2 className="name-precog">{this.state.selectedPsychic.preCogName}</h2>
+                                <table className="bg-rg">
                                     <tbody>
                                     <tr>
                                         <td className="table-label">ID:</td>
-                                        <td>{this.state.selectedPsychic.id}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.id}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">Age:</td>
-                                        <td>{this.state.selectedPsychic.age}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.age}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">Level dopamine:</td>
-                                        <td>{this.state.selectedPsychic.dopamineLevel}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.dopamineLevel}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">Level serotonin:</td>
-                                        <td>{this.state.selectedPsychic.serotoninLevel}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.serotoninLevel}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">Stress level:</td>
-                                        <td>{this.state.selectedPsychic.stressLevel}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.stressLevel}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">Date of comission:</td>
-                                        <td>{this.state.selectedPsychic.commissionedOn}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.commissionedOn}</td>
                                     </tr>
                                     <tr>
                                         <td className="table-label">On Working:</td>
-                                        <td>{this.state.selectedPsychic.work ? 'Yes' : 'No'}</td>
+                                        <td className="table-label">{this.state.selectedPsychic.work ? 'Yes' : 'No'}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -229,55 +249,47 @@ class PrecogsList extends Component {
                         )}
                     </div>
                 </div>
-            <div className="psyc">
-                <button className="new-precog" onClick={this.openModal}>New Precog</button>
-                {this.state.showModal && <RegPrecogs onClose={this.closeModal} onRenew={this.fetchPsychics} />}
-                {this.state.showModal_2 && <UpdatePrecogs onClose={this.closeModal_2} pre={this.state.selectedPsychic} />}
-            {this.state.selectedPsychic && (<div><button className="ret-precog" onClick={this.fetchRetire}>Retire precog</button>
-                <button className="reh-precog" onClick={this.fetchRehabilitate}>Rehabilitate</button>
-                <button className="del-precog" onClick={this.fetchDel}>Delete Precog</button>
-                <button className="upd-precog" onClick={this.openModal_2}>Update Info Precog</button></div>)}
-            </div>
-                {this.state.selectedPsychic && ( <div className="containerStyle">
-                    <div>
-                        <h2>Prescribe Medications</h2>
-                        <label htmlFor="serotonin">Serotonin:</label>
-                        <input
-                            type="number"
-                            id="serotonin"
-                            className="inputStyle"
-                            value={this.state.serotonin}
-                            onChange={(event) => this.handleNumberChange('serotonin', event)}
-                        />
-                        <button className="buttonStyle"
-                                onClick={() => this.handleButtonClick('serotonin')}>Enter</button>
-                    </div>
 
-                    <div>
-                        <label htmlFor="dopamine">Dopamine:</label>
-                        <input
-                            type="number"
-                            id="dopamine"
-                            className="inputStyle"
-                            value={this.state.dopamine}
-                            onChange={(event) => this.handleNumberChange('dopamine', event)}
-                        />
-                        <button className="buttonStyle"
-                                onClick={() => this.handleButtonClick('dopamine')}>Enter</button>
+                {this.state.selectedPsychic && (
+                    <div className="draggableContainer">
+                    <div className="containerStyle">
+                        <div className="row">
+                            <label htmlFor="serotoninLevel" className="labelStyle">Serotonin:</label>
+                            <input
+                                type="number"
+                                id="serotoninLevel"
+                                className="inputStyle"
+                                value={this.state.serotoninLevel}
+                                onChange={(event) => this.handleNumberChange('serotoninLevel', event)}
+                            />
+                            <button className="buttonStyle" onClick={() => this.handleButtonClick('serotoninLevel')}>Enter</button>
+                        </div>
+
+                        <div className="row">
+                            <label htmlFor="dopamineLevel" className="labelStyle">Dopamine:</label>
+                            <input
+                                type="number"
+                                id="dopamineLevel"
+                                className="inputStyle"
+                                value={this.state.dopamineLevel}
+                                onChange={(event) => this.handleNumberChange('dopamineLevel', event)}
+                            />
+                            <button className="buttonStyle" onClick={() => this.handleButtonClick('dopamineLevel')}>Enter</button>
+                        </div>
+
+                        <div className="row">
+                            <label htmlFor="stressLevel" className="labelStyle">Depressant:</label>
+                            <input
+                                type="number"
+                                id="stressLevel"
+                                className="inputStyle"
+                                value={this.state.stressLevel}
+                                onChange={(event) => this.handleNumberChange('stressLevel', event)}
+                            />
+                            <button className="buttonStyle" onClick={() => this.handleButtonClick('stressLevel')}>Enter</button>
+                        </div>
                     </div>
-                    <div>
-                        <label htmlFor="depressant">Depressant:</label>
-                        <input
-                            type="number"
-                            className="inputStyle"
-                            id="depressant"
-                            value={this.state.depressant}
-                            onChange={(event) => this.handleNumberChange('depressant', event)}
-                        />
-                        <button className="buttonStyle"
-                                onClick={() => this.handleButtonClick('depressant')}>Enter</button>
-                    </div>
-                </div>)}
+                    </div>)}
 
             </div>
         );

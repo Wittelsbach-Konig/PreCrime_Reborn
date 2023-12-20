@@ -1,4 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
 .burger-menu {
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
     position: fixed;
     top: 0;
     left: 0;
@@ -56,6 +60,7 @@
 }
 
 .role-p{
+    color: #e0e0e0;
     position: fixed;
     top: 1%;
     left: 5%;

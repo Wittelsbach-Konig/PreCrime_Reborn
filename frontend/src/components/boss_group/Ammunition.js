@@ -50,23 +50,21 @@ class Ammunition extends React.Component {
 
 
 
-    showGR = () => {
-        this.setState({showReactionGroup: true})
-        this.setState({showTransport: false})
-        this.setState({showAmmunition: false})
-        this.setState({showCriminal:false})
-    };
 
     render() {
         const {onChange, me, ammun} = this.props
         const {showReactionGroup, showTransport, showAmmunition, showCriminal} = this.state
         return ( <div>
+
+                <header className="header-pr">
+                    <button className="acc-vis" onClick={this.openModal}>Supply Ammunition</button>
+                    <button className="del-vis" onClick={this.openModal_2}>Amount</button>
+                </header>
                 <h1 className="car-text">Ammunition List</h1>
                 <SupplyTable supplyList={ammun} idTr={this.updateState} />
 
-                <button className="new-transport" onClick={this.openModal}>Supply Ammunition</button>
                 {this.state.showModal && <NewAmmunition onClose={this.closeModal} onRenew={this.props.renew} />}
-                <button className="ref-transport" onClick={this.openModal_2}>Amount</button>
+
                 {this.state.showModal_2 && <Refuel reff={false} amm={this.state.amountAmm} onClose={this.closeModal_2} idTr={this.state.idAmm} onRenew={this.props.renew}/>}
             </div>
         )

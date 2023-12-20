@@ -35,10 +35,6 @@ class UserCard extends Component {
         };
     }
 
-    handleEditClick = () => {
-        this.setState({ isEditing: true });
-    };
-
     handleInputChange = (e) => {
         const { name, value } = e.target;
         this.setState((prevState) => ({
@@ -51,27 +47,9 @@ class UserCard extends Component {
 
     handleStatisticChange = (selectedStatistic) => {
         this.setState({ selectedStatistic });
+        console.log(this.props.userStat)
     };
 
-    renderStatistics = () => {
-        const { selectedStatistic, statistics } = this.state;
-        const { userStat } = this.props;
-
-        return (
-            <div>
-                <h2>{selectedStatistic}</h2>
-                {userStat.bossReactGroupStatistic && selectedStatistic === "bossReactGroupStatistic" && Object.entries(userStat.bossReactGroupStatistic).map(([key, value]) => (
-                    <p key={key}>{key}: {value}</p>
-                ))}
-                {userStat.detectiveStatistic && selectedStatistic === "detectiveStatistic" && Object.entries(userStat.detectiveStatistic).map(([key, value]) => (
-                    <p key={key}>{key}: {value}</p>
-                ))}
-                {userStat.technicStatistic && selectedStatistic === "technicStatistic" && Object.entries(userStat.technicStatistic).map(([key, value]) => (
-                    <p key={key}>{key}: {value}</p>
-                ))}
-            </div>
-        );
-    };
 
 
     render() {
@@ -80,37 +58,79 @@ class UserCard extends Component {
 
         return (
             <div className="modal">
-                <div className="modal-content">
+                <div className="modal-content-user">
                     <span className="close" onClick={onClose}>
                         &times;
                     </span>
+                        <h2 className="h-style">User Details and Statistics</h2>
 
-                    <div>
-                        <h2>User Details and Statistics</h2>
-                        {userStat && (<div><p>ID: {userStat.userInfo.id}</p>
-                            <p>LOGIN: {userStat.userInfo.login}</p>
-                    <p>EMAIL: {userStat.userInfo.email}</p>
-                    <p>FULL NAME: {userStat.userInfo.firstName} {userStat.lastName}</p>
-                            <p>TELEGRAM ID: {userStat.userInfo.telegramId}</p></div>)}
+                        {userStat && (<div>
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+                                    <td className="table-label-pr">Id:</td>
+                                    <td className="table-label-pr">{userStat.userInfo.id}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Login:</td>
+                                    <td className="table-label-pr">{userStat.userInfo.login}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Email:</td>
+                                    <td className="table-label-pr">{userStat.userInfo.email}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Full Name:</td>
+                                    <td className="table-label-pr">{userStat.userInfo.firstName} {userStat.userInfo.lastName}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Telegram Id:</td>
+                                    <td className="table-label-pr">{userStat.userInfo.telegramId}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Select Statistic:</td>
+                                    <td className="table-label-edit"><select
+                                        value={selectedStatistic}
+                                        onChange={(e) => this.handleStatisticChange(e.target.value)}
+                                    >
+                                        <option className="table-select" value="bossReactGroupStatistic">Boss React Group Statistic</option>
+                                        <option className="table-select" value="detectiveStatistic">Detective Statistic</option>
+                                        <option className="table-select" value="technicStatistic">Technic Statistic</option>
+                                    </select></td>
+                                </tr>
+                                <tr >
+                                    <td colSpan="2">
+                                <h2 className="h-style">{selectedStatistic}</h2>
+                                    </td>
+                                </tr>
+                                    {userStat.bossReactGroupStatistic && selectedStatistic === "bossReactGroupStatistic" && Object.entries(userStat.bossReactGroupStatistic).map(([key, value]) => (
+                                        (key !== 'id') && (<tr>
+                                        <td className="table-label-pr" key={key}>{key}:</td>
+                                        <td className="table-label-pr">{value}</td>
+                                        </tr>)
 
-                    </div>
+                                    ))}
+                                    {userStat.detectiveStatistic && selectedStatistic === "detectiveStatistic" && Object.entries(userStat.detectiveStatistic).map(([key, value]) => (
+                                        (key !== 'id') &&  (<tr>
+                                        <td className="table-label-pr" key={key}>{key}</td>
+                                        <td className="table-label-pr">{value}</td>
+                                        </tr>)
+                                    ))}
+                                    {userStat.technicStatistic && selectedStatistic === "technicStatistic" && Object.entries(userStat.technicStatistic).map(([key, value]) => (
+
+                                        (key !== 'id') && (<tr>
+                                            <td className="table-label-pr" key={key}>{key}:</td>
+                                            <td className="table-label-pr">{value}</td>
+                                        </tr>)
+
+                                    ))}
+
+                                </tbody>
+                            </table>
+
+                        </div>)}
 
 
-                    <div>
-                        {/* Выпадающий список для выбора статистики */}
-                        <label>Select Statistic:</label>
-                        <select
-                            value={selectedStatistic}
-                            onChange={(e) => this.handleStatisticChange(e.target.value)}
-                        >
-                            <option value="bossReactGroupStatistic">Boss React Group Statistic</option>
-                            <option value="detectiveStatistic">Detective Statistic</option>
-                            <option value="technicStatistic">Technic Statistic</option>
-                        </select>
-
-                        {/* Отображение выбранной статистики */}
-                        {this.renderStatistics()}
-                    </div>
 
                 </div>
             </div>

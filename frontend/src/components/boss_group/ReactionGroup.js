@@ -1,7 +1,6 @@
 import React from "react";
 import TableGroup from "./TableGroup";
 import RegMans from "./newMan";
-import DelMan from "./DelMan"
 import CorMans from "./CorMans"
 class ReactionGroup extends React.Component {
     constructor(props) {
@@ -32,7 +31,10 @@ class ReactionGroup extends React.Component {
     };
 
     openModal_1 = () => {
-        this.setState({ showModal_1: true });
+        if(!this.state.manData)
+        {window.alert('Choose men')}
+        else
+        {this.setState({ showModal_1: true });}
     };
 
     closeModal_1 = () => {
@@ -40,8 +42,13 @@ class ReactionGroup extends React.Component {
         this.props.renew();
     };
 
-    openModal_2 = () => {
-        this.setState({ showModal_2: true });
+    retireMan = () => {
+
+        const putData = {
+            id: this.state.idd,
+        };
+        this.fetch_method("PUT", `${this.state.idGroup}/retire`)
+
     };
 
     closeModal_2 = () => {
@@ -53,7 +60,6 @@ class ReactionGroup extends React.Component {
         this.setState({ showWorking: !this.state.showWorking }, ()=>
         {
             this.props.onChange(!this.state.showWorking)
-           // this.props.renew()
         });
 
     };
@@ -69,26 +75,33 @@ class ReactionGroup extends React.Component {
     updateStateId = () => {
         this.setState({ prevId: this.state.idGroup }, ()=>
         {
-            const token = localStorage.getItem('jwtToken');
-
-
-            fetch(`http://localhost:8028/api/v1/reactiongroup/${this.state.idGroup}/statistic`, {
-                method: 'GET', // или другой метод
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(responses => responses.json())
-                .then(data => {
-                    this.setState({manData:data})
-                })
-                .catch(error => {
-                    console.error('Ошибка при запросе к серверу:', error);
-                });
+            this.fetch_method('GET',`${this.state.idGroup}/statistic`,)
         });
         console.log(this.state.prevId)
     };
+
+
+    fetch_method =(method, url) =>{
+        const token = localStorage.getItem('jwtToken');
+
+
+        fetch(`http://localhost:8028/api/v1/reactiongroup/${url}`, {
+            method: method, // или другой метод
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+            .then(responses => responses.json())
+            .then(data => {
+                if (method === "GET")
+                {this.setState({manData:data})}
+                this.props.renew()
+            })
+            .catch(error => {
+                console.error('Ошибка при запросе к серверу:', error);
+            });
+    }
 
     updateState = (newValue) => {
         this.setState({ idGroup: newValue });
@@ -102,28 +115,60 @@ class ReactionGroup extends React.Component {
     render() {
         const {manData, idGroup, prevId} = this.state
         return ( <div>
+                <header className="header-pr">
+                    <button className="acc-vis" onClick={this.openModal}>Register new men</button>
+
+                    <button className="acc-vis" onClick={this.openModal_1}>Correct men</button>
+
+                    <button className="acc-vis" onClick={this.retireMan}>Retire men</button>
+
+                    {this.state.showWorking ? <button className="acc-vis" onClick={this.showAll}>Show all men</button>
+                        :<button className="acc-vis" onClick={this.showAll}>Show working men</button>}
+                </header>
                 <h1 className="car-text">Group List</h1>
-                <TableGroup groupList={this.props.group} idTr={this.updateState}/>
-
-                <button className="new-group" onClick={this.openModal}>Register new man</button>
-                {this.state.showModal && <RegMans onClose={this.closeModal} onRenew={this.props.renew} shWrk={this.updateWrk}/>}
-                <button className="corr-group" onClick={this.openModal_1}>Correct man</button>
-                {this.state.showModal_1 && <CorMans onClose={this.closeModal_1} onRenew={this.props.renew}/>}
-                <button className="del-man" onClick={this.openModal_2}>Retire man</button>
-                {this.state.showModal_2 && <DelMan onClose={this.closeModal_2} onRenew={this.props.renew} />}
-                {this.state.showWorking ? <button className="work-man" onClick={this.showAll}>Show all men</button>
-                    :<button className="work-man" onClick={this.showAll}>Show working men</button>}
-
+                {this.state.manData && this.state.showModal_1 && <CorMans
+                    onClose={this.closeModal_1}
+                    onRenew={this.props.renew}
+                    manData={this.state.manData}
+                />}
+                {this.state.showModal && <RegMans
+                    onClose={this.closeModal}
+                    onRenew={this.props.renew}
+                    shWrk={this.updateWrk}
+                />}
                 {manData && (
                     <div className="man-statistic">
-                        <h3>Criminal info</h3>
-                        <p>ID: {manData.id}</p>
-                        <p>Member Name: {manData.memberName}</p>
-                        <p>In Operation: {manData.inOperation ? 'Yes':'No'}</p>
-                        <p>Criminals Caught: {manData.criminalsCaught}</p>
-                        <p>Criminals Escaped: {manData.criminalsEscaped}</p>
+                        <table className="bg-rg">
+                            <tbody>
+                            <tr>
+                                <td colSpan="2" className="table-label">Criminal info</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">ID:</td>
+                                <td className="table-label">{manData.id}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Member Name:</td>
+                                <td className="table-label">{manData.memberName}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">In Operation:</td>
+                                <td className="table-label">{manData.inOperation ? 'Yes':'No'}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Criminals Caught:</td>
+                                <td className="table-label">{manData.criminalsCaught}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Criminals Escaped:</td>
+                                <td className="table-label">{manData.criminalsEscaped}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 )}
+                <TableGroup groupList={this.props.group} idTr={this.updateState}/>
+
             </div>
         )
     }

@@ -21,18 +21,17 @@ class TableTransport extends Component {
         const { selectedRow } = this.state;
         return (
 
-            <div className="content-container">
-            <div className="table-container">
-            <table>
+            <div className="content-container-supply">
+                <div className="table-container-supply">
+            <table className="bg-rg">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Remaining Fuel</th>
-                    <th>Maximum Fuel</th>
-                    <th>Condition</th>
-                    <th>In Operation</th>
+                    <th className="table-label">Brand</th>
+                    <th className="table-label">Model</th>
+                    <th className="table-label">Remaining Fuel</th>
+                    <th className="table-label">Maximum Fuel</th>
+                    <th className="table-label">Condition</th>
+                    <th className="table-label">In Operation</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,20 +40,19 @@ class TableTransport extends Component {
                     <tr key={car.id}
                         className={car.id === selectedRow ? 'selected-row' : ''}
                         onClick={() => this.handleRowClick(car.id)}>
-                        <td>{car.id}</td>
-                        <td>{car.brand}</td>
-                        <td>{car.model}</td>
-                        <td>{car.remaining_fuel}</td>
-                        <td>{car.maximum_fuel}</td>
-                        <td>{car.condition}</td>
-                        <td>{car.inOperation ? 'Yes' : 'No'}</td>
+                        <td className="table-label-pr">{car.brand}</td>
+                        <td className="table-label-pr">{car.model}</td>
+                        <td className="table-label-pr">{car.remaining_fuel}</td>
+                        <td className="table-label-pr">{car.maximum_fuel}</td>
+                        <td className="table-label-pr">{car.condition}</td>
+                        <td className="table-label-pr">{car.inOperation ? 'Yes' : 'No'}</td>
                     </tr>
                 ))
                     )
                     :
                     (
                         <tr>
-                            <td colSpan="5">No transport data available</td>
+                            <td colSpan="5" className="table-label-pr">No transport data available</td>
                         </tr>
                     )
                 }

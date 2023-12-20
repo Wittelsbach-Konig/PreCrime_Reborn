@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import FormData from "form-data";
 
 class CorMans extends Component {
     constructor(props) {
         super(props);
         this.state = {
             idd: 0,
-            manData: null, // Данные о человеке
-            memberName: '',
-            telegramId: 0,
+            memberName: this.props.manData.memberName,
+            telegramId: this.props.manData.telegramId,
 
         };
     }
@@ -18,41 +16,20 @@ class CorMans extends Component {
         this.setState({ [name]: value });
     };
 
-    handleGetManData = () => {
-        const token = localStorage.getItem('jwtToken');
-        const { idd } = this.state;
-        const url = `http://localhost:8028/api/v1/reactiongroup/${idd}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({manData:data})
-                console.log(this.state.manData)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
-    };
 
     handleUpdateManData = () => {
-        const { idd, memberName, telegramId } = this.state;
+        const { memberName, telegramId } = this.state;
 
-        const intValue = parseInt(idd, 10);
         const telId = parseInt(telegramId, 10);
         const token = localStorage.getItem('jwtToken');
-        const url = `http://localhost:8028/api/v1/reactiongroup/${intValue}`;
+        const url = `http://localhost:8028/api/v1/reactiongroup/${this.props.manData.id}`;
 
         const requestData = {
             memberName: memberName,
             telegramId: telId,
         };
-
+        if(memberName !== '' && telId !== 0 )
+        {
         fetch(url, {
             method: 'PUT',
             headers: {
@@ -73,60 +50,54 @@ class CorMans extends Component {
             });
 
         this.props.onClose();
+        }
+        else
+        {window.alert("member name shouldn't be empty")}
     };
 
     render() {
         const { onClose } = this.props;
-        const { idd, manData, memberName, telegramId } = this.state;
+        const { memberName, telegramId } = this.state;
 
         return (
             <div>
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-precog">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2>Manage Man</h2>
+                        <h2 className="h-style">Update Men Data</h2>
                         <form className="form-tr">
-                            <label>
-                                Enter id for man management:
-                                <input type="text" name="idd" value={idd} onChange={this.handleInputChange} />
-                            </label>
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+                                    <td className="table-label-pr">Member Name:</td>
+                                    <td className="table-label-edit">
+                                        <input
+                                            type="text"
+                                            name="memberName"
+                                            value={memberName}
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Telegram ID:</td>
+                                    <td className="table-label-edit">
+                                        <input
+                                            type="text"
+                                            name="telegramId"
+                                            value={telegramId}
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                             <br />
-                            <button className="button-tr" type="button" onClick={this.handleGetManData}>
-                                Get Man Data
-                            </button>
-
-                            {manData && (
-                                <div>
-                                    <h3>Man Details</h3>
-                                    <p>ID: {manData.id}</p>
-                                    <p>Member Name: {manData.memberName}</p>
-                                    <p>Telegram ID: {manData.telegramId}</p>
-                                </div>
-                            )}
-
-                            <h3>Update Man Data</h3>
-                            <label>
-                                Member Name:
-                                <input
-                                    type="text"
-                                    name="memberName"
-                                    value={memberName}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br />
-                            <label>
-                                Telegram ID:
-                                <input
-                                    type="text"
-                                    name="telegramId"
-                                    value={telegramId}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br />
-                            <button className="button-tr" type="button" onClick={this.handleUpdateManData}>
-                                Update Man Data
+                            <button
+                                className="button-tr"
+                                type="button"
+                                onClick={this.handleUpdateManData}>
+                                Update
                             </button>
                         </form>
                     </div>

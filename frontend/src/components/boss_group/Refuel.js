@@ -12,8 +12,15 @@ class Refuel extends Component {
 
     handleInputChange = (event) => {
         const { name, value } = event.target;
-        this.setState({ [name]: value });
+        if(value>=0 && value<=10000)
+        {this.setState({ [name]: value })};
     };
+
+    handleKeyDown = (event) => {
+        if (event.key === '+' || event.key === '-' || event.key === '.' || event.key === ',') {
+            event.preventDefault();
+        }
+    }
 
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
@@ -31,18 +38,15 @@ class Refuel extends Component {
             .then(response => {
                 if (!response.ok) {
                     // Если статус ответа не 2xx (успех), бросаем ошибку
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(response.status);
                 }
-
-                // Возвращаем response.text(), так как мы не ожидаем JSON
-                return response.text();
-            })
-            .then(data => {
-                console.log(data);
                 this.props.onRenew();
             })
             .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
+                if (error.message ==="400")
+                    window.alert("Purchases shouldn't be more then max possible amount");
+                if (error.message ==="404")
+                    window.alert("You don't choose position");
             });
         }
 
@@ -58,19 +62,17 @@ class Refuel extends Component {
                 .then(response => {
                     if (!response.ok) {
                         // Если статус ответа не 2xx (успех), бросаем ошибку
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+                        throw new Error(response.status);
                     }
-
-                    // Возвращаем response.text(), так как мы не ожидаем JSON
-                    return response.text();
-                })
-                .then(data => {
-                    console.log(data);
                     this.props.onRenew();
                 })
                 .catch(error => {
-                    console.error('Ошибка при запросе к серверу:', error);
+                    if (error.message ==="400")
+                        window.alert("Purchases shouldn't be more then max possible amount");
+                    if (error.message ==="404")
+                        window.alert("You don't choose position");
                 });
+            this.props.onRenew();
         }
 
         this.props.onClose();
@@ -82,15 +84,26 @@ class Refuel extends Component {
 
         return (<div>
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-precog">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2>Refuel Transport</h2>
+                        <h2 className="h-style">Purchase</h2>
                         <form className="form-tr">
-                            <label>
-                                Amount:
-                                <input type="number" name="amount" value={amount} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+                                    <td className="table-label-pr">Amount:</td>
+                                    <td className="table-label-edit">
+                                        <input
+                                            type="number"
+                                            name="amount"
+                                            value={amount === '' ? this.setState({amount:0}):amount}
+                                            onChange={this.handleInputChange}
+                                            onKeyDown={this.handleKeyDown}
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                             <button className="button-tr" type="button" onClick={this.handleSubmit}>Submit</button>
                         </form>
                     </div>

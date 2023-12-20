@@ -1,25 +1,51 @@
 .modal {
     position: fixed;
-    z-index: 2;
+    z-index:3;
     left: 0;
     top: 0%;
     width: 100%;
     height: 100%;
-    overflow-y: scroll ;
+    overflow-y: auto ;
     overflow-x: hidden ;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
+    border-radius: 10px;
     background-color: #333;
-    margin: 7% auto;
+    margin: 2.6% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
 }
 
 
+.modal-content-precog {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.modal-content-appoint {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.modal-content-user {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
 
 .close {
     color: #aaa;
@@ -42,8 +68,10 @@
     align-items: center;
 }
 
-label {
+.modal-content-precog label {
+    color: #e0e0e0;
     margin-bottom: 10px;
+    margin-right: 15px;
 }
 
 input {
@@ -51,14 +79,48 @@ input {
     padding: 5px;
 }
 
-.button-tr {
+.modal-content-precog .button-tr {
     background-color: #222;
     color: white;
     padding: 10px;
     border: none;
     cursor: pointer;
+    width: 40%;
+    margin-left: 20px;
 }
 
-.button-tr:hover {
+.bg-rg{
+    background-color: rgba(0,0,0,0.5);
+    border: none;
+}
+
+.bg-rg-edit{
+    background-color: rgba(0,0,0,0.5);
+    border: none;
+}
+
+.table-label-pr{
+    color: #e0e0e0;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.modal-content-precog .button-tr:hover {
     background-color: #222;
 }
+
+.modal-content-appoint .button-tr:hover {
+    background-color: #222;
+}
+
+.h-style{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #e0e0e0;
+    border-bottom: 2px;
+}
+
+

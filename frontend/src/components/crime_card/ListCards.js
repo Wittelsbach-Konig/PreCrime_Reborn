@@ -37,14 +37,14 @@ class ListCards extends Component {
         return (
             <div className="crime-content-container">
                 <div className="crime-table-container">
-                    <table>
+                    <table className="bg-rg">
                         <thead>
                         <tr>
-                            <th>Victim Name</th>
-                            <th>Criminal Name</th>
-                            <th>Weapon</th>
-                            <th>Crime Type</th>
-                            <th>Responsible Detective</th>
+                            <th className="table-label">Victim Name</th>
+                            <th className="table-label">Criminal Name</th>
+                            <th className="table-label">Weapon</th>
+                            <th className="table-label">Crime Type</th>
+                            <th className="table-label">Detective</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -56,11 +56,11 @@ class ListCards extends Component {
                                     onClick={() => this.handleRowClick(crime.id)}
                                     onDoubleClick={() => this.handleRowDoubleClick(crime.id)}
                                 >
-                                    <td>{crime.victimName}</td>
-                                    <td>{crime.criminalName}</td>
-                                    <td>{crime.weapon}</td>
-                                    <td>{crime.crimeType}</td>
-                                    <td>{crime.responsibleDetective}</td>
+                                    <td className="table-label">{crime.victimName}</td>
+                                    <td className="table-label">{crime.criminalName}</td>
+                                    <td className="table-label">{crime.weapon}</td>
+                                    <td className="table-label">{crime.crimeType}</td>
+                                    <td className="table-label">{crime.responsibleDetective}</td>
                                 </tr>
                             ))
                         ) : (

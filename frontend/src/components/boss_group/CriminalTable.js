@@ -89,16 +89,57 @@ class CriminalTable extends Component {
             <div>
                 {this.state.showGroup && <AppointGroup onClose={this.closeGroup} groupList={this.state.groupList}
                                                        idCr={this.state.criminalInfo.id} onRenew={onRenew}/>}
-            <div className="content-container-group">
-                <div className="table-container-group">
-                    <table>
+                {showCriminal && (
+                    <div className="criminal-statistic">
+                        <table className="bg-rg">
+                            <tbody>
+                            <tr>
+                                <td colSpan="2"
+                                    className="table-label">
+                                    Criminal Info
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">ID:</td>
+                                <td className="table-label">{criminalInfo.id}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Name:</td>
+                                <td className="table-label">{criminalInfo.name}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Location:</td>
+                                <td className="table-label">{criminalInfo.location}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Weapon:</td>
+                                <td className="table-label">{criminalInfo.weapon}</td>
+                            </tr>
+                            <tr>
+                                <td className="table-label">Status:</td>
+                                <td className="table-label-edit-rel">
+                                    <select
+                                        value={newStatus}
+                                        onChange={this.handleChangeStatus}>
+                                        <option value="">Choose state</option>
+                                        <option value="CAUGHT">CAUGHT</option>
+                                        <option value="ESCAPED">ESCAPED</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            <div className="content-container-criminal">
+                <div className="table-container-precog">
+                    <table className="bg-rg">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Weapon</th>
-                            <th>Status</th>
-                            <th>Assign a group</th>
+                            <th className="table-label">Name</th>
+                            <th className="table-label">Location</th>
+                            <th className="table-label">Weapon</th>
+                            <th className="table-label">Group</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -109,11 +150,10 @@ class CriminalTable extends Component {
                                 className={criminal.id === selectedRow ? 'selected-row' : ''}
                                 onClick={() => this.handleRowClick(criminal.id, criminal)}
                             >
-                                <td>{criminal.name}</td>
-                                <td>{criminal.location}</td>
-                                <td>{criminal.weapon}</td>
-                                <td>{criminal.status}</td>
-                                <td><button onClick={this.getGroup}>to appoint</button></td>
+                                <td className="table-label-edit">{criminal.name}</td>
+                                <td className="table-label-edit">{criminal.location}</td>
+                                <td className="table-label-edit">{criminal.weapon}</td>
+                                <td className="table-label-edit"><button onClick={this.getGroup}>to appoint</button></td>
                             </tr>
                         )))
                         : (<tr>
@@ -124,22 +164,7 @@ class CriminalTable extends Component {
                     </table>
                 </div>
             </div>
-                {showCriminal && (
-                    <div className="man-statistic">
-                        <h3>Criminal</h3>
-                        <p>ID: {criminalInfo.id}</p>
-                        <p>Name: {criminalInfo.name}</p>
-                        <p>Location: {criminalInfo.location}</p>
-                        <p>Weapon: {criminalInfo.weapon}</p>
-                        <p>Status:
-                            <select value={newStatus} onChange={this.handleChangeStatus}>
-                                <option value="">Выберите статус</option>
-                                <option value="CAUGHT">CAUGHT</option>
-                                <option value="ESCAPED">ESCAPED</option>
-                            </select>
-                        </p>
-                    </div>
-                )}
+
             </div>
         );
     }

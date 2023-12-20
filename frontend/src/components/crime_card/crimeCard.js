@@ -9,6 +9,7 @@ class CrimeCard extends Component {
         this.state = {
             isEditing: false,
             message:"",
+            crimeType: this.props.crimeCard.crimeType,
             editedCrimeData: {
                 victimName: this.props.crimeCard.victimName,
                 criminalName: this.props.crimeCard.criminalName,
@@ -16,13 +17,25 @@ class CrimeCard extends Component {
                 weapon: this.props.crimeCard.weapon,
                 crimeTime: this.props.crimeCard.crimeTime,
                 crimeType: this.props.crimeCard.crimeType,
-                visionId: this.props.crimeCard.visionId,
+                visionUrl: this.props.crimeCard.visionUrl,
             },
         };
     }
 
     handleEditClick = () => {
         this.setState({ isEditing: true });
+    };
+
+    handleChangeStatus = (event) => {
+        const newStatus = event.target.value;
+        const confirmation = window.confirm(`Вы уверены, что хотите изменить статус на ${newStatus}?`);
+
+        if (confirmation) {
+            this.state.editedCrimeData.crimeType = newStatus
+            this.setState({crimeType:newStatus}, ()=>{console.log(this.state.editedCrimeData.crimeType)})
+        } else {
+            this.setState({ newStatus: '' });
+        }
     };
 
     handleInputChange = (e) => {
@@ -46,6 +59,7 @@ class CrimeCard extends Component {
         const { role } = this.props
         if (role==="DETECTIVE") {
             const url = `http://localhost:8028/api/v1/cards/${this.props.crimeCard.id}`;
+
             fetch(url, {
                 method: 'PUT',
                 headers: {
@@ -116,102 +130,141 @@ class CrimeCard extends Component {
                     {isEditing && (role==="AUDITOR") &&
                         ( <div>
 
-                            <h2>Message</h2>
-                            <label>
-                                Text message:
-                                <input
+                            <h2 className="h-style">Message</h2>
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+
+                                    <td className="table-label-edit">Text message:</td>
+
+                                <td className="table-label-edit">
+
+                                    <textarea
+                                    maxLength="2000"
                                     className="message"
                                     type="text"
                                     name="message"
                                     value={message}
                                     onChange={this.handleInputChange}
                                 />
-                            </label>
-                            <br/>
-                            <button onClick={this.handleSaveClick}>Send message</button>
+                                </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button className="button-edit" onClick={this.handleSaveClick}>Send message</button>
                                 </div>)}
                     {isEditing && (role==="DETECTIVE") && ( <div>
 
-                            <h2>Edit Crime Card</h2>
-                            <label>
-                                Victim Name:
-                                <input
+                            <h2 className="h-style">Edit Card #{crimeCard.id}</h2>
+                        <table className="bg-rg">
+                            <tbody>
+                            <tr>
+
+                                <td className="table-label-pr">Victim Name:</td>
+                                <td className="table-label-edit"><input
+                                    maxLength="20"
                                     type="text"
                                     name="victimName"
                                     value={editedCrimeData.victimName}
                                     onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <label>
-                                Criminal Name:
-                                <input
+                                /></td>
+                            </tr>
+                            <tr>
+
+                                <td className="table-label-pr">Criminal Name:</td>
+                                <td className="table-label-edit"><input
+                                    maxLength="20"
                                     type="text"
                                     name="criminalName"
                                     value={editedCrimeData.criminalName}
                                     onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <label>
-                                Place of Crime:
-                                <input
+                                /></td>
+                            </tr>
+                            <tr>
+
+                                <td className="table-label-pr">Place of Crime:</td>
+                                <td className="table-label-edit"><input
+                                    maxLength="40"
                                     type="text"
                                     name="placeOfCrime"
                                     value={editedCrimeData.placeOfCrime}
                                     onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <label>
-                                Weapon:
-                                <input
+                                /></td>
+                            </tr>
+                            <tr>
+
+                                <td className="table-label-pr">Weapon:</td>
+                                <td className="table-label-edit"><input
+                                    maxLength="20"
                                     type="text"
                                     name="weapon"
                                     value={editedCrimeData.weapon}
                                     onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <label>
-                                Type Crime:
-                                <input
-                                    type="text"
-                                    name="crimeType"
-                                    value={editedCrimeData.crimeType}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <label>
-                                Vision Id:
-                                <input
-                                    type="text"
-                                    name="visionId"
-                                    value={editedCrimeData.visionId}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <br/>
-                            <button onClick={this.handleSaveClick}>Save</button>
+                                /></td>
+                            </tr>
+                            <tr>
+
+                                <td className="table-label-pr">Type Crime:</td>
+                                <td className="table-label-edit">
+                                    <select value={this.state.crimeType} onChange={this.handleChangeStatus}>
+                                        <option className="table-select" value="INTENTIONAL" name="crimeType">INTENTIONAL</option>
+                                        <option className="table-select" value="UNINTENTIONAL" name="crimeType">UNINTENTIONAL</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                            <button className="button-edit" onClick={this.handleSaveClick}>Save</button>
                         </div>)
 
                     }
                     {!isEditing &&
                         <div>
-                            {/* Информация о преступлении */}
-                            <h2>Crime Details</h2>
-                            <p>ID: {crimeCard.id}</p>
-                            <p>Victim Name: {crimeCard.victimName}</p>
-                            <p>Criminal Name: {crimeCard.criminalName}</p>
-                            <p>Place of Crime: {crimeCard.placeOfCrime}</p>
-                            <p>Weapon: {crimeCard.weapon}</p>
-                            <p>Crime Time: {crimeCard.crimeTime}</p>
-                            <p>Responsible Detective: {crimeCard.responsibleDetective}</p>
-                            <p>Is Criminal Caught: {crimeCard.isCriminalCaught ? 'Yes':'No'}</p>
-                            <p>Crime Type: {crimeCard.crimeType}</p>
-                            <p>Vision ID: {crimeCard.visionId}</p>
-                            <button onClick={this.handleEditClick}>Edit</button>
+                            <h2 className="h-style">Card #{crimeCard.id}</h2>
+                            <table className="bg-rg">
+                                <tbody>
+                                <tr>
+
+                            <td className="table-label-pr">Victim Name:</td>
+                            <td className="table-label-pr">{crimeCard.victimName}</td>
+                                    </tr>
+                                <tr>
+                            <td className="table-label-pr">Criminal Name: </td>
+                            <td className="table-label-pr">{crimeCard.criminalName}</td>
+                                </tr>
+                                <tr>
+                            <td className="table-label-pr">Place of Crime:</td>
+                            <td className="table-label-pr">{crimeCard.placeOfCrime}</td>
+                                </tr>
+                                    <tr>
+                                        <td className="table-label-pr">Weapon:</td>
+                                        <td className="table-label-pr">{crimeCard.weapon}</td>
+                                    </tr>
+                                <tr>
+                                    <td className="table-label-pr">Crime Time:</td>
+                                    <td className="table-label-pr">{crimeCard.crimeTime}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Responsible Detective:</td>
+                                    <td className="table-label-pr">{crimeCard.responsibleDetective}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Is Criminal Caught:</td>
+                                    <td className="table-label-pr">{crimeCard.isCriminalCaught ? 'Yes':'No'}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Crime Type:</td>
+                                    <td className="table-label-pr">{crimeCard.crimeType}</td>
+                                </tr>
+                                <tr>
+                                    <td className="table-label-pr">Vision URL:</td>
+                                    <td className="table-label-pr">{crimeCard.visionUrl}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                            <button className="button-edit" onClick={this.handleEditClick}>Edit</button>
+
                         </div>
                     }
                 </div>
