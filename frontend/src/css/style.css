@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
 
 * {
     margin: 0;
@@ -7,13 +7,16 @@
 
 
 body{
-    background-color: #333;
-    font-family: 'Kanit', sans-serif;
-    font-weight: 300;
-    height: 100%;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    justify-content: center;
     margin: 0;
     overflow: hidden;
-    color: #a0d3ff;
+    font-weight: 400;
 }
 
 .scroll-bar{
@@ -78,18 +81,6 @@ form button:hover {
     transform: scale(1.01);
 }
 
-img {
-
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-aside img {
-        position: relative;
-        display: block;
-        left: 10%;
-        width: 80%;
-}
 
 ul button {
     width: 50%;
@@ -103,35 +94,7 @@ ul li::before {
     content: "";
 }
 
-.chip-container button {
-    width: 5%;
-    font-size: 10px;
-    display: inline-block; /* Добавлено свойство display */
-}
 
-.selected-chips-container ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.selected-chips-container li {
-    display: inline-block; /* Добавлено свойство display */
-    margin-right: 5px; /* Регулирует расстояние между кнопками */
-}
-
-.selected-chips-container button {
-    width: auto; /* Ширина на auto, чтобы кнопки занимали только необходимое пространство */
-    font-size: 10px;
-}
-
-.selected-chips-container {
-    max-height: 10%;
-    height: 10%;
-    overflow: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
 
 .error{
     font-size: 10px;
@@ -141,8 +104,6 @@ ul li::before {
 .header {
     background-color: #222;
     font-weight: 600;
-    text-align: center;
-    position: relative;
 }
 
 .button-container {
@@ -152,11 +113,13 @@ ul li::before {
 }
 
 .button-container button {
-    margin: 0.5%;
+    margin: 0.3%;
     padding: 0.5% 5%;
     background-color: #222;
-    font-family: 'Kanit', sans-serif;
-    color: #fafaaf;
+    font-family: "Poppins" , sans-serif;
+    font-weight: 500;
+    color: #e0e0e0;
+    font-size: 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -170,10 +133,12 @@ ul li::before {
     position: absolute;
     top: 7px;
     right: 7px;
-    padding: 0.5% 2%;
+    padding: 0.3% 2%;
     background-color: #222;
-    font-family: 'Kanit', sans-serif;
-    color: #fafaaf;
+    font-family: "Poppins" , sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #e0e0e0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -198,17 +163,25 @@ ul li::before {
 }
 
 .man-statistic {
-    z-index: 1;
     position: absolute;
-    left: 70.3%;
-    top: 12%;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin-top: 20px;
+    left :60%;
+    height: 40%;
+    width: 35%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    border: none;
+}
+
+.criminal-statistic {
+    position: absolute;
+    left :67%;
+    height: 40%;
+    width: 30%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0);
+    border-radius: 10px;
+    border: none;
 }
 
 .man-statistic h3 {
@@ -220,10 +193,17 @@ ul li::before {
     margin: 5px 0;
 }
 
-.message {
-    font-size: 16px;
-    width: 90%;
-    height: 20%;
+.filter-img{
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.filter-img :hover{
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
 }
 
 /*FORMING*/

@@ -8,10 +8,13 @@
 }
 .local-body{
     min-height: 100vh;
-    display: flex;
-    align-items: center;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
     justify-content: center;
-    background: #888;
     padding: 30px;
     overflow: hidden;
 }
@@ -35,6 +38,7 @@
     transition: all 1s ease;
     transform-origin: left;
     transform-style: preserve-3d;
+    overflow: hidden;
 }
 .container #flip:checked ~ .cover{
     transform: rotateY(-180deg);
@@ -95,12 +99,13 @@
     font-weight: 500;
 }
 .container .forms{
-
+    overflow: hidden;
     height: 100%;
     width: 100%;
     background: #fff;
 }
 .container .form-content{
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -177,7 +182,7 @@
 }
 .forms .form-content .button input{
     color: #fff;
-    background: #7d2ae8;
+    background: #134b57;
     border-radius: 6px;
     padding: 0;
     cursor: pointer;

@@ -99,29 +99,30 @@ class DetectiveMain extends React.Component {
                 </div>)
                 }
 
-                {this.state.showUsers && (
-                    <div>
-                        <h1 className="card-text">User List</h1>
-                        <Users onClose={this.closeUsers} usersList={this.state.users} onRenew={this.showUsers} role={"AUDITOR"}/>
-                    </div>
-                )}
 
-                {this.state.showModal && (
-                    <div>
-                        <h1 className="card-text">Card List</h1>
-                        <ListCards onClose={this.closeModal} crimeList={this.state.cards} onRenew={this.openModal} role={"AUDITOR"}/>
-                    </div>
-                )}
 
                 <div className="frame-but">
-                    <div className="rectangle-but" />
+                    <div className="rectangle-but">
                     <button className="card-list" onClick={this.openModal}>Cards List</button>
                     <button onClick={()=>{this.showUsers()}} className="create-card">Users</button>
+                    </div>
                 </div>
                 <div className="frame-2">
-                    <div className="rectangle-2" />
+                    <div className="rectangle-2">
+                        {this.state.showUsers && (
+                            <div>
+                                <h1 className="card-text">User List</h1>
+                                <Users onClose={this.closeUsers} usersList={this.state.users} onRenew={this.showUsers} role={"AUDITOR"}/>
+                            </div>
+                        )}
 
-
+                        {this.state.showModal && (
+                            <div>
+                                <h1 className="card-text">Card List</h1>
+                                <ListCards onClose={this.closeModal} crimeList={this.state.cards} onRenew={this.openModal} role={"AUDITOR"}/>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         )

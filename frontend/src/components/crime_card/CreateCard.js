@@ -1,6 +1,7 @@
 // CrimeForm.js
 import React, { Component } from 'react';
 import '../../css/CardCreate.css';
+import '../../css/CrimeCard.css';
 import TableVision from "../visions/TableVision";
 
 class CrimeForm extends Component {
@@ -135,24 +136,36 @@ class CrimeForm extends Component {
             criminalName: this.state.criminalName,
             victimName: this.state.victimName,
         };
-
+        console.log(postData)
         const token = localStorage.getItem('jwtToken');
+       if (placeOfCrime && weapon && crimeType && selectedRow && postData.criminalName && parsedDate && postData.victimName) {
+           fetch('http://localhost:8028/api/v1/cards/newcard', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}`,
+               },
+               body: JSON.stringify(postData),
+           })
+               .then(response => {
+               if (!response.ok) {
+               throw new Error(response.status);}
+               else{
+                   console.log('Данные успешно отправлены:')
+                   this.props.onClose()
+               }
+           })
+               .catch(error => {
+                   console.log(error.message)
+                   if (error.message === "500") {
+                       window.alert("This vision is already in use");
+                   } else {
+                       window.alert("You haven't chosen a vision");
+                   }});
 
-        fetch('http://localhost:8028/api/v1/cards/newcard', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(postData),
-        })
-            .then(response => response.json())
-            .then(responseData => {
-                console.log('Данные успешно отправлены:', responseData);
-
-            })
-            .catch(error => console.error('Ошибка при отправке данных:', error));
-        this.props.onClose()
+       }
+       else
+       {window.alert("Input all fields")}
     };
     render() {
         const {
@@ -173,68 +186,69 @@ class CrimeForm extends Component {
 
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
-                {!crimeTimeClicked && (
-                    <button onClick={this.handleGetCrimeTime} className="form-button-cc">Get Crime Time</button>
-                )}
-                {!criminalNameClicked && (
-                    <button onClick={this.handleGetCriminalName} className="form-button-cc">Get Criminal Name</button>
-                )}
-                {!victimNameClicked && (
-                    <button onClick={this.handleGetVictimName} className="form-button-cc">Get Victim Name</button>
-                )}
-                {crimeTimeClicked && (
-                    <label className="form-label-cc">Crime Time</label>
-                )}
-                {criminalNameClicked && (
-                    <label  className="form-label-cc">Criminal Name</label>
-                )}
-                {victimNameClicked && (
-                    <label  className="form-label-cc">Victim Name</label>
-                )}
-                <div className="crime-info">
-                    <input type="text" value={this.state.crimeTime}  className="form-input" />
-                    <input type="text" value={this.state.criminalName}  className="form-input" />
-                    <input type="text" value={this.state.victimName} className="form-input" />
-                </div>
-                <form>
-
-                    <label>
-                        Place of Crime:
-                        <input type="text" name="placeOfCrime" value={placeOfCrime} onChange={this.handleChangePlace} className="form-input" />
-                    </label>
-                    <br />
-                    <label>
-                        Weapon:
-                        <input type="text" name="weapon" value={weapon} onChange={this.handleChangeWeapon} className="form-input" />
-                    </label>
-                    <br />
-                    <label>
-                        Crime Type:
-                        <input type="text" name="crimeType" value={crimeType} onChange={this.handleChangeType} className="form-input" />
-                    </label>
-                    <br />
-                    <label>
-                        Visions:
-                        <div className="video-and-table-container">
-                            <div className="video-container-card">
-                            {selectedVideoUrl && (
-
-                                <iframe
-                                    title="Vision Video"
-                                    src={selectedVideoUrl}
-                                    frameBorder="0"
-                                    allowFullScreen
-                                ></iframe>)}
-                            </div>
-                            <div className="content-detective-vision">
-                                <div className="table-detective-vision">
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th>Video</th>
-                                            <th>Accepted</th>
-                                        </tr>
-                                        </thead>
+                <h2 className="h-style">Create Card</h2>
+                <table className="bg-rg">
+                    <tbody>
+                    <tr>
+                        <td className="table-label-edit">Victim Name:</td>
+                        <td colSpan="2" className="table-label-edit">{!victimNameClicked && (
+                            <button onClick={this.handleGetVictimName}>Get Victim Name</button>
+                        )}
+                            {victimNameClicked && (
+                                <input type="text" value={this.state.victimName} className="form-input" />
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Criminal Name:</td>
+                        <td colSpan="2" className="table-label-edit">
+                            {!criminalNameClicked && (
+                            <button onClick={this.handleGetCriminalName}>Get Criminal Name</button>
+                        )}
+                            {criminalNameClicked && (
+                                <input type="text" value={this.state.criminalName}  className="form-input" />
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Crime Time:</td>
+                        <td colSpan="2" className="table-label-edit">
+                            {!crimeTimeClicked && (
+                                <button onClick={this.handleGetCrimeTime} >Get Crime Time</button>
+                            )}
+                            {crimeTimeClicked && (
+                                <input type="text" value={this.state.crimeTime}  className="form-input" />
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Place of Crime:</td>
+                        <td colSpan="2" className="table-label-edit">
+                            <input maxLength="40" type="text" name="placeOfCrime" value={placeOfCrime}
+                                   onChange={this.handleChangePlace} className="form-input" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Weapon:</td>
+                        <td colSpan="2" className="table-label-edit">
+                            <input maxLength="20" type="text" name="weapon" value={weapon}
+                                   onChange={this.handleChangeWeapon} className="form-input" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Crime Type:</td>
+                        <td colSpan="2" className="table-label-edit">
+                            <select value={this.state.crimeType} onChange={this.handleChangeType}>
+                                <option className="table-select" value="" name="crimeType">choose state</option>
+                                <option className="table-select" value="INTENTIONAL" name="crimeType">INTENTIONAL</option>
+                                <option className="table-select" value="UNINTENTIONAL" name="crimeType">UNINTENTIONAL</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td className="table-label-pr">Visions:</td>
+                        <td className="table-label-edit">
+                                    <table className="bg-rg-edit">
                                         <tbody>
                                         {visions ? (
                                             visions.map((vision) => (
@@ -243,30 +257,35 @@ class CrimeForm extends Component {
                                                     className={vision.id === selectedRow ? 'selected-row' : ''}
                                                     onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
                                                 >
-                                                    <td>
-                                                        Vision {vision.id}
-                                                    </td>
-                                                    <td>{vision.accepted ? 'Yes' : 'No'}</td>
+                                                    <td className="table-label-edit-rel"> Vision {vision.id}</td>
                                                 </tr>
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan="3">No vision data available</td>
+                                                <td colSpan="1">No vision data available</td>
                                             </tr>
                                         )}
                                         </tbody>
                                     </table>
-                                </div>
-                                <div className="remaining-content">
-                                </div>
+                        </td>
+                        <td className="table-label-edit">
+                            <div className="video-container-card">
+                                    {selectedVideoUrl && (
+
+                                        <iframe
+                                            title="Vision Video"
+                                            src={selectedVideoUrl}
+                                            frameBorder="0"
+                                            allowFullScreen
+                                        ></iframe>)}
                             </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                        </div>
-                    </label>
+                <button type="button-tr" onClick={this.handleSubmit} className="button-edit">Submit</button>
 
-                    <br />
-                    <button type="button-tr" onClick={this.handleSubmit} className="form-button">Submit</button>
-                </form>
             </div>
             </div>
         );

@@ -26,12 +26,11 @@ class TableVision extends Component {
         return (
             <div className="content-container-vision">
                 <div className="table-container-vision">
-                    <table>
+                    <table className="bg-rg">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Video</th>
-                            <th>Accepted</th>
+                            <th className="table-label">Video</th>
+                            <th className="table-label">Accepted</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,16 +41,15 @@ class TableVision extends Component {
                                     className={vision.id === selectedRow ? 'selected-row' : ''}
                                     onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
                                 >
-                                    <td>{vision.id}</td>
-                                    <td>
+                                    <td className="table-label">
                                         Vision {vision.id}
                                     </td>
-                                    <td>{vision.accepted ? 'Yes' : 'No'}</td>
+                                    <td className="table-label">{vision.accepted ? 'Yes' : 'No'}</td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="3">No vision data available</td>
+                                <td colSpan="2">No vision data available</td>
                             </tr>
                         )}
                         </tbody>

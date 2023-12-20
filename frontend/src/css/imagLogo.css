@@ -1,0 +1,11 @@
+.image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+}
+
+.animated-image {
+    width: 10px;
+    height: 20vh;
+}

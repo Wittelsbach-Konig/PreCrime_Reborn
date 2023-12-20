@@ -33,31 +33,36 @@ class AppointGroup extends Component {
 
         const grr = selectedRows.length !== 0 ? (selectedRows.length === 1 ? [selectedRows] : selectedRows) : [];
         console.log(grr)
-        fetch(`http://localhost:8028/api/v1/reactiongroup/criminal/${idCr}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-            body: JSON.stringify(grr),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                return response.text();
+        if (selectedRows.length !== 0) {
+            fetch(`http://localhost:8028/api/v1/reactiongroup/criminal/${idCr}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+                },
+                body: JSON.stringify(grr),
             })
-            .then(data => {
-                console.log(data);
-                this.props.onRenew();
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
 
-        this.props.onClose();
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                    this.props.onRenew();
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе к серверу:', error);
+                });
 
+            this.props.onClose();
+        }
+        else
+        {
+            window.alert("choose men")
+        }
 
     };
 
@@ -66,19 +71,17 @@ class AppointGroup extends Component {
         const { groupList, onClose } = this.props;
         const { selectedRows } = this.state;
 
-        return (<div>
-                <div className="overlay"></div>
-                    <div className="modal-container">
+        return (<div className="modal">
+                    <div className="modal-content-appoint">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <div className="content-container-group-cr">
-                            <div className="table-container-group-cr">
-                                <table>
+                        <form className="form-content">
+                                <table className="bg-rg">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Member Name</th>
-                                        <th>Telegram ID</th>
-                                        <th>in Operation</th>
+                                        <th className="table-label">ID</th>
+                                        <th className="table-label">Member Name</th>
+                                        <th className="table-label">Telegram ID</th>
+                                        <th className="table-label">in Operation</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -89,25 +92,23 @@ class AppointGroup extends Component {
                                             className={this.state.selectedRows.includes(group.id) ? 'selected-row' : ''}
                                             onClick={() => this.handleRowsClick(group.id)}
                                         >
-                                            <td>{group.id}</td>
-                                            <td>{group.memberName}</td>
-                                            <td>{group.telegramId}</td>
-                                            <td>{group.inOperation ? 'Yes' : 'No'}</td>
+                                            <td className="table-label-edit">{group.id}</td>
+                                            <td className="table-label-edit">{group.memberName}</td>
+                                            <td className="table-label-edit">{group.telegramId}</td>
+                                            <td className="table-label-edit">{group.inOperation ? 'Yes' : 'No'}</td>
                                         </tr>
                                     )))
                                     : (
                                             <tr>
-                                                <td colSpan="4">No group data available</td>
+                                                <td className="table-label-edit"
+                                                    colSpan="4">No group data available</td>
                                             </tr>
                                         )}
                                     </tbody>
                                 </table>
-                                <div className="modal-buttons">
-                                    <button onClick={this.appointing}>Appoint Group</button>
-                                </div>
-                            </div>
-                        </div>
-
+                            <br/>
+                                <button type="button" className="button-tr" onClick={this.appointing}>Appoint Group</button>
+                        </form>
                         </div>
                     </div>
         );

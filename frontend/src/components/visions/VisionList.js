@@ -22,13 +22,6 @@ class VisionList extends React.Component {
 
     }
 
-    openVision = () => {
-        this.setState({ isModalOpen: true });
-    };
-
-    closeVision = () => {
-        this.setState({ isModalOpen: false });
-    };
 
     handleVideoClick = (url) => {
         this.setState({ selectedVisionUrl: url });
@@ -36,38 +29,6 @@ class VisionList extends React.Component {
 
     openModal = () => {
         this.setState({ showModal: true });
-    };
-
-    closeModal = () => {
-        this.setState({showModal: false});
-    };
-
-    openModal_1 = () => {
-        this.setState({ showModal_1: true });
-    };
-
-    closeModal_1 = () => {
-        this.setState({showModal_1: false});
-        this.props.renew();
-    };
-
-    openModal_2 = () => {
-        this.setState({ showModal_2: true });
-        console.log(this.props.visions)
-    };
-
-    closeModal_2 = () => {
-        this.setState({showModal_2: false});
-        this.props.renew();
-    };
-
-    showAll = () => {
-        this.setState({ showWorking: !this.state.showWorking }, ()=>
-        {
-            this.props.onChange(!this.state.showWorking)
-            // this.props.renew()
-        });
-
     };
 
     componentDidUpdate(prevProps, prevState) {
@@ -79,26 +40,7 @@ class VisionList extends React.Component {
 
 
     updateStateId = () => {
-        this.setState({ prevId: this.state.idGroup }, ()=>
-        {
-            const token = localStorage.getItem('jwtToken');
-
-
-            fetch(`http://localhost:8028/api/v1/reactiongroup/${this.state.idGroup}/statistic`, {
-                method: 'GET', // или другой метод
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-                },
-            })
-                .then(responses => responses.json())
-                .then(data => {
-                    this.setState({manData:data})
-                })
-                .catch(error => {
-                    console.error('Ошибка при запросе к серверу:', error);
-                });
-        });
+        this.setState({ prevId: this.state.idGroup})
         console.log(this.state.prevId)
     };
 
@@ -106,28 +48,38 @@ class VisionList extends React.Component {
     del = async () => {
         const token = localStorage.getItem('jwtToken');
         const url = `http://localhost:8028/api/v1/visions/${this.state.idGroup}`;
+        const confirmation = window.confirm(`Are you sure delete this vision?`);
 
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка сети или сервера');
-                }
-                console.log('Данные успешно удалены');
-                this.props.onRenew()
+        if (confirmation) {
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
             })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status);
+                    }
+                    console.log('Данные успешно удалены');
+                    this.props.onRenew()
+                })
+                .catch(error => {
+                    console.log(error.message)
+                    if (error.message === "500") {
+                        window.alert("This vision is already in use");
+                    } else {
+                        window.alert("You haven't chosen a vision");
+                    }
+                });
+            this.props.onRenew()
+        }
     }
 
-    acceptVision = () => {
+    acceptVision = async () => {
         const token = localStorage.getItem('jwtToken');
+        (this.state.idGroup !== 0) ? (
         fetch(`http://localhost:8028/api/v1/visions/${this.state.idGroup}/accept`, {
             method: 'POST', // или другой метод
             headers: {
@@ -139,12 +91,13 @@ class VisionList extends React.Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({vision: data});
-                this.props.onRenew()
+                this.setState({vision: data}, ()=>{this.props.onRenew()});
+
             })
             .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+
+            })) : window.alert("you don't choosing vision")
+
 
     };
 
@@ -163,9 +116,10 @@ class VisionList extends React.Component {
         return ( <div>
                 <h1 className="car-text">Visions</h1>
                 <TableVision visionList={visions} updateUrl={this.handleVideoClick} updateId={this.updateState}/>
+                <header className="header-pr">
                 <button className="acc-vis" onClick={this.acceptVision}>Accept Vision</button>
                 <button className="del-vis" onClick={this.del}>Delete Vision</button>
-
+                </header>
                 {selectedVisionUrl && (
                 <div className="video-container">
                     <iframe

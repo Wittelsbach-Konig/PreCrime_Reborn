@@ -1,0 +1,13 @@
+.animation-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 100vh;
+    z-index: 3;
+}
+
+.animated-text {
+
+    font-size: 2em;
+    font-weight: bold;
+}

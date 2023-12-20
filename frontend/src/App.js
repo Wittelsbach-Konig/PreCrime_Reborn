@@ -10,6 +10,11 @@ import Administrator from "./components/Admin/Administrator";
 import Auditor from "./components/Auditor/Auditor";
 
 import "./css/Login.css"
+import "./css/imagLogo.css"
+import "./css/animation.css"
+
+import { gsap } from 'gsap';
+import logo from "./img/logo.png"
 
 
 class App extends React.Component  {
@@ -90,7 +95,7 @@ class App extends React.Component  {
                 this.fetchRole(response.data.accessToken)
             }
         } catch (error) {
-            console.error('Ошибка при запросе:', error);
+            window.alert("invalid username or password")
         }
     };
 
@@ -118,7 +123,18 @@ class App extends React.Component  {
 
     async componentDidMount() {
         const jwtToken = localStorage.getItem('jwtToken');
+        // Задержка перед запуском анимации
+        const delay = 1000;
 
+        // Элементы для анимации
+        this.text = document.getElementById('text');
+        this.logoP = document.getElementById('logoP');
+
+        // Запуск анимации с задержкой
+        setTimeout(() => {
+            this.animateText();
+            setTimeout(() => this.animateLogoP(), 1000); // Запускаем вторую часть анимации
+        }, delay);
         if (jwtToken) {
             await this.setRoles();
         }
@@ -170,10 +186,16 @@ class App extends React.Component  {
             });
 
         } catch (error) {
-            console.error('Ошибка при запросе к серверу:', error);
+           // console.error('Ошибка при запросе к серверу:', error);
         }
     }
 
+
+    animateText() {
+    }
+
+    animateLogoP() {
+    }
 
 
     render() {
@@ -230,7 +252,27 @@ class App extends React.Component  {
                 return(
                     <div className="local-body">
                     <div className="container">
-                        <div className="cover"></div>
+                        <div className="cover">
+                            <div className="animation-container">
+
+                                <svg
+                                    id="logoP"
+                                    className="logo"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <text
+                                        x="10"
+                                        y="75"
+                                        fontSize="16"
+                                        fontWeight="bold"
+                                        fill="black"
+                                    >
+                                        PRECRIME
+                                    </text>
+                                </svg>
+                            </div>
+                        </div>
 
                                 <div className="forms">
                                     <div className="form-content">
