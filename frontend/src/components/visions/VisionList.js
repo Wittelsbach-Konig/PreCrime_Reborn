@@ -114,12 +114,12 @@ class VisionList extends React.Component {
         const { manData, idGroup, prevId, isModalOpen, selectedVisionUrl } = this.state;
         const {visions, onRenew} = this.props
         return ( <div>
-                <h1 className="car-text">Visions</h1>
                 <TableVision visionList={visions} updateUrl={this.handleVideoClick} updateId={this.updateState}/>
                 <header className="header-pr">
                 <button className="acc-vis" onClick={this.acceptVision}>Accept Vision</button>
                 <button className="del-vis" onClick={this.del}>Delete Vision</button>
                 </header>
+                <h1 className="car-text">Visions</h1>
                 {selectedVisionUrl && (
                 <div className="video-container">
                     <iframe

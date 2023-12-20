@@ -71,17 +71,9 @@ class DetectiveMain extends React.Component {
         this.setState({showUsers: false})
     }
 
-    openBurger = () => {
-        this.setState({ showBurger: true });
-    };
-
     closeBurger = () => {
         this.setState({showBurger: false});
         this.props.renew();
-    };
-
-    showAm = () => {
-
     };
 
 
