@@ -259,7 +259,17 @@ class CrimeCard extends Component {
                                 </tr>
                                 <tr>
                                     <td className="table-label-pr">Vision URL:</td>
-                                    <td className="table-label-pr">{crimeCard.visionUrl}</td>
+                                    <td className="table-label-pr">
+                                        <div className="video-container-card">
+                                            {crimeCard.visionUrl && (
+
+                                                <iframe
+                                                    title="Vision Video"
+                                                    src={crimeCard.visionUrl}
+                                                    frameBorder="0"
+                                                    allowFullScreen
+                                                ></iframe>)}
+                                        </div></td>
                                 </tr>
                             </tbody>
                         </table>
