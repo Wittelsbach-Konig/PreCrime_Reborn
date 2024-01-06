@@ -7,11 +7,12 @@ class Users extends Component {
         this.state = {
             selectedRow: null,
             userId:null,
-            isFormOpen:false
+            isFormOpen:false,
+            roles:[],
         };
     }
 
-    handleRowClick = (id) => {
+    handleRowClick = (id, funRole) => {
         this.setState({ selectedRow: id }, ()=>{
             const token = localStorage.getItem('jwtToken');
 
@@ -26,6 +27,7 @@ class Users extends Component {
                 .then(data => {
                     this.setState({userId:data})
                     this.setState({isFormOpen: true})
+                    this.setState({roles: funRole})
                 })
                 .catch(error => {
                     console.error('Ошибка при запросе к серверу:', error);
@@ -45,7 +47,7 @@ class Users extends Component {
 
         return (<div>
             {this.state.isFormOpen &&
-                (<UserCard onClose={this.closeForm} userStat={this.state.userId}/>)}
+                (<UserCard onClose={this.closeForm} userStat={this.state.userId} roles={this.state.roles}/>)}
             <div className="user-content-container">
                 <div className="user-table-container">
                     <table className="bg-rg">
@@ -61,6 +63,7 @@ class Users extends Component {
                         <tbody>
                         {usersList ? (
                             usersList.map((user) => (
+                                !user.roles.includes('ADMIN') &&
                                 <tr
                                     key={user.id}
                                     className={user.id === selectedRow ? 'selected-row' : ''}
@@ -71,7 +74,7 @@ class Users extends Component {
                                     <td className="table-label-pr">{user.lastName}</td>
                                     <td className="table-label-pr">{user.roles.join(', ')}</td>
                                     <td className="table-label-edit">
-                                        <button onClick={() => this.handleRowClick(user.id)}>
+                                        <button onClick={() => this.handleRowClick(user.id, user.roles)}>
                                             Info
                                         </button>
                                     </td>

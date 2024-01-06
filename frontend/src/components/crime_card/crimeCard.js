@@ -50,7 +50,7 @@ class CrimeCard extends Component {
             },
         }))}
         else
-        {   const { name, value } = e.target;
+        {   const { value } = e.target;
             this.setState({message:value})}
     };
 
@@ -273,7 +273,9 @@ class CrimeCard extends Component {
                                 </tr>
                             </tbody>
                         </table>
-                            <button className="button-edit" onClick={this.handleEditClick}>Edit</button>
+                            <button className="button-edit" onClick={this.handleEditClick}>
+                                {role==="DETECTIVE" ? 'Edit':'Report a mistake'}
+                            </button>
 
                         </div>
                     }

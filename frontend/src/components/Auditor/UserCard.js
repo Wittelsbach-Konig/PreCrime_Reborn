@@ -7,7 +7,7 @@ class UserCard extends Component {
         this.state = {
             isEditing: false,
             message: "",
-            selectedStatistic: "bossReactGroupStatistic", // По умолчанию выбраны данные bossReactGroupStatistic
+            selectedStatistic: "Select Statistic", // По умолчанию выбраны данные bossReactGroupStatistic
             statistics: {
                 bossReactGroupStatistic: {
                     id: 0,
@@ -53,8 +53,8 @@ class UserCard extends Component {
 
 
     render() {
-        const { userStat, onClose, role } = this.props;
-        const { isEditing, editedCrimeData, selectedStatistic, message } = this.state;
+        const { userStat, onClose, roles } = this.props;
+        const { selectedStatistic } = this.state;
 
         return (
             <div className="modal">
@@ -93,10 +93,17 @@ class UserCard extends Component {
                                         value={selectedStatistic}
                                         onChange={(e) => this.handleStatisticChange(e.target.value)}
                                     >
+                                        <option> Select Statistic </option>
+                                        {roles.includes('REACTIONGROUP') &&
                                         <option className="table-select" value="bossReactGroupStatistic">Boss React Group Statistic</option>
+                                        }
+                                        {roles.includes('DETECTIVE') &&
                                         <option className="table-select" value="detectiveStatistic">Detective Statistic</option>
+                                        }
+                                        {roles.includes('TECHNIC') &&
                                         <option className="table-select" value="technicStatistic">Technic Statistic</option>
-                                    </select></td>
+                                        }
+                                        </select></td>
                                 </tr>
                                 <tr >
                                     <td colSpan="2">
