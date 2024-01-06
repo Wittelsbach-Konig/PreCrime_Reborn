@@ -25,4 +25,6 @@ public class Vision {
 
     @Builder.Default
     private boolean accepted = false; //поле техника что он просмотрел
+    @Builder.Default
+    private boolean alreadyInUse = false;
 }

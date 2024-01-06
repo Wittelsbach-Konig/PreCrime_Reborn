@@ -100,7 +100,7 @@ public class ReactGroupController {
     }
 
     @GetMapping("/supply/filter")
-    public ResponseEntity<List<GroupResource>> getResourcesByFilter(@RequestBody List<String> types){
+    public ResponseEntity<List<GroupResource>> getResourcesByFilter(@RequestBody(required = false) List<String> types){
         List<GroupResource> resources = groupResourceService.getResourcesByType(types);
         if(resources.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

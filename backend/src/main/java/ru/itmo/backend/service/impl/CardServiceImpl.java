@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
 import ru.itmo.backend.dto.CriminalOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.exceptions.NotValidArgumentException;
@@ -74,6 +75,8 @@ public class CardServiceImpl implements CardService {
             throw new NotValidArgumentException("Vision " + crimeVision.getId() + " is not accepted! Please contact to your technic.");
         }
         crimeCard.setVision(crimeVision);
+        crimeVision.setAlreadyInUse(true);
+        visionRepository.save(crimeVision);
         Criminal criminal = new Criminal();
         CrimeCard newCard = cardRepository.save(crimeCard);
         CrimeCardOutDto resultCard = mapToCrimeCardOutDto(newCard);
@@ -89,14 +92,15 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CrimeCardOutDto updateCard(Long id, CrimeCardInDto crimeCardInDto) {
+    public CrimeCardOutDto updateCard(Long id, CrimeCardUpdateDto crimeCardInDto) {
         CrimeCard cardToUpdate = findCardById(id);
         Criminal criminalToUpdate = criminalRepository.findByCrimeCard(cardToUpdate);
         cardToUpdate.setVictimName(crimeCardInDto.getVictimName());
         cardToUpdate.setCriminalName(crimeCardInDto.getCriminalName());
         cardToUpdate.setPlaceOfCrime(crimeCardInDto.getPlaceOfCrime());
         cardToUpdate.setWeapon(crimeCardInDto.getWeapon());
-        cardToUpdate.setCrimeTime(crimeCardInDto.getCrimeTime());
+
+        //cardToUpdate.setCrimeTime(cardToUpdate.getCrimeTime());
         if (crimeCardInDto.getCrimeType().equals("INTENTIONAL")) {
             cardToUpdate.setTypeOfCrime(CrimeType.INTENTIONAL);
         }

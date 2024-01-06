@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
 import ru.itmo.backend.dto.CriminalOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.models.*;
@@ -142,7 +143,8 @@ public class CardServiceTests {
     public void CardServive_UpdateCard_ReturnsCrimeCardOutDto(){
         // Arrange
         Long cardId = 1L;
-        CrimeCardInDto cardInDto = CrimeCardInDto.builder()
+        
+        CrimeCardUpdateDto cardUpdateDto = CrimeCardUpdateDto.builder()
                 .criminalName("criminal")
                 .victimName("victim")
                 .weapon("weapon")
@@ -154,7 +156,7 @@ public class CardServiceTests {
         when(cardRepository.save(crimeCard)).thenReturn(crimeCard);
         when(criminalRepository.save(criminal)).thenReturn(criminal);
         // Act
-        CrimeCardOutDto updatedCard = cardService.updateCard(cardId, cardInDto);
+        CrimeCardOutDto updatedCard = cardService.updateCard(cardId, cardUpdateDto);
         // Assert
         Assertions.assertNotNull(updatedCard);
     }

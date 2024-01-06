@@ -4,6 +4,9 @@ import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
 import ru.itmo.backend.models.CrimeCard;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class CardMapper {
     public static CrimeCard mapToCrimeCard(CrimeCardInDto cardDto){
         CrimeCard card = CrimeCard.builder()
@@ -20,7 +23,7 @@ public class CardMapper {
     public static CrimeCardOutDto mapToCrimeCardOutDto(CrimeCard crimeCard) {
         CrimeCardOutDto card = CrimeCardOutDto.builder()
                 .id(crimeCard.getId())
-                .crimeTime(crimeCard.getCrimeTime())
+                .crimeTime(convertDateToString(crimeCard.getCrimeTime()))
                 .placeOfCrime(crimeCard.getPlaceOfCrime())
                 .criminalName(crimeCard.getCriminalName())
                 .victimName(crimeCard.getVictimName())
@@ -33,5 +36,11 @@ public class CardMapper {
                 .visionUrl(crimeCard.getVision().getVideoUrl())
                 .build();
         return card;
+    }
+
+    private static String convertDateToString(LocalDateTime dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedTime = dateTime.format(formatter);
+        return formattedTime;
     }
 }

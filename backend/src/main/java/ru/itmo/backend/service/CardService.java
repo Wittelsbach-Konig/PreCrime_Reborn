@@ -2,6 +2,7 @@ package ru.itmo.backend.service;
 
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
 import ru.itmo.backend.dto.CriminalOutDto;
 import ru.itmo.backend.models.CrimeCard;
 import ru.itmo.backend.models.Criminal;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface CardService {
     CrimeCardOutDto createCard(CrimeCardInDto crimeCardInDto);
-    CrimeCardOutDto updateCard(Long id , CrimeCardInDto crimeCardInDto);
+    CrimeCardOutDto updateCard(Long id , CrimeCardUpdateDto crimeCardInDto);
     void deleteCard(Long id);
     List<CrimeCardOutDto> getAllCards();
     List<CrimeCardOutDto> getAllDetectiveCards();

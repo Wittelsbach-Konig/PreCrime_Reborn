@@ -97,7 +97,7 @@ public class CrimeCardControllerIntegration {
         CrimeCardOutDto cardOutDto = CrimeCardOutDto.builder()
                 .id(1L)
                 .weapon("weapon")
-                .crimeTime(LocalDateTime.now())
+                .crimeTime("LocalDateTime.now()")
                 .criminalName("criminal")
                 .victimName("victim")
                 .responsibleDetective("Sherlock Holmes")

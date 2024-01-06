@@ -17,33 +17,47 @@ class SupplyTable extends Component {
     };
 
     handleChangeType = (e) => {
-        this.setState({ type: e.target.value });
-        console.log(this.state.type)
-        const token = localStorage.getItem('jwtToken');
-        if(this.state.type==='Type'){
-            this.setState({data:this.props.supplyList})
-           // this.props.onRenew();
-        }
-        else
-        {
-        fetch('http://localhost:8028/api/v1/reactiongroup/supply/filter', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-            body: this.state.type
-        })
-            .then(response => response.json())
-            .then(data => {
-                this.setState({data: data});
-                console.log(data);
-             //   this.props.onRenew();
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            })}
-        ;
+        this.setState({ type: e.target.value },()=>{
+
+            console.log(this.state.type)
+            const token = localStorage.getItem('jwtToken');
+
+            const baseUrl = 'http://localhost:8028/api/v1/reactiongroup/supply/filter';
+
+            const types = [this.state.type];
+
+            const queryString = `types=${types.join(',')}`;
+            const url = `${baseUrl}?${queryString}`;
+            if(this.state.type==='Type'){
+                this.setState({data:this.props.supplyList})
+                // this.props.onRenew();
+            }
+            else {
+                fetch(url,{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body:this.state.type
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Обрабатываем полученные данные
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+            }
+            ;
+        });
+
     }
 
     render() {
@@ -60,8 +74,10 @@ class SupplyTable extends Component {
                             <th className="table-label">Amount</th>
                             <th className="table-label">Max Amount</th>
                             <th className="table-label">
-                                Type
-                                {/*<select
+                                {
+                                 //   Type
+                                }
+                                (<select
                                     value={this.state.data.crimeType}
                                     onChange={this.handleChangeType}>
                                     <option className="table-select" value="" name="crimeType">Type</option>
@@ -69,7 +85,7 @@ class SupplyTable extends Component {
                                     <option className="table-select" value="WEAPON" name="crimeType">WEAPON</option>
                                     <option className="table-select" value="GADGET" name="crimeType">GADGET</option>
                                     <option className="table-select" value="FUEL" name="crimeType">FUEL</option>
-                                </select>*/}
+                                </select>)
                             </th>
                         </tr>
                         </thead>

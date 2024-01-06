@@ -93,7 +93,7 @@ public class VisionServiceImpl implements VisionService {
         List<Vision> visionList = new ArrayList<>();
         List<String> userRoles = securityUtil.getSessionUserRoles();
         if (userRoles.contains("DETECTIVE")) {
-            visionList.addAll(visionRepository.findAllByAcceptedTrue());
+            visionList.addAll(visionRepository.findAllByAcceptedTrueAndAlreadyInUseFalse());
         }
         if (userRoles.contains("TECHNIC")) {
             visionList.addAll(visionRepository.findAllByAcceptedFalse());

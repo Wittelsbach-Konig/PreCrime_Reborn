@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
 import ru.itmo.backend.service.CardService;
 
 import javax.validation.Valid;
@@ -72,7 +73,7 @@ public class CrimeCardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CrimeCardOutDto> updateCardData(@PathVariable Long id
-                                                        , @Valid @RequestBody CrimeCardInDto updatedCardDto) {
+                                                        , @Valid @RequestBody CrimeCardUpdateDto updatedCardDto) {
         CrimeCardOutDto cardAfterUpdate = cardService.updateCard(id, updatedCardDto);
         return new ResponseEntity<>(cardAfterUpdate, HttpStatus.OK);
     }

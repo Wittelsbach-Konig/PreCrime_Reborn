@@ -86,11 +86,12 @@ class PrecogsList extends Component {
         const FormData = require('form-data');
         const form = new FormData();
         form.append(`amount`, this.state[fieldName]);
-            if(fieldName==="serotonin")
+        console.log(this.state.selectedPsychic.id)
+            if(fieldName==="serotoninLevel")
             {this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterserotonin`,form)}
-            if(fieldName==="dopamine")
+            if(fieldName==="dopamineLevel")
             { this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterdopamine`,form)}
-            if(fieldName==="depressant")
+            if(fieldName==="stressLevel")
             { this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterdepressant`,form)}
 
 

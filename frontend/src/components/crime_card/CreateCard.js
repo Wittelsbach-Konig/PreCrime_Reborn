@@ -252,13 +252,17 @@ class CrimeForm extends Component {
                                         <tbody>
                                         {visions ? (
                                             visions.map((vision) => (
-                                                <tr
-                                                    key={vision.id}
-                                                    className={vision.id === selectedRow ? 'selected-row' : ''}
-                                                    onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
-                                                >
-                                                    <td className="table-label-edit-rel"> Vision {vision.id}</td>
-                                                </tr>
+                                                vision.accepted &&
+                                                (
+                                                    <tr
+                                                        key={vision.id}
+                                                        className={vision.id === selectedRow ? 'selected-row' : ''}
+                                                        onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
+                                                    >
+                                                        <td className="table-label-edit-rel"> Vision {vision.id}</td>
+                                                    </tr>
+                                                )
+
                                             ))
                                         ) : (
                                             <tr>

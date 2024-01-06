@@ -14,19 +14,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CrimeCardOutDto {
     private Long id;
-    @NotEmpty
+    //@NotEmpty
     private String victimName;
-    @NotEmpty
+    //@NotEmpty
     private String criminalName;
-    @NotEmpty
+    //@NotEmpty
     private String placeOfCrime;
-    @NotEmpty
+    //@NotEmpty
     private String weapon;
-    @NotEmpty
-    private LocalDateTime crimeTime;
-    @NotEmpty
+    //@NotEmpty
+    //private LocalDateTime crimeTime;
+    private String crimeTime;
+    //@NotEmpty
     private String crimeType;
-    @NotEmpty
+    //@NotEmpty
     private String responsibleDetective;
     private Boolean isCriminalCaught;
     private String visionUrl;

@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.itmo.backend.controllers.CrimeCardController;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
 import ru.itmo.backend.models.CrimeCard;
 import ru.itmo.backend.service.CardService;
 
@@ -64,7 +65,7 @@ public class CrimeCardControllerTests {
         cardOutDto = CrimeCardOutDto.builder()
                 .id(1L)
                 .weapon("weapon")
-                .crimeTime(LocalDateTime.now())
+                .crimeTime("LocalDateTime.now()")
                 .criminalName("criminal")
                 .victimName("victim")
                 .responsibleDetective("Sherlock Holmes")
@@ -104,7 +105,7 @@ public class CrimeCardControllerTests {
         CrimeCardOutDto cardOutDto1 = CrimeCardOutDto.builder()
                 .id(2L)
                 .weapon("knife")
-                .crimeTime(LocalDateTime.now())
+                .crimeTime("LocalDateTime.now()")
                 .criminalName("killer")
                 .victimName("babka")
                 .responsibleDetective("Sherlock Holmes")
@@ -160,7 +161,15 @@ public class CrimeCardControllerTests {
     @Test
     public void CrimeCardController_UpdateCard_ReturnCardDto() throws Exception {
         Long cardId = 1L;
-        when(cardService.updateCard(cardId, cardInDto)).thenReturn(cardOutDto);
+
+        CrimeCardUpdateDto cardUpdateDto = CrimeCardUpdateDto.builder()
+                .criminalName("criminal")
+                .victimName("victim")
+                .weapon("weapon")
+                .crimeType("INTENTIONAL")
+                .placeOfCrime("City")
+                .build();
+        when(cardService.updateCard(cardId, cardUpdateDto)).thenReturn(cardOutDto);
         ResultActions response = mockMvc.perform(put("/api/v1/cards/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cardInDto)).characterEncoding("UTF-8"));
