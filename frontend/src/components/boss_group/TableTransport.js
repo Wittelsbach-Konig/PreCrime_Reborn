@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import "../../css/Profile.css"
+import Del from "../../img/free-icon-remove-folder-circular-button-8532372.png"
 class TableTransport extends Component {
     constructor(props) {
         super(props);
@@ -26,12 +27,13 @@ class TableTransport extends Component {
             <table className="bg-rg">
                 <thead>
                 <tr>
-                    <th className="table-label">Brand</th>
-                    <th className="table-label">Model</th>
-                    <th className="table-label">Remaining Fuel</th>
-                    <th className="table-label">Maximum Fuel</th>
-                    <th className="table-label">Condition</th>
-                    <th className="table-label">In Operation</th>
+                    <th className="table-label-pr">Brand</th>
+                    <th className="table-label-pr">Model</th>
+                    <th className="table-label-pr">Remaining Fuel</th>
+                    <th className="table-label-pr">Maximum Fuel</th>
+                    <th className="table-label-pr">Condition</th>
+                    <th className="table-label-pr">In Operation</th>
+                    <th className="table-label-pr"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,6 +48,7 @@ class TableTransport extends Component {
                         <td className="table-label-pr">{car.maximum_fuel}</td>
                         <td className="table-label-pr">{car.condition}</td>
                         <td className="table-label-pr">{car.inOperation ? 'Yes' : 'No'}</td>
+                        <td className="table-label-pr"><span className="close-tr">&times;</span></td>
                     </tr>
                 ))
                     )

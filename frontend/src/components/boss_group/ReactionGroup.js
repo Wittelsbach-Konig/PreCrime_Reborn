@@ -141,15 +141,11 @@ class ReactionGroup extends React.Component {
                         <table className="bg-rg">
                             <tbody>
                             <tr>
-                                <td colSpan="2" className="table-label">Criminal info</td>
+                                <td colSpan="2" className="table-label">{manData.memberName}</td>
                             </tr>
                             <tr>
                                 <td className="table-label">ID:</td>
                                 <td className="table-label">{manData.id}</td>
-                            </tr>
-                            <tr>
-                                <td className="table-label">Member Name:</td>
-                                <td className="table-label">{manData.memberName}</td>
                             </tr>
                             <tr>
                                 <td className="table-label">In Operation:</td>

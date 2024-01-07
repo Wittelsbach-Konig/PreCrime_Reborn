@@ -1,7 +1,8 @@
 import React from "react";
 import SupplyTable from "./SupplyTable";
 import NewAmmunition from "./NewAmmunition";
-import Refuel from "./Refuel";
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 class Ammunition extends React.Component {
     constructor(props) {
@@ -17,7 +18,16 @@ class Ammunition extends React.Component {
             showModal: false,
             showModal_2: false,
             amountAmm: false,
-            idAmm:0
+            idAmm:0,
+            isOpen: false,
+            options: [
+                { id: 1, label: 'AMMUNITION' },
+                { id: 2, label: 'WEAPON' },
+                { id: 3, label: 'GADGET' },
+                { id: 4, label: 'FUEL' },
+            ],
+            selectedOptions: [],
+            numericValue: [0, 10000], // Диапазон числовых данных
         }
 
     }
@@ -37,36 +47,73 @@ class Ammunition extends React.Component {
         this.props.renew();
     };
 
-    openModal_2 = () => {
-        this.setState({ showModal_2: true });
-        this.setState({ amountAmm:true});
+
+    handleCheckboxChange = (option) => {
+        const { selectedOptions } = this.state;
+
+        // Проверяем, была ли опция выбрана или нет
+        const isSelected = selectedOptions.some((selected) => selected.id === option.id);
+
+        // Если опция была выбрана, убираем её из массива выбранных
+        // В противном случае, добавляем в массив выбранных
+        const updatedOptions = isSelected
+            ? selectedOptions.filter((selected) => selected.id !== option.id)
+            : [...selectedOptions, option];
+
+        this.setState({
+            selectedOptions: updatedOptions,
+        }, ()=>{console.log(selectedOptions)});
+
     };
 
-    closeModal_2 = () => {
-        this.setState({showModal_2: false});
-        this.setState({amountAmm: false});
-        this.props.renew();
+    filterOpen = () => {
+        this.setState({isOpen: !this.state.isOpen})
+    }
+
+    handleNumericChange = (value) => {
+        this.setState({
+            numericValue: value,
+        });
+        // Здесь вы можете выполнить дополнительные действия при изменении числового значения
     };
-
-
 
 
     render() {
-        const {onChange, me, ammun} = this.props
-        const {showReactionGroup, showTransport, showAmmunition, showCriminal} = this.state
+        const {renew, ammun} = this.props
+        const {isOpen, options, selectedOptions} = this.state
         return ( <div>
 
                 <header className="header-pr">
-                    <button className="acc-vis" onClick={this.openModal}>Supply Ammunition</button>
-                    <button className="del-vis" onClick={this.openModal_2}>Amount</button>
+                    <button className="acc-vis" onClick={this.openModal}>Add new resource</button>
+
+                    {!isOpen ? <button className="acc-vis" onClick={this.filterOpen}>Filter ↓</button> :
+                        <button className="acc-vis" onClick={this.filterOpen}>Filter ↑</button>}
+                    {isOpen &&
+                    <div className="multi-select-menu">
+                        <ul>
+                            {options.map((option) => (
+                                <li key={option.id}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedOptions.some((selected) => selected.id === option.id)}
+                                            onChange={() => this.handleCheckboxChange(option)}
+                                        />
+                                        {option.label}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>}
                 </header>
                 <h1 className="car-text">Ammunition List</h1>
-                <SupplyTable supplyList={ammun} idTr={this.updateState} />
+            {!this.state.showModal && <SupplyTable supplyList={ammun}
+                                                   idTr={this.updateState}
+                                                   onRenew={renew}
+                                                   selectOpt={selectedOptions}/>}
 
-                {this.state.showModal && <NewAmmunition onClose={this.closeModal} onRenew={this.props.renew} />}
-
-                {this.state.showModal_2 && <Refuel reff={false} amm={this.state.amountAmm} onClose={this.closeModal_2} idTr={this.state.idAmm} onRenew={this.props.renew}/>}
-            </div>
+                {this.state.showModal && <NewAmmunition onClose={this.closeModal} renew={renew}/>}
+                </div>
         )
     }
 }

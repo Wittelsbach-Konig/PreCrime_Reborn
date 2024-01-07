@@ -6,6 +6,7 @@ class Refuel extends Component {
         this.state = {
             amount: 0,
             idTr:0,
+
         };
 
     }
@@ -20,6 +21,7 @@ class Refuel extends Component {
         if (event.key === '+' || event.key === '-' || event.key === '.' || event.key === ',') {
             event.preventDefault();
         }
+
     }
 
     handleSubmit = () => {

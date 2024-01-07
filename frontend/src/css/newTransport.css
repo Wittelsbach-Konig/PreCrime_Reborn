@@ -61,6 +61,14 @@
     cursor: pointer;
 }
 
+.close-tr:hover,
+.close-tr:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 
 .form-tr {
     display: flex;
