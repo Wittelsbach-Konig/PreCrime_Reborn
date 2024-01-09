@@ -70,9 +70,18 @@ public class ReactGroupController {
     }
 
     @GetMapping("/criminal/{id}")
-    public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id){
+    public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id) {
         CriminalOutDto criminal = cardService.getCriminalById(id);
         return new ResponseEntity<>(criminal, HttpStatus.OK);
+    }
+
+    @GetMapping("/criminal/{id}/assignedgroup")
+    public ResponseEntity<List<ReactGroupOutDto>> getAssignedMembers(@PathVariable Long id) {
+        List<ReactGroupOutDto> assignedGroup = reactGroupService.getMembersAssignedToArrestCriminal(id);
+        if(assignedGroup.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(assignedGroup, HttpStatus.OK);
     }
 
     @GetMapping("/supply")

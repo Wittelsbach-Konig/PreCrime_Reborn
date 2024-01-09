@@ -75,6 +75,8 @@ public class GroupResourceImpl implements GroupResourceService {
                     break;
                 case "GADGET":
                     resources.addAll(groupResourceRepository.findAllByType(GroupResourceType.GADGET));
+                case "FUEL":
+                    resources.addAll(groupResourceRepository.findAllByType(GroupResourceType.FUEL));
                 default:
                     break;
             }
@@ -97,6 +99,7 @@ public class GroupResourceImpl implements GroupResourceService {
             case "AMMUNITION" -> resourceToAdd.setType(GroupResourceType.AMMUNITION);
             case "WEAPON" -> resourceToAdd.setType(GroupResourceType.WEAPON);
             case "GADGET" -> resourceToAdd.setType(GroupResourceType.GADGET);
+            case "FUEL" -> resourceToAdd.setType(GroupResourceType.FUEL);
             default -> throw new NotValidArgumentException("Unknown resource type: " + resourceType);
         }
         GroupResource newResource = groupResourceRepository.save(resourceToAdd);

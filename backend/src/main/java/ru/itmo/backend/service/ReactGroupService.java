@@ -13,6 +13,7 @@ public interface ReactGroupService {
     Criminal findCriminalById(Long id);
     List<ReactGroup> getAllMembers();
     List<ReactGroup> getAllWorkingMembers();
+    List<ReactGroupOutDto> getMembersAssignedToArrestCriminal(Long id);
     //void deleteGroupMember(Long id);
     ReactGroupOutDto retireGroupMember(Long id);
     ReactGroupOutDto updateGroupMember(Long id, ReactGroupInDto reactGroupInDto);

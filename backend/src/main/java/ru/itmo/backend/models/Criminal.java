@@ -1,9 +1,6 @@
 package ru.itmo.backend.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +9,7 @@ import javax.validation.constraints.Size;
 
 @Entity(name = "criminals")
 @Getter
+@Builder
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +35,9 @@ public class Criminal {
 
     @Enumerated(EnumType.STRING)
     private CriminalStatus status;
+
+    @Builder.Default
+    private boolean isArrestAssigned = false;
 
     @OneToOne
     @JoinColumn(name = "crime_card_id",nullable = false)

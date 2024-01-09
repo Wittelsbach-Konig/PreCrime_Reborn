@@ -115,6 +115,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         statisticService.appointedToArrest(user);
 
         Criminal criminal = findCriminalById(id);
+        criminal.setArrestAssigned(true);
         String message = "You have been assigned to arrest a criminal, information:\n"
                 + "Criminal Name: " + criminal.getName() + "\n"
                 + "Last known location: " + criminal.getLocation()
@@ -131,6 +132,17 @@ public class ReactGroupServiceImpl implements ReactGroupService {
             arrestAssignment.setReactGroup(groupMember);
             criminalToReactGroupRepository.save(arrestAssignment);
         }
+        criminalRepository.save(criminal);
     }
 
+    @Override
+    public List<ReactGroupOutDto> getMembersAssignedToArrestCriminal(Long id) {
+        Criminal criminal = findCriminalById(id);
+        List<CriminalToReactGroup> criminalToReactGroups = criminalToReactGroupRepository.findAllByCriminal(criminal);
+        List<ReactGroupOutDto> assignedMembers = null;
+        for(CriminalToReactGroup record : criminalToReactGroups) {
+            assignedMembers.add(mapToReactGroupOutDto(record.getReactGroup()));
+        }
+        return assignedMembers;
+    }
 }
