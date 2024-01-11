@@ -9,5 +9,6 @@ public interface VisionRepository extends JpaRepository<Vision, Long> {
     Vision findByVideoUrl(String videoUrl);
     List <Vision> findAllByAcceptedFalse();
     List <Vision> findAllByAcceptedTrueAndAlreadyInUseFalse();
+    List <Vision> findAllByAlreadyInUseTrue();
 
 }

@@ -149,7 +149,7 @@ public class GroupResourceImpl implements GroupResourceService {
 
     @Override
     public List<Transport> getAllTransport() {
-        return transportRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        return transportRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override

@@ -62,7 +62,25 @@ public class ReactGroupController {
 
     @GetMapping("/criminal")
     public ResponseEntity<List<CriminalOutDto>> getAllCriminals() {
-        List<CriminalOutDto> criminals = cardService.getAllCriminals();
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.NOT_CAUGHT);
+        if(criminals.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(criminals, HttpStatus.OK);
+    }
+
+    @GetMapping("/caughtcriminal")
+    public ResponseEntity<List<CriminalOutDto>> getAllCaughtCriminals() {
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.CAUGHT);
+        if(criminals.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(criminals, HttpStatus.OK);
+    }
+
+    @GetMapping("/escapedcriminal")
+    public ResponseEntity<List<CriminalOutDto>> getAllEscapedCriminals() {
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.ESCAPED);
         if(criminals.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -20,6 +20,7 @@ import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.TelegramBotService;
 //import ru.itmo.precrimesyst.service.TelegramBotService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroup;
@@ -139,7 +140,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
     public List<ReactGroupOutDto> getMembersAssignedToArrestCriminal(Long id) {
         Criminal criminal = findCriminalById(id);
         List<CriminalToReactGroup> criminalToReactGroups = criminalToReactGroupRepository.findAllByCriminal(criminal);
-        List<ReactGroupOutDto> assignedMembers = null;
+        List<ReactGroupOutDto> assignedMembers = new ArrayList<>();
         for(CriminalToReactGroup record : criminalToReactGroups) {
             assignedMembers.add(mapToReactGroupOutDto(record.getReactGroup()));
         }

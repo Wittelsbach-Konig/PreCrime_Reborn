@@ -15,19 +15,28 @@ public class SecurityLiterals {
             "/api/v1/cards/randomCriminalName",
             "/api/v1/cards/newcard",
             "/api/v1/cards/{id}",
+            "/api/v1/cards/bycreationdate",
+            "/api/v1/cards/bycrimetime",
             "/api/v1/cards/"
     };
+
     public static final String AUDITOR_ENDPOINTS = "/api/v1/auditor/**";
     public static final String[] REACT_GROUP_BOSS_ENDPOINTS = {
             "/api/v1/reactiongroup/**"
     };
+
     public static final String[] TECHNIC_ENDPOINTS = {
             "/api/v1/precogs/**",
             "/api/v1/visions/{id}/**"
     };
+
     public static final String[] COMMON_VISION_ENDPOINTS = {
             "/api/v1/visions",
             "/api/v1/visions/{id}"
+    };
+
+    public static final String[] TECHNIC_DETECTIVE_VISION_ENDPOINTS = {
+            "/api/v1/visions/used"
     };
 
     public static final long JWT_EXPIRATION = 10000000;

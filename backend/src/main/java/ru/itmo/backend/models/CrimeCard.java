@@ -1,6 +1,7 @@
 package ru.itmo.backend.models;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -56,4 +57,6 @@ public class CrimeCard {
     @Valid
     @JoinColumn(name = "vision_id", unique = true, nullable = false)
     private Vision vision;
+    @CreationTimestamp
+    private LocalDateTime creationDate;
 }

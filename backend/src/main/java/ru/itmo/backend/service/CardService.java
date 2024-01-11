@@ -15,10 +15,14 @@ public interface CardService {
     CrimeCardOutDto updateCard(Long id , CrimeCardUpdateDto crimeCardInDto);
     void deleteCard(Long id);
     List<CrimeCardOutDto> getAllCards();
+    List<CrimeCardOutDto> getAllCardsSortedByCrimeTime(String direction);
+    List<CrimeCardOutDto> getAllCardsSortedByCreationDate(String direction);
     List<CrimeCardOutDto> getAllDetectiveCards();
+    List<CrimeCardOutDto> getAllDetectiveCardsSortedByCrimeTime(String direction);
+    List<CrimeCardOutDto> getAllDetectiveCardsSortedByCreationDate(String direction);
     CrimeCardOutDto getCardById(Long id);
     CrimeCard findCardById(Long id);
-    List<CriminalOutDto> getAllCriminals();
+    List<CriminalOutDto> getAllCriminals(CriminalStatus status);
     CriminalOutDto getCriminalById(Long id);
     Criminal findCriminalById(Long id);
     CriminalOutDto updateCriminalStatus(Long id, CriminalStatus status);

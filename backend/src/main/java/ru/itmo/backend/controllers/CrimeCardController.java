@@ -34,6 +34,18 @@ public class CrimeCardController {
         return new ResponseEntity<>(crimeCards, HttpStatus.OK);
     }
 
+    @GetMapping("/bycreationdate")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCardsSortedByCreationDate(@RequestParam String direction) {
+        List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCardsSortedByCreationDate(direction);
+        return new ResponseEntity<>(crimeCards, HttpStatus.OK);
+    }
+
+    @GetMapping("/bycrimetime")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCardsSortedByCrimeTime(@RequestParam String direction) {
+        List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCardsSortedByCrimeTime(direction);
+        return new ResponseEntity<>(crimeCards, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CrimeCardOutDto> getCard(@PathVariable Long id) {
         CrimeCardOutDto card = cardService.getCardById(id);

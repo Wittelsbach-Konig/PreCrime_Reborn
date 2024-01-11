@@ -11,6 +11,7 @@ public class CriminalOutMapper {
                 .weapon(criminal.getWeapon())
                 .location(criminal.getLocation())
                 .status(criminal.getStatus().name())
+                .isArrestAssigned(criminal.isArrestAssigned())
                 .build();
         return criminalOutDto;
     }

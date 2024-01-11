@@ -1,6 +1,7 @@
 package ru.itmo.backend.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
@@ -15,7 +16,6 @@ import ru.itmo.backend.service.CardService;
 import ru.itmo.backend.service.PreCogService;
 import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.TelegramBotService;
-//import ru.itmo.precrimesyst.service.TelegramBotService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +99,6 @@ public class CardServiceImpl implements CardService {
         cardToUpdate.setCriminalName(crimeCardInDto.getCriminalName());
         cardToUpdate.setPlaceOfCrime(crimeCardInDto.getPlaceOfCrime());
         cardToUpdate.setWeapon(crimeCardInDto.getWeapon());
-
-        //cardToUpdate.setCrimeTime(cardToUpdate.getCrimeTime());
         if (crimeCardInDto.getCrimeType().equals("INTENTIONAL")) {
             cardToUpdate.setTypeOfCrime(CrimeType.INTENTIONAL);
         }
@@ -134,10 +132,82 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public List<CrimeCardOutDto> getAllCardsSortedByCrimeTime(String direction) {
+        List<CrimeCard> crimeCards = new ArrayList<>();
+        if(direction.equals("desc")) {
+            crimeCards = cardRepository.findAll(Sort.by(Sort.Direction.DESC, "crimeTime"));
+        }
+        else if(direction.equals("asc")){
+            crimeCards = cardRepository.findAll(Sort.by(Sort.Direction.ASC, "crimeTime"));
+        }
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
+    }
+
+    @Override
+    public List<CrimeCardOutDto> getAllCardsSortedByCreationDate(String direction) {
+        List<CrimeCard> crimeCards = new ArrayList<>();
+        if(direction.equals("desc")) {
+            crimeCards = cardRepository.findAll(Sort.by(Sort.Direction.DESC, "creationDate"));
+        }
+        else if(direction.equals("asc")){
+            crimeCards = cardRepository.findAll(Sort.by(Sort.Direction.ASC, "creationDate"));
+        }
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
+    }
+
+    @Override
     public List<CrimeCardOutDto> getAllDetectiveCards() {
         String login = securityUtil.getSessionUser();
         UserEntity user = userRepository.findByLogin(login);
         List<CrimeCard> crimeCards = cardRepository.findAllByResponsibleDetective(user);
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
+    }
+
+    @Override
+    public List<CrimeCardOutDto> getAllDetectiveCardsSortedByCrimeTime(String direction) {
+        String login = securityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
+        List<CrimeCard> crimeCards = new ArrayList<>();
+        if(direction.equals("desc")) {
+            crimeCards = cardRepository.findAllByResponsibleDetectiveOrderByCrimeTimeDesc(user);
+        }
+        else if(direction.equals("asc")) {
+            crimeCards = cardRepository.findAllByResponsibleDetectiveOrderByCrimeTimeAsc(user);
+        }
+        List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
+        for(CrimeCard card : crimeCards){
+            CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
+            crimeCardOutDtos.add(crimeCardOutDto);
+        }
+        return crimeCardOutDtos;
+    }
+
+    @Override
+    public List<CrimeCardOutDto> getAllDetectiveCardsSortedByCreationDate(String direction) {
+        String login = securityUtil.getSessionUser();
+        UserEntity user = userRepository.findByLogin(login);
+        List<CrimeCard> crimeCards = new ArrayList<>();
+        if(direction.equals("desc")) {
+            crimeCards = cardRepository.findAllByResponsibleDetectiveOrderByCreationDateDesc(user);
+        }
+        else if(direction.equals("asc")) {
+            crimeCards = cardRepository.findAllByResponsibleDetectiveOrderByCreationDateAsc(user);
+        }
         List<CrimeCardOutDto> crimeCardOutDtos = new ArrayList<>();
         for(CrimeCard card : crimeCards){
             CrimeCardOutDto crimeCardOutDto = prepareCardForOutput(card);
@@ -159,8 +229,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CriminalOutDto> getAllCriminals() {
-        List<Criminal> criminals = criminalRepository.findAllByStatusIsLike(CriminalStatus.NOT_CAUGHT);
+    public List<CriminalOutDto> getAllCriminals(CriminalStatus status) {
+        List<Criminal> criminals = criminalRepository.findAllByStatusIsLike(status);
         List<CriminalOutDto> criminalOutDtos = new ArrayList<>();
         for(Criminal criminal : criminals){
             CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);

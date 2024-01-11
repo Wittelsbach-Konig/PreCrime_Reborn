@@ -13,4 +13,5 @@ public interface VisionService {
     void deleteVision(Long id);
     void approveVision(Long id);
     List<Vision> getVisionsList();
+    List<Vision> getUsedVisionList();
 }

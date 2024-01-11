@@ -100,4 +100,11 @@ public class VisionServiceImpl implements VisionService {
         }
         return visionList;
     }
+
+    @Override
+    public List<Vision> getUsedVisionList() {
+        List<Vision> visionList = new ArrayList<>();
+        visionList.addAll(visionRepository.findAllByAlreadyInUseTrue());
+        return visionList;
+    }
 }

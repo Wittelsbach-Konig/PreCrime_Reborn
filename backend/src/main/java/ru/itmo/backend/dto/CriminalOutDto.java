@@ -11,4 +11,5 @@ public class CriminalOutDto {
     private String location;
     private String weapon;
     private String status;
+    private Boolean isArrestAssigned;
 }

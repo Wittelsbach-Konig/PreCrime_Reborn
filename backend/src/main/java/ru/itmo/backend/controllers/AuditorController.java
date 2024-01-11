@@ -51,6 +51,24 @@ public class AuditorController {
         return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/cards/bycreationdate")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCrimeCardsSortedByCreationDate(@RequestParam String direction){
+        List<CrimeCardOutDto> crimeCardOutDtos = cardService.getAllCardsSortedByCreationDate(direction);
+        if(crimeCardOutDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/cards/bycrimetime")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCrimeCardsSortedByCrimeTime(@RequestParam String direction){
+        List<CrimeCardOutDto> crimeCardOutDtos = cardService.getAllCardsSortedByCrimeTime(direction);
+        if(crimeCardOutDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
+    }
+
     @GetMapping("/cards/{id}")
     public ResponseEntity<CrimeCardOutDto> getCrimeCard(@PathVariable Long id){
         CrimeCardOutDto crimeCardOutDto = cardService.getCardById(id);

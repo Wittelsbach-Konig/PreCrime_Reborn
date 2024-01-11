@@ -34,6 +34,7 @@ public class CardMapper {
                                     + crimeCard.getResponsibleDetective().getLastName())
                 .isCriminalCaught(crimeCard.getIsCriminalCaught())
                 .visionUrl(crimeCard.getVision().getVideoUrl())
+                .creationDate(convertDateToString(crimeCard.getCreationDate()))
                 .build();
         return card;
     }
