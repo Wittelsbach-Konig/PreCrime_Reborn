@@ -236,7 +236,7 @@ public class ReactGroupControllerTests {
                 .location("Cottage")
                 .build();
         List<CriminalOutDto> criminals = Arrays.asList(criminal1, criminal2, criminal3);
-        when(cardService.getAllCriminals()).thenReturn(criminals);
+        when(cardService.getAllCriminals(CriminalStatus.NOT_CAUGHT)).thenReturn(criminals);
 
         ResultActions resultActions = mockMvc.perform(get("/api/v1/reactiongroup/criminal")
                 .contentType(MediaType.APPLICATION_JSON));
@@ -248,7 +248,7 @@ public class ReactGroupControllerTests {
     @Test
     public void ReactGroupController_GetAllCriminals_ReturnsNoContent() throws Exception {
         List<CriminalOutDto> criminals = new ArrayList<>();
-        when(cardService.getAllCriminals()).thenReturn(criminals);
+        when(cardService.getAllCriminals(CriminalStatus.NOT_CAUGHT)).thenReturn(criminals);
 
         ResultActions resultActions = mockMvc.perform(get("/api/v1/reactiongroup/criminal")
                 .contentType(MediaType.APPLICATION_JSON));
