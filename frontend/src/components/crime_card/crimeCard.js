@@ -50,7 +50,7 @@ class CrimeCard extends Component {
             },
         }))}
         else
-        {   const { name, value } = e.target;
+        {   const { value } = e.target;
             this.setState({message:value})}
     };
 
@@ -58,7 +58,7 @@ class CrimeCard extends Component {
         const token = localStorage.getItem('jwtToken');
         const { role } = this.props
         if (role==="DETECTIVE") {
-            const url = `http://localhost:8028/api/v1/cards/${this.props.crimeCard.id}`;
+            const url = `api/v1/cards/${this.props.crimeCard.id}`;
 
             fetch(url, {
                 method: 'PUT',
@@ -88,7 +88,7 @@ class CrimeCard extends Component {
             const form = new FormData();
             form.append('message', this.state.message);
             console.log(this.state.message)
-            fetch(`http://localhost:8028/api/v1/auditor/cards/${this.props.crimeCard.id}`, {
+            fetch(`api/v1/auditor/cards/${this.props.crimeCard.id}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -273,7 +273,9 @@ class CrimeCard extends Component {
                                 </tr>
                             </tbody>
                         </table>
-                            <button className="button-edit" onClick={this.handleEditClick}>Edit</button>
+                            <button className="button-edit" onClick={this.handleEditClick}>
+                                {role==="DETECTIVE" ? 'Edit':'Report a mistake'}
+                            </button>
 
                         </div>
                     }

@@ -86,7 +86,7 @@ class App extends React.Component  {
         console.log(this.state.log)
 
         try {
-            const response = await axios.post('http://localhost:8028/api/v1/auth/login', this.state.log);
+            const response = await axios.post('api/v1/auth/login', this.state.log);
             console.log('Ответ сервера:', response.data);
 
             if (response.data.accessToken) {
@@ -167,7 +167,7 @@ class App extends React.Component  {
         const jwtToken = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch('http://localhost:8028/api/v1/me', {
+            const response = await fetch('api/v1/me', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

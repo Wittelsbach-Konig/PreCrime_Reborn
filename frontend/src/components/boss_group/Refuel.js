@@ -6,6 +6,7 @@ class Refuel extends Component {
         this.state = {
             amount: 0,
             idTr:0,
+
         };
 
     }
@@ -20,6 +21,7 @@ class Refuel extends Component {
         if (event.key === '+' || event.key === '-' || event.key === '.' || event.key === ',') {
             event.preventDefault();
         }
+
     }
 
     handleSubmit = () => {
@@ -28,7 +30,7 @@ class Refuel extends Component {
         const form = new FormData();
         form.append('amount', this.state.amount);
         if (this.props.reff)
-        {fetch(`http://localhost:8028/api/v1/reactiongroup/transport/${this.props.idTr}/refuel`, {
+        {fetch(`api/v1/reactiongroup/transport/${this.props.idTr}/refuel`, {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -52,7 +54,7 @@ class Refuel extends Component {
 
         if (this.props.amm)
         {
-            fetch(`http://localhost:8028/api/v1/reactiongroup/supply/${this.props.idTr}`, {
+            fetch(`api/v1/reactiongroup/supply/${this.props.idTr}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,

@@ -19,7 +19,7 @@ class RegMans extends Component {
         const token = localStorage.getItem('jwtToken');
         if(this.state.memberName !== '' && this.state.telegramId !== 0 )
         {
-        fetch('http://localhost:8028/api/v1/reactiongroup/newman', {
+        fetch('api/v1/reactiongroup/newman', {
             method: 'POST', // или другой метод
             headers: {
                 'Content-Type': 'application/json',

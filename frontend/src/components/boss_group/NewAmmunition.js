@@ -6,11 +6,12 @@ class NewAmmunition extends Component {
         this.state = {
             id: 0,
             resourceName: "",
-            amount: 0,
-            maxPossibleAmount: 0,
+            amount: '',
+            maxPossibleAmount: '',
             type: "",
             supply:[]
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleKeyDown = (event) => {
@@ -20,20 +21,29 @@ class NewAmmunition extends Component {
     }
     handleInputChange = (event) => {
         const { name, value } = event.target;
-        if(name === 'amount' || name === 'maxPossibleAmount')
-        {if (value>=0 && value <=10000)
-          {this.setState({ [name]: value })}}
+        console.log(this.state.amount, this.state.maxPossibleAmount)
+        if(name === 'amount') {
+            const numericValue = parseFloat(value);
+            if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 10000) {
+                this.setState({amount: numericValue});
+            }
+        }
+        if(name === 'maxPossibleAmount') {
+            const numericValue = parseFloat(value);
+            if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 10000) {
+                this.setState({maxPossibleAmount: numericValue});
+            }
+        }
         else
           {this.setState({ [name]: value })};
     };
 
-    handleSubmit = () => {
+    async handleSubmit () {
         const token = localStorage.getItem('jwtToken');
         if (this.state.resourceName && this.state.maxPossibleAmount!==0 && this.state.type!=='')
-        {
-            if (this.state.maxPossibleAmount>this.state.amount)
-            {
-        fetch('http://localhost:8028/api/v1/reactiongroup/supply/new', {
+        { console.log(this.state.amount, this.state.maxPossibleAmount)
+        this.state.maxPossibleAmount>this.state.amount ?
+            (await fetch('api/v1/reactiongroup/supply/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,23 +59,20 @@ class NewAmmunition extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({supply: data});
-                console.log(data);
-                this.props.onRenew();
+                this.setState({supply: data},
+                    ()=>{this.props.renew()});
+                this.props.onClose()
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
-            });
-
-        this.props.onClose();}
-        else
-            {
-                window.alert('Max amount should be more then amount')
-            }}
+            })): window.alert('max possible amount needed more then amount')
+        }
         else
         {
             window.alert('Input all fields')
         }
+        this.props.renew()
+
     };
 
     handleChangeType = (e) => {
@@ -81,7 +88,7 @@ class NewAmmunition extends Component {
                 <div className="modal">
                     <div className="modal-content-precog">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2 className="h-style">Supply Ammunition</h2>
+                        <h2 className="h-style">Add new resource</h2>
                         <form className="form-tr">
                             <table className="bg-rg">
                                 <tbody>
@@ -101,11 +108,12 @@ class NewAmmunition extends Component {
                                     <td className="table-label-pr">Amount:</td>
                                     <td className="table-label-edit">
                                         <input
-                                            type="number"
+                                            type='number'
                                             name="amount"
-                                            value={amount===''? this.setState({amount:0}):amount}
+                                            value={amount}
                                             onChange={this.handleInputChange}
                                             onKeyDown={this.handleKeyDown}
+                                            onClick={this.handleInputChange}
                                         />
                                     </td>
                                 </tr>
@@ -113,18 +121,19 @@ class NewAmmunition extends Component {
                                     <td className="table-label-pr">Max Amount:</td>
                                     <td className="table-label-edit">
                                         <input
-                                            type="number"
+                                            type='number'
                                             name="maxPossibleAmount"
-                                            value={maxPossibleAmount===''? this.setState({maxPossibleAmount:0}):maxPossibleAmount}
+                                            value={maxPossibleAmount}
                                             onChange={this.handleInputChange}
                                             onKeyDown={this.handleKeyDown}
+                                            onClick={this.handleInputChange}
                                         />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="table-label-pr">Type Resource:</td>
                                     <td className="table-label-edit">
-                                        <select value={this.state.crimeType} onChange={this.handleChangeType}>
+                                        <select value={this.state.crimeType} onChange={this.handleChangeType} >
                                             <option className="table-select" value="" name="crimeType">choose type</option>
                                             <option className="table-select" value="AMMUNITION" name="crimeType">AMMUNITION</option>
                                             <option className="table-select" value="WEAPON" name="crimeType">WEAPON</option>

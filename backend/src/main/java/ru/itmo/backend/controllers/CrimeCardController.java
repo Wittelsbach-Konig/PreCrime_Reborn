@@ -33,6 +33,7 @@ public class CrimeCardController {
     @GetMapping
     public ResponseEntity<List<CrimeCardOutDto>> getAllCards(){
         List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCards();
+        System.out.println("Detective Cards size= " + crimeCards.size());
         return new ResponseEntity<>(crimeCards, HttpStatus.OK);
     }
 

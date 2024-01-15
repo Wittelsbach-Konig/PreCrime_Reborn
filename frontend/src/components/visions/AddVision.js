@@ -17,7 +17,7 @@ class AddVision extends Component {
 
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/visions/add', {
+        fetch('api/v1/visions/add', {
             method: 'POST', // или другой метод
             headers: {
                 'Content-Type': 'application/json',

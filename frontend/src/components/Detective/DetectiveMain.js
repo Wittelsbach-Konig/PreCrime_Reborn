@@ -1,15 +1,17 @@
 import React from "react";
 import Header from "../Header";
-import Profile from "../profile";
 import ListCards from "../crime_card/ListCards";
 import BurgerMenu from "../BurgerMenu";
 import CrimeForm from "../crime_card/CreateCard";
+import Criminals from "./Criminals";
+
 class DetectiveMain extends React.Component {
     constructor(props) {
 
         super(props);
         this.state = {
             showModal: false,
+            showModal_2:false,
             showBurger: false,
             showCard:false,
             cards:null,
@@ -20,9 +22,10 @@ class DetectiveMain extends React.Component {
 
     openModal = () => {
         this.setState({ showModal: true });
+        this.setState({ showModal_2: false })
         const token = localStorage.getItem('jwtToken');
 
-        fetch('http://localhost:8028/api/v1/cards', {
+        fetch('api/v1/cards', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -52,9 +55,11 @@ class DetectiveMain extends React.Component {
         this.setState({showCard: false})
     }
 
-    openBurger = () => {
-        this.setState({ showBurger: true });
-    };
+
+    openCriminals = () => {
+        this.setState({showModal_2: true})
+        this.setState({showModal: false})
+    }
 
     closeBurger = () => {
         this.setState({showBurger: false});
@@ -63,7 +68,7 @@ class DetectiveMain extends React.Component {
 
     fetchVisions = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/visions', {
+        fetch('api/v1/visions', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -90,13 +95,6 @@ class DetectiveMain extends React.Component {
         return (<div>
                 <Header isLogged={this.props.isLogged} me={me}/>
                 <BurgerMenu onClose={this.closeBurger} roles={rolesToDisplay} updatePull={this.props.pullRole}/>
-                {!this.state.showModal && (<div>
-
-
-
-                </div>)
-                }
-
 
                 {this.state.showCard && (
                     <div>
@@ -110,17 +108,26 @@ class DetectiveMain extends React.Component {
                 <div className="frame-2">
                     <div className="rectangle-2">
                         {this.state.showModal && (
+                                <ListCards onClose={this.closeModal}
+                                           crimeList={this.state.cards}
+                                           onRenew={this.openModal}
+                                           role={"DETECTIVE"}/>
+                        )}
+                        {this.state.showModal_2 && (
                             <div>
-                                <h1 className="card-text">Card List</h1>
-                                <ListCards onClose={this.closeModal} crimeList={this.state.cards} onRenew={this.openModal} role={"DETECTIVE"}/>
+                                <Criminals onClose={this.closeModal}
+                                           crimeList={this.state.cards}
+                                           onRenew={this.openModal}
+                                           role={"DETECTIVE"}/>
                             </div>
                         )}
                     </div>
                 </div>
                 <div className="frame-but">
                     <div className="rectangle-but" >
-                        <button className="card-list" onClick={this.openModal}>Open List Card</button>
+                        <button className="card-list" onClick={this.openModal}>Card List</button>
                         <button onClick={()=>{this.CreateCarted(true)}} className="create-card">Create Crime Card</button>
+                        <button className="card-list" onClick={this.openCriminals}>Criminals</button>
                     </div>
                 </div>
                 </div>

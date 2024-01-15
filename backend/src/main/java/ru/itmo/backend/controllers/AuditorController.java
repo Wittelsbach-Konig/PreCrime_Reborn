@@ -48,6 +48,7 @@ public class AuditorController {
         if(crimeCardOutDtos.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        System.out.println("Auditor cards size= " + crimeCardOutDtos.size());
         return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
     }
 

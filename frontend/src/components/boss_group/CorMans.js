@@ -22,7 +22,7 @@ class CorMans extends Component {
 
         const telId = parseInt(telegramId, 10);
         const token = localStorage.getItem('jwtToken');
-        const url = `http://localhost:8028/api/v1/reactiongroup/${this.props.manData.id}`;
+        const url = `api/v1/reactiongroup/${this.props.manData.id}`;
 
         const requestData = {
             memberName: memberName,

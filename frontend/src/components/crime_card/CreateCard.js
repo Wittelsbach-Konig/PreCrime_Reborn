@@ -37,7 +37,7 @@ class CrimeForm extends Component {
 
     handleGetCrimeTime = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/cards/randomDateTime', {
+        fetch('api/v1/cards/randomDateTime', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ class CrimeForm extends Component {
 
     handleGetCriminalName = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/cards/randomCriminalName', {
+        fetch('api/v1/cards/randomCriminalName', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ class CrimeForm extends Component {
 
     handleGetVictimName = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/cards/randomVictimName', {
+        fetch('api/v1/cards/randomVictimName', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ class CrimeForm extends Component {
         console.log(postData)
         const token = localStorage.getItem('jwtToken');
        if (placeOfCrime && weapon && crimeType && selectedRow && postData.criminalName && parsedDate && postData.victimName) {
-           fetch('http://localhost:8028/api/v1/cards/newcard', {
+           fetch('api/v1/cards/newcard', {
                method: 'POST',
                headers: {
                    'Content-Type': 'application/json',
@@ -171,8 +171,6 @@ class CrimeForm extends Component {
         const {
          placeOfCrime,
             weapon,
-            crimeType,
-            visionId,
             crimeTimeClicked,
             criminalNameClicked,
             victimNameClicked,
@@ -190,6 +188,47 @@ class CrimeForm extends Component {
                 <table className="bg-rg">
                     <tbody>
                     <tr>
+                        <td className="table-label-pr">Visions:</td>
+                        <td className="table-label-edit">
+                            <table className="bg-rg">
+                                <tbody>
+                                {visions ? (
+                                    visions.map((vision) => (
+                                        vision.accepted &&
+                                        (
+                                            <tr
+                                                key={vision.id}
+                                                className={vision.id === selectedRow ? 'selected-row' : ''}
+                                                onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
+                                            >
+                                                <td className="table-label-edit-rel"> Vision {vision.id}</td>
+                                            </tr>
+                                        )
+
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="1">No vision data available</td>
+                                    </tr>
+                                )}
+                                </tbody>
+                            </table>
+                        </td>
+                        <td className="table-label-edit">
+                            <div className="video-container-card">
+                                {selectedVideoUrl && (
+
+                                    <iframe
+                                        title="Vision Video"
+                                        src={selectedVideoUrl}
+                                        frameBorder="0"
+                                        allowFullScreen
+                                    ></iframe>)}
+                            </div>
+                        </td>
+                    </tr>
+                    {selectedVideoUrl &&
+                    <tr>
                         <td className="table-label-edit">Victim Name:</td>
                         <td colSpan="2" className="table-label-edit">{!victimNameClicked && (
                             <button onClick={this.handleGetVictimName}>Get Victim Name</button>
@@ -198,7 +237,8 @@ class CrimeForm extends Component {
                                 <input type="text" value={this.state.victimName} className="form-input" />
                             )}
                         </td>
-                    </tr>
+                    </tr>}
+                    {selectedVideoUrl &&
                     <tr>
                         <td className="table-label-pr">Criminal Name:</td>
                         <td colSpan="2" className="table-label-edit">
@@ -209,7 +249,8 @@ class CrimeForm extends Component {
                                 <input type="text" value={this.state.criminalName}  className="form-input" />
                             )}
                         </td>
-                    </tr>
+                    </tr>}
+                    {selectedVideoUrl &&
                     <tr>
                         <td className="table-label-pr">Crime Time:</td>
                         <td colSpan="2" className="table-label-edit">
@@ -220,21 +261,24 @@ class CrimeForm extends Component {
                                 <input type="text" value={this.state.crimeTime}  className="form-input" />
                             )}
                         </td>
-                    </tr>
+                    </tr>}
+                    {selectedVideoUrl &&
                     <tr>
                         <td className="table-label-pr">Place of Crime:</td>
                         <td colSpan="2" className="table-label-edit">
                             <input maxLength="40" type="text" name="placeOfCrime" value={placeOfCrime}
                                    onChange={this.handleChangePlace} className="form-input" />
                         </td>
-                    </tr>
+                    </tr>}
+                    {selectedVideoUrl &&
                     <tr>
                         <td className="table-label-pr">Weapon:</td>
                         <td colSpan="2" className="table-label-edit">
                             <input maxLength="20" type="text" name="weapon" value={weapon}
                                    onChange={this.handleChangeWeapon} className="form-input" />
                         </td>
-                    </tr>
+                    </tr>}
+                    {selectedVideoUrl &&
                     <tr>
                         <td className="table-label-pr">Crime Type:</td>
                         <td colSpan="2" className="table-label-edit">
@@ -244,47 +288,7 @@ class CrimeForm extends Component {
                                 <option className="table-select" value="UNINTENTIONAL" name="crimeType">UNINTENTIONAL</option>
                             </select>
                         </td>
-                    </tr>
-                    <tr>
-                        <td className="table-label-pr">Visions:</td>
-                        <td className="table-label-edit">
-                                    <table className="bg-rg-edit">
-                                        <tbody>
-                                        {visions ? (
-                                            visions.map((vision) => (
-                                                vision.accepted &&
-                                                (
-                                                    <tr
-                                                        key={vision.id}
-                                                        className={vision.id === selectedRow ? 'selected-row' : ''}
-                                                        onClick={() => this.handleRowClick(vision.id, vision.videoUrl)}
-                                                    >
-                                                        <td className="table-label-edit-rel"> Vision {vision.id}</td>
-                                                    </tr>
-                                                )
-
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="1">No vision data available</td>
-                                            </tr>
-                                        )}
-                                        </tbody>
-                                    </table>
-                        </td>
-                        <td className="table-label-edit">
-                            <div className="video-container-card">
-                                    {selectedVideoUrl && (
-
-                                        <iframe
-                                            title="Vision Video"
-                                            src={selectedVideoUrl}
-                                            frameBorder="0"
-                                            allowFullScreen
-                                        ></iframe>)}
-                            </div>
-                        </td>
-                    </tr>
+                    </tr>}
                     </tbody>
                 </table>
 

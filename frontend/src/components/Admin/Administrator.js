@@ -40,7 +40,7 @@ class Administrator extends Component {
         this.setState({showModal: false});
         const token = localStorage.getItem('jwtToken');
 
-        fetch('http://localhost:8028/api/v1/admin/users', {
+        fetch('api/v1/admin/users', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',

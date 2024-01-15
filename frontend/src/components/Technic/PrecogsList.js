@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import UpdatePrecogs from "./UpdatePrecogs";
 import RegPrecogs from "../Technic/RegPrecogs";
 import FormData from "form-data";
-
+import update from "../../img/correct.png";
+import close from "../../img/close.png";
+import retire from "../../img/retirePr.png"
+import rehab from "../../img/rehabPr.png"
 class PrecogsList extends Component {
     constructor(props) {
         super(props);
@@ -35,7 +38,7 @@ class PrecogsList extends Component {
     closeModal_2 = () => {
         const token = localStorage.getItem('jwtToken');
         this.setState({showModal_2: false});
-        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'GET');
+        this.fetchRenew(`api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'GET');
     };
 
     componentDidMount() {
@@ -45,7 +48,7 @@ class PrecogsList extends Component {
 
     fetchPsychics = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/precogs', {
+        fetch('api/v1/precogs', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,6 +63,7 @@ class PrecogsList extends Component {
             })
             .then(data => {
                 this.setState({ psychics: data });
+                data!==null && this.setState({ selectedPsychic: data[0] });
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
@@ -88,11 +92,11 @@ class PrecogsList extends Component {
         form.append(`amount`, this.state[fieldName]);
         console.log(this.state.selectedPsychic.id)
             if(fieldName==="serotoninLevel")
-            {this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterserotonin`,form)}
+            {this.fetchChange(token,`api/v1/precogs/${this.state.selectedPsychic.id}/enterserotonin`,form)}
             if(fieldName==="dopamineLevel")
-            { this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterdopamine`,form)}
+            { this.fetchChange(token,`api/v1/precogs/${this.state.selectedPsychic.id}/enterdopamine`,form)}
             if(fieldName==="stressLevel")
-            { this.fetchChange(token,`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/enterdepressant`,form)}
+            { this.fetchChange(token,`api/v1/precogs/${this.state.selectedPsychic.id}/enterdepressant`,form)}
 
 
 
@@ -120,7 +124,7 @@ class PrecogsList extends Component {
             })
             .then(data => {
                 console.log(data);
-                this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'GET')
+                this.fetchRenew(`api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'GET')
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
@@ -131,14 +135,14 @@ class PrecogsList extends Component {
     fetchRetire = () =>
     {
         const token = localStorage.getItem('jwtToken');
-        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/retire`,token, 'POST')
+        this.fetchRenew(`api/v1/precogs/${this.state.selectedPsychic.id}/retire`,token, 'POST')
 
     }
 
     fetchRehabilitate = () =>
     {
         const token = localStorage.getItem('jwtToken');
-        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}/rehabilitate`,token, 'POST')
+        this.fetchRenew(`api/v1/precogs/${this.state.selectedPsychic.id}/rehabilitate`,token, 'POST')
 
     }
 
@@ -148,7 +152,7 @@ class PrecogsList extends Component {
         const confirmation = window.confirm(`Are you sure delete this precog?`);
 
         if (confirmation) {
-        this.fetchRenew(`http://localhost:8028/api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'DELETE')}
+        this.fetchRenew(`api/v1/precogs/${this.state.selectedPsychic.id}`,token, 'DELETE')}
 
     }
 
@@ -193,26 +197,20 @@ class PrecogsList extends Component {
                 <header className="header-pr">
                     {this.state.showModal && <RegPrecogs onClose={this.closeModal} onRenew={this.fetchPsychics} />}
                     {this.state.showModal_2 && <UpdatePrecogs onClose={this.closeModal_2} pre={this.state.selectedPsychic} />}
-                    {this.state.selectedPsychic ? (<div>
-                        <button className="new-precog" onClick={this.openModal}>New Precog</button>
-                        <button className="ret-precog" onClick={this.fetchRetire}>Retire</button>
-                        <button className="reh-precog" onClick={this.fetchRehabilitate}>Rehabilitate</button>
-                        <button className="del-precog" onClick={this.fetchDel}>Delete Precog</button>
-                        <button className="upd-precog" onClick={this.openModal_2}>Update Precog</button></div>):
-                        ( <button className="new-precog" onClick={this.openModal}>New Precog</button>)}
+                    <button className="new-precog" onClick={this.openModal}>New Precog</button>
                 </header>
                 <div className="psychic-container">
                     <div className="psychic-dropdown-container">
-                        <label htmlFor="psychicDropdown" className="ch-pr">Choose Precogs</label>
+                        <label htmlFor="psychicDropdown" className="ch-pr">Precogs</label>
                         <select id="psychicDropdown" onChange={this.handlePsychicChange}>
-                            <option value={null}>Choosing Precogs</option>
-                            {psychics && this.state.psychics.map(psychic => (
+
+                            {psychics ? this.state.psychics.map(psychic => (
                                 <option key={psychic.id} value={psychic.id}>{psychic.preCogName}</option>
-                            ))}
+                            ))
+                            : <option value={null}>Registration precog</option>}
                         </select>
                         {selectedPsychic && this.state.selectedPsychic && (
                             <div className="psychic-info">
-                                <h2 className="name-precog">Information about precogs</h2>
                                 <h2 className="name-precog">{this.state.selectedPsychic.preCogName}</h2>
                                 <table className="bg-rg">
                                     <tbody>
@@ -243,6 +241,36 @@ class PrecogsList extends Component {
                                     <tr>
                                         <td className="table-label">On Working:</td>
                                         <td className="table-label">{this.state.selectedPsychic.work ? 'Yes' : 'No'}</td>
+                                    </tr>
+                                    <tr className="special">
+                                        <td className="table-label" colSpan='2'>
+                                        {selectedPsychic.work ?
+                                            <td className="table-label-pr">
+                                                <button className="fuel-but" onClick={this.fetchRetire}>
+                                                    <img src={retire} className="fuel" alt="Кнопка «button»"/>
+                                                </button>
+                                                <div className="tooltip" id="tooltip">Retire</div>
+                                            </td>
+                                            :
+                                            <td className="table-label-pr">
+                                                <button className="fuel-but" onClick={this.fetchRehabilitate}>
+                                                    <img src={rehab} className="fuel" alt="Кнопка «button»"/>
+                                                </button>
+                                                <div className="tooltip" id="tooltip">Rehabilitate</div>
+                                            </td>}
+                                        <td className="table-label-pr">
+                                            <button className="fuel-but" onClick={this.openModal_2}>
+                                                <img src={update} className="fuel" alt="Кнопка «button»"/>
+                                            </button>
+                                            <div className="tooltip" id="tooltip">Update</div>
+                                        </td>
+                                        <td className="table-label-pr">
+                                            <button className="fuel-but" onClick={this.fetchDel}>
+                                                <img src={close} className="fuel" alt="Кнопка «button»"/>
+                                            </button>
+                                            <div className="tooltip" id="tooltip">Delete</div>
+                                        </td>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>

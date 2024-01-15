@@ -31,10 +31,10 @@ class AppointGroup extends Component {
         const { selectedRows } = this.state
         const { idCr } = this.props
 
-        const grr = selectedRows.length !== 0 ? (selectedRows.length === 1 ? [selectedRows] : selectedRows) : [];
+        const grr = selectedRows.length !== 0 ? (selectedRows.length === 1 ? [...selectedRows] : selectedRows) : [];
         console.log(grr)
         if (selectedRows.length !== 0) {
-            fetch(`http://localhost:8028/api/v1/reactiongroup/criminal/${idCr}`, {
+            fetch(`api/v1/reactiongroup/criminal/${idCr}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,6 +52,7 @@ class AppointGroup extends Component {
                 .then(data => {
                     console.log(data);
                     this.props.onRenew();
+                    this.props.onClose();
                 })
                 .catch(error => {
                     console.error('Ошибка при запросе к серверу:', error);
@@ -63,7 +64,7 @@ class AppointGroup extends Component {
         {
             window.alert("choose men")
         }
-
+        this.props.onClose();
     };
 
 
@@ -87,16 +88,18 @@ class AppointGroup extends Component {
                                     <tbody>
 
                                     {groupList ? (groupList.map((group) => (
-                                        <tr
-                                            key={group.id}
-                                            className={this.state.selectedRows.includes(group.id) ? 'selected-row' : ''}
-                                            onClick={() => this.handleRowsClick(group.id)}
-                                        >
-                                            <td className="table-label-edit">{group.id}</td>
-                                            <td className="table-label-edit">{group.memberName}</td>
-                                            <td className="table-label-edit">{group.telegramId}</td>
-                                            <td className="table-label-edit">{group.inOperation ? 'Yes' : 'No'}</td>
-                                        </tr>
+                                            group.inOperation &&
+                                                    <tr
+                                                        key={group.id}
+                                                        className={this.state.selectedRows.includes(group.id) ? 'selected-row' : ''}
+                                                        onClick={() => this.handleRowsClick(group.id)}
+                                                    >
+                                                        <td className="table-label-edit">{group.id}</td>
+                                                        <td className="table-label-edit">{group.memberName}</td>
+                                                        <td className="table-label-edit">{group.telegramId}</td>
+                                                        <td className="table-label-edit">{group.inOperation ? 'Yes' : 'No'}</td>
+                                                    </tr>
+
                                     )))
                                     : (
                                             <tr>

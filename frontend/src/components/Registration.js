@@ -68,7 +68,7 @@ class Registration extends React.Component {
         || !user.lastName || !user.telegramId)
         {window.alert("There's no good idea)")}
         else {
-            fetch('http://localhost:8028/api/v1/auth/registration', {
+            fetch('api/v1/auth/registration', {
                 method: 'POST', // или другой метод
                 headers: {
                     'Content-Type': 'application/json',

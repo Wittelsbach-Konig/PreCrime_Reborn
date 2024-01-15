@@ -50,6 +50,8 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/", "/index.html", "/static/**",
+                        "/*.ico", "/*.json", "/*.png").permitAll()
                 .antMatchers(SecurityLiterals.AUTH_ENDPOINTS).anonymous()
                 .antMatchers("/api/v1/credits").permitAll()
                 .antMatchers(SecurityLiterals.ADMIN_ENDPOINTS).hasAuthority("ADMIN")
