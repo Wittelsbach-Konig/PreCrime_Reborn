@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PreCogOutDto {
+    private Long id;
     private String preCogName;
     private int age;
     private int dopamineLevel;

@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class PreCogMapper {
     public static PreCogOutDto mapToPreCogOutDto(PreCog preCog){
         PreCogOutDto preCogOutDto = PreCogOutDto.builder()
+                .id(preCog.getId())
                 .preCogName(preCog.getPreCogName())
                 .age(preCog.getAge())
                 .serotoninLevel(preCog.getSerotoninLevel())
