@@ -13,9 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfiguration;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -72,6 +78,7 @@ public class WebSecurityConfig {
                 .logout().disable()
                 .httpBasic();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(spaWebFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean
@@ -107,5 +114,24 @@ public class WebSecurityConfig {
     @Bean
     public JwtRequestFilter jwtAuthenticationFilter() {
         return new JwtRequestFilter();
+    }
+
+    @Bean
+    public SpaWebFilter spaWebFilter() { return new SpaWebFilter();}
+
+    @Bean
+    public RequestCache referrerRequestCache() {
+        return new HttpSessionRequestCache() {
+            @Override
+            public void saveRequest(HttpServletRequest request, HttpServletResponse response) {
+                String referrer = request.getHeader("referrer");
+                if (referrer == null) {
+                    referrer = request.getRequestURL().toString();
+                }
+                request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST",
+                        new SimpleSavedRequest(referrer));
+            }
+        };
+
     }
 }
