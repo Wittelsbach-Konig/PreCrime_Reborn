@@ -69,7 +69,7 @@ public class WebSecurityConfig {
                 .antMatchers(SecurityLiterals.TECHNIC_ENDPOINTS).hasAuthority("TECHNIC")
                 .antMatchers(SecurityLiterals.REACT_GROUP_BOSS_ENDPOINTS).hasAuthority("REACTIONGROUP")
                 .antMatchers(SecurityLiterals.TECHNIC_DETECTIVE_VISION_ENDPOINTS).hasAnyAuthority("TECHNIC", "DETECTIVE")
-                .antMatchers(SecurityLiterals.COMMON_VISION_ENDPOINTS).hasAnyAuthority("ADMIN", "TECHNIC")
+                .antMatchers(SecurityLiterals.COMMON_VISION_ENDPOINTS).hasAnyAuthority("ADMIN", "TECHNIC", "DETECTIVE")
                 .anyRequest()
                 .authenticated()
                 .and()
