@@ -119,7 +119,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         criminal.setArrestAssigned(true);
         String message = "You have been assigned to arrest a criminal, information:\n"
                 + "Criminal Name: " + criminal.getName() + "\n"
-                + "Last known location: " + criminal.getLocation()
+                + "Last known location: " + criminal.getLocation() +"\n"
                 + "Weapon :" + criminal.getWeapon();
         for(Long memberId : group){
             ReactGroup groupMember = findGroupMemberById(memberId);

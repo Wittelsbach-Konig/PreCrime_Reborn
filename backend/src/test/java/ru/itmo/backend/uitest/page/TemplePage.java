@@ -44,6 +44,16 @@ public class TemplePage extends BasePage{
     private WebElement acceptButton;
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/div/table/tbody/tr/td[4]/td[2]/button/img")
     private WebElement deleteButton;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[8]/td/td[1]/button/img")
+    private WebElement retirePreCog;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[7]/td[2]")
+    private WebElement preCogStatus;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[4]/td[2]")
+    private WebElement preCogSerotonin;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[3]/td[2]")
+    private WebElement preCogDopamine;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[5]/td[2]")
+    private WebElement preCogStress;
 
 
     public TemplePage() {
@@ -56,10 +66,22 @@ public class TemplePage extends BasePage{
     public void clickCheckPreCogs() {
         checkPreCogs.click();
     }
+
     public void selectPreCog(String name) {
         Select select = new Select(physicsDropDown);
         select.selectByVisibleText(name);
     }
+
+    public void clickRetirePreCog(String name) {
+        selectPreCog(name);
+        retirePreCog.click();
+    }
+
+    public String getPreCogStatus(String name) {
+        selectPreCog(name);
+        return preCogStatus.getText();
+    }
+
     public void newPreCog(String name, int age) {
         clickCheckPreCogs();
         newPreCogButton.click();
@@ -88,17 +110,24 @@ public class TemplePage extends BasePage{
         return Integer.parseInt(substance.getText());
     }
     public int getStressLevel() {
-        return getSubstanceLevel(stressLevel);
+        return getSubstanceLevel(preCogStress);
     }
     public int getDopamineLevel() {
-        return getSubstanceLevel(dopamineLevel);
+        return getSubstanceLevel(preCogDopamine);
     }
     public int getSerotoninLevel() {
-        return getSubstanceLevel(serotoninLevel);
+        return getSubstanceLevel(preCogSerotonin);
     }
 
-    public void healPreCog () {
-        
+    public void healPreCog (String name) throws InterruptedException {
+        clickCheckPreCogs();
+        Thread.sleep(500);
+        selectPreCog(name);
+        int deltaDopamine = 100 - getDopamineLevel();
+        int deltaSerotonin = 100 - getSerotoninLevel();
+        if (deltaSerotonin > 0) { setSerotonin(deltaSerotonin); }
+        if (deltaDopamine > 0) { setDopamine(deltaDopamine); }
+        setDepressant(getStressLevel());
     }
 
     public void clickVision() {
