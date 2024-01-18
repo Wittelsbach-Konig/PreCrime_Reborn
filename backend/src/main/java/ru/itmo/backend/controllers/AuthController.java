@@ -8,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +18,6 @@ import ru.itmo.backend.dto.LoginDto;
 import ru.itmo.backend.dto.RegistrationDto;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.exceptions.AppError;
-import ru.itmo.backend.exceptions.NotValidArgumentException;
-import ru.itmo.backend.security.CustomUserDetailService;
 import ru.itmo.backend.security.JwtTokenUtils;
 import ru.itmo.backend.service.UserService;
 
@@ -33,16 +30,14 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-    private final CustomUserDetailService customUserDetailService;
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(UserService userService, JwtTokenUtils jwtTokenUtils, AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService) {
+    public AuthController(UserService userService, JwtTokenUtils jwtTokenUtils, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtTokenUtils = jwtTokenUtils;
         this.authenticationManager = authenticationManager;
-        this.customUserDetailService = customUserDetailService;
     }
 
     @PostMapping("/login")

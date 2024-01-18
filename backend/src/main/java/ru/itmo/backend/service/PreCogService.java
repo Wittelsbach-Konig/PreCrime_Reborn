@@ -1,19 +1,20 @@
 package ru.itmo.backend.service;
 
 import ru.itmo.backend.dto.PreCogDto;
+import ru.itmo.backend.dto.PreCogOutDto;
 import ru.itmo.backend.models.PreCog;
 
 import java.util.List;
 
 public interface PreCogService {
-    List<PreCog> getAllPreCogs();
+    List<PreCogOutDto> getAllPreCogs();
     PreCog findPreCogById(Long id);
-    PreCog getPreCog(Long id);
-    PreCog addNewPreCog(PreCogDto preCogDto);
+    PreCogOutDto getPreCog(Long id);
+    PreCogOutDto addNewPreCog(PreCogDto preCogDto);
     void deletePreCog(Long id);
-    PreCog updatePreCogInfo(Long id, PreCogDto preCogDto);
-    PreCog retirePreCog(Long id);
-    PreCog rehabilitatePreCog(Long id);
+    PreCogOutDto updatePreCogInfo(Long id, PreCogDto preCogDto);
+    PreCogOutDto retirePreCog(Long id);
+    PreCogOutDto rehabilitatePreCog(Long id);
     void updateVitalSigns();
     void enterDopamine(Long id, int amount);
     void enterSerotonine(Long id, int amount);

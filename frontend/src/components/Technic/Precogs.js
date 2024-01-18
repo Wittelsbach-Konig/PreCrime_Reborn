@@ -21,22 +21,6 @@ class Precogs extends Component {
     openModal = () => {
         this.setState({ showModal: true });
         this.setState({ showModal_2: false });
-        const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/visions', {
-            method: 'GET', // или другой метод
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({ visions: data });
-                console.log(this.state.visions)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
     };
 
     closeModal = () => {
@@ -61,9 +45,12 @@ class Precogs extends Component {
     }
 
 
+
+
+
     fetchPsychics = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/precogs', {
+        fetch('api/v1/precogs', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +84,7 @@ class Precogs extends Component {
 
                 <div className="frame-2">
                     <div className="rectangle-2">
-                        {this.state.showModal && <VisionList onClose={this.closeModal} visions={this.state.visions} onRenew={this.openModal}/>}
+                        {this.state.showModal && <VisionList onClose={this.closeModal}/>}
                         {this.state.showModal_2 &&
                             (<div>
                                 <PrecogsList onClose={this.closeModal_2} onRenew={this.fetchPsychics} />

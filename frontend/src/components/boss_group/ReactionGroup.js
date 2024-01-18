@@ -2,6 +2,8 @@ import React from "react";
 import TableGroup from "./TableGroup";
 import RegMans from "./newMan";
 import CorMans from "./CorMans"
+import close from "../../img/close.png";
+import update from "../../img/correct.png"
 class ReactionGroup extends React.Component {
     constructor(props) {
 
@@ -85,7 +87,7 @@ class ReactionGroup extends React.Component {
         const token = localStorage.getItem('jwtToken');
 
 
-        fetch(`http://localhost:8028/api/v1/reactiongroup/${url}`, {
+        fetch(`api/v1/reactiongroup/${url}`, {
             method: method, // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -118,10 +120,6 @@ class ReactionGroup extends React.Component {
                 <header className="header-pr">
                     <button className="acc-vis" onClick={this.openModal}>Register new men</button>
 
-                    <button className="acc-vis" onClick={this.openModal_1}>Correct men</button>
-
-                    <button className="acc-vis" onClick={this.retireMan}>Retire men</button>
-
                     {this.state.showWorking ? <button className="acc-vis" onClick={this.showAll}>Show all men</button>
                         :<button className="acc-vis" onClick={this.showAll}>Show working men</button>}
                 </header>
@@ -141,15 +139,11 @@ class ReactionGroup extends React.Component {
                         <table className="bg-rg">
                             <tbody>
                             <tr>
-                                <td colSpan="2" className="table-label">Criminal info</td>
+                                <td colSpan="2" className="table-label">{manData.memberName}</td>
                             </tr>
                             <tr>
                                 <td className="table-label">ID:</td>
                                 <td className="table-label">{manData.id}</td>
-                            </tr>
-                            <tr>
-                                <td className="table-label">Member Name:</td>
-                                <td className="table-label">{manData.memberName}</td>
                             </tr>
                             <tr>
                                 <td className="table-label">In Operation:</td>
@@ -162,6 +156,21 @@ class ReactionGroup extends React.Component {
                             <tr>
                                 <td className="table-label">Criminals Escaped:</td>
                                 <td className="table-label">{manData.criminalsEscaped}</td>
+                            </tr>
+                            <tr>
+
+                                <td className="table-label">
+                                    <button className="fuel-but" onClick={this.openModal_1}>
+                                        <img src={update} className="fuel" alt="Кнопка «button»"/>
+                                    </button>
+                                    <div className="tooltip" id="tooltip">Update</div>
+                                </td>
+                                <td className="table-label">
+                                    <button className="fuel-but" onClick={this.retireMan}>
+                                        <img src={close} className="fuel" alt="Кнопка «button»"/>
+                                    </button>
+                                    <div className="tooltip" id="tooltip">Retire</div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

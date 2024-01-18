@@ -8,6 +8,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.CrimeCardInDto;
 import ru.itmo.backend.dto.CrimeCardOutDto;
+import ru.itmo.backend.dto.CrimeCardUpdateDto;
+import ru.itmo.backend.dto.CriminalOutDto;
+import ru.itmo.backend.models.CriminalStatus;
 import ru.itmo.backend.service.CardService;
 
 import javax.validation.Valid;
@@ -30,7 +33,38 @@ public class CrimeCardController {
     @GetMapping
     public ResponseEntity<List<CrimeCardOutDto>> getAllCards(){
         List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCards();
+        System.out.println("Detective Cards size= " + crimeCards.size());
         return new ResponseEntity<>(crimeCards, HttpStatus.OK);
+    }
+
+    @GetMapping("/bycreationdate")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCardsSortedByCreationDate(@RequestParam String direction) {
+        List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCardsSortedByCreationDate(direction);
+        return new ResponseEntity<>(crimeCards, HttpStatus.OK);
+    }
+
+    @GetMapping("/bycrimetime")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCardsSortedByCrimeTime(@RequestParam String direction) {
+        List<CrimeCardOutDto> crimeCards = cardService.getAllDetectiveCardsSortedByCrimeTime(direction);
+        return new ResponseEntity<>(crimeCards, HttpStatus.OK);
+    }
+
+    @GetMapping("caughtcriminals")
+    public ResponseEntity<List<CriminalOutDto>> getAllCaughtCriminals() {
+        List<CriminalOutDto> caughtCriminals = cardService.getAllCriminals(CriminalStatus.CAUGHT);
+        return new ResponseEntity<>(caughtCriminals, HttpStatus.OK);
+    }
+
+    @GetMapping("escapedcriminals")
+    public ResponseEntity<List<CriminalOutDto>> getAllEscapedCriminals() {
+        List<CriminalOutDto> caughtCriminals = cardService.getAllCriminals(CriminalStatus.ESCAPED);
+        return new ResponseEntity<>(caughtCriminals, HttpStatus.OK);
+    }
+
+    @GetMapping("recentcriminals")
+    public ResponseEntity<List<CriminalOutDto>> getAllRecentCriminals() {
+        List<CriminalOutDto> caughtCriminals = cardService.getAllCriminals(CriminalStatus.NOT_CAUGHT);
+        return new ResponseEntity<>(caughtCriminals, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -72,7 +106,7 @@ public class CrimeCardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CrimeCardOutDto> updateCardData(@PathVariable Long id
-                                                        , @Valid @RequestBody CrimeCardInDto updatedCardDto) {
+                                                        , @Valid @RequestBody CrimeCardUpdateDto updatedCardDto) {
         CrimeCardOutDto cardAfterUpdate = cardService.updateCard(id, updatedCardDto);
         return new ResponseEntity<>(cardAfterUpdate, HttpStatus.OK);
     }

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.itmo.backend.dto.PreCogDto;
+import ru.itmo.backend.dto.PreCogOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.models.PreCog;
@@ -70,9 +71,10 @@ public class PreCogServiceTests {
                 .commissionedOn(LocalDateTime.now())
                 .isWork(true)
                 .build();
+
         List<PreCog> preCogs = Arrays.asList(preCog1,preCog2);
         when(preCogRepository.findAll()).thenReturn(preCogs);
-        List<PreCog> result = preCogService.getAllPreCogs();
+        List<PreCogOutDto> result = preCogService.getAllPreCogs();
         Assertions.assertNotNull(result);
         Assertions.assertEquals(2, result.size());
     }
@@ -81,9 +83,9 @@ public class PreCogServiceTests {
     public void PreCogService_GetPreCog_ReturnPreCog(){
         Long preCogId = 1L;
         when(preCogRepository.findById(preCogId)).thenReturn(Optional.of(preCog1));
-        PreCog resultValue = preCogService.getPreCog(preCogId);
+        PreCogOutDto resultValue = preCogService.getPreCog(preCogId);
         Assertions.assertNotNull(resultValue);
-        Assertions.assertEquals(preCog1, resultValue);
+        Assertions.assertEquals(preCog1.getPreCogName(), resultValue.getPreCogName());
     }
 
     @Test
@@ -91,7 +93,7 @@ public class PreCogServiceTests {
         Long preCogId = 3L;
         when(preCogRepository.findById(preCogId)).thenReturn(Optional.ofNullable(null));
         Assertions.assertThrows(NotFoundException.class, ()-> {
-            PreCog resultValue = preCogService.getPreCog(preCogId);
+            PreCogOutDto resultValue = preCogService.getPreCog(preCogId);
         });
     }
 
@@ -103,7 +105,7 @@ public class PreCogServiceTests {
         preCogToAdd.setAge(22);
         when(preCogRepository.save(Mockito.any(PreCog.class))).thenReturn(preCog1);
         // Act
-        PreCog addedPreCog = preCogService.addNewPreCog(preCogToAdd);
+        PreCogOutDto addedPreCog = preCogService.addNewPreCog(preCogToAdd);
         // Assert
         Assertions.assertNotNull(addedPreCog);
         Assertions.assertEquals("Max", addedPreCog.getPreCogName());
@@ -125,7 +127,7 @@ public class PreCogServiceTests {
         Long preCogId = 1L;
         when(preCogRepository.findById(preCogId)).thenReturn(Optional.ofNullable(preCog1));
         when(preCogRepository.save(preCog1)).thenReturn(preCog1);
-        PreCog updatedPreCog = preCogService.updatePreCogInfo(preCogId, preCogToUpd);
+        PreCogOutDto updatedPreCog = preCogService.updatePreCogInfo(preCogId, preCogToUpd);
         Assertions.assertNotNull(updatedPreCog);
         Assertions.assertEquals(preCogToUpd.getPreCogName(), updatedPreCog.getPreCogName());
         Assertions.assertEquals(preCogToUpd.getAge(), updatedPreCog.getAge());
@@ -137,7 +139,7 @@ public class PreCogServiceTests {
         when(preCogRepository.findById(preCogId)).thenReturn(Optional.ofNullable(preCog1));
         when(preCogRepository.save(preCog1)).thenReturn(preCog1);
 
-        PreCog updatedPreCog = preCogService.retirePreCog(preCogId);
+        PreCogOutDto updatedPreCog = preCogService.retirePreCog(preCogId);
         Assertions.assertNotNull(updatedPreCog);
         Assertions.assertEquals(false, updatedPreCog.isWork());
     }
@@ -148,7 +150,7 @@ public class PreCogServiceTests {
         when(preCogRepository.findById(preCogId)).thenReturn(Optional.ofNullable(preCog1));
         when(preCogRepository.save(preCog1)).thenReturn(preCog1);
 
-        PreCog updatedPreCog = preCogService.rehabilitatePreCog(preCogId);
+        PreCogOutDto updatedPreCog = preCogService.rehabilitatePreCog(preCogId);
         Assertions.assertNotNull(updatedPreCog);
         Assertions.assertEquals(true, updatedPreCog.isWork());
     }

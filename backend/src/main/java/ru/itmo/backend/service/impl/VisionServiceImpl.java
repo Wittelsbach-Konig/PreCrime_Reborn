@@ -51,12 +51,11 @@ public class VisionServiceImpl implements VisionService {
         Vision newVision = new Vision();
         newVision.setVideoUrl(visionDto.getVideoUrl());
         Vision savedVision = visionRepository.save(newVision);
-        VisionOutDto result = VisionOutDto.builder()
+        return VisionOutDto.builder()
                 .id(savedVision.getId())
                 .videoUrl(savedVision.getVideoUrl())
                 .accepted(savedVision.isAccepted())
                 .build();
-        return result;
     }
 
     @Override
@@ -93,11 +92,16 @@ public class VisionServiceImpl implements VisionService {
         List<Vision> visionList = new ArrayList<>();
         List<String> userRoles = securityUtil.getSessionUserRoles();
         if (userRoles.contains("DETECTIVE")) {
-            visionList.addAll(visionRepository.findAllByAcceptedTrue());
+            visionList.addAll(visionRepository.findAllByAcceptedTrueAndAlreadyInUseFalse());
         }
         if (userRoles.contains("TECHNIC")) {
             visionList.addAll(visionRepository.findAllByAcceptedFalse());
         }
         return visionList;
+    }
+
+    @Override
+    public List<Vision> getUsedVisionList() {
+        return new ArrayList<>(visionRepository.findAllByAlreadyInUseTrue());
     }
 }

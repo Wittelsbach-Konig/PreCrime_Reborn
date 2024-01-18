@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.itmo.backend.controllers.PreCogController;
 import ru.itmo.backend.dto.PreCogDto;
+import ru.itmo.backend.dto.PreCogOutDto;
 import ru.itmo.backend.models.PreCog;
 import ru.itmo.backend.service.PreCogService;
 
@@ -46,37 +47,34 @@ public class PreCogControllerUnitTests {
 
     @Test
     public void PreCogController_GetAllPreCogs_ReturnsListOfPreCogs() throws Exception{
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(23)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Alex")
                 .dopamineLevel(100)
                 .isWork(true)
                 .serotoninLevel(100)
                 .stressLevel(0)
                 .build();
-        PreCog preCog2 = PreCog.builder()
-                .id(2L)
+        PreCogOutDto preCog2 = PreCogOutDto.builder()
                 .age(22)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Mike")
                 .dopamineLevel(100)
                 .isWork(true)
                 .serotoninLevel(100)
                 .stressLevel(0)
                 .build();
-        PreCog preCog3 = PreCog.builder()
-                .id(3L)
+        PreCogOutDto preCog3 = PreCogOutDto.builder()
                 .age(23)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Claire")
                 .dopamineLevel(100)
                 .isWork(true)
                 .serotoninLevel(100)
                 .stressLevel(0)
                 .build();
-        List<PreCog> preCogs = Arrays.asList(preCog1, preCog2, preCog3);
+        List<PreCogOutDto> preCogs = Arrays.asList(preCog1, preCog2, preCog3);
         when(preCogService.getAllPreCogs()).thenReturn(preCogs);
 
         ResultActions resultActions = mockMvc.perform(get("/api/v1/precogs")
@@ -91,7 +89,7 @@ public class PreCogControllerUnitTests {
     @Test
     public void PreCogController_GetAllPreCogs_ReturnsNoContent() throws Exception{
 
-        List<PreCog> preCogs = new ArrayList<>();
+        List<PreCogOutDto> preCogs = new ArrayList<>();
         when(preCogService.getAllPreCogs()).thenReturn(preCogs);
 
         ResultActions resultActions = mockMvc.perform(get("/api/v1/precogs")
@@ -104,10 +102,9 @@ public class PreCogControllerUnitTests {
 
     @Test
     public void PreCogController_GetPreCog_ReturnsPreCog() throws Exception {
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(23)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Alex")
                 .dopamineLevel(100)
                 .isWork(true)
@@ -130,10 +127,9 @@ public class PreCogControllerUnitTests {
         PreCogDto preCogDto = new PreCogDto();
         preCogDto.setPreCogName("Michael");
         preCogDto.setAge(25);
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(25)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Michael")
                 .dopamineLevel(100)
                 .isWork(true)
@@ -156,10 +152,9 @@ public class PreCogControllerUnitTests {
         PreCogDto preCogDto = new PreCogDto();
         preCogDto.setPreCogName("Michael");
         preCogDto.setAge(25);
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(25)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Michael")
                 .dopamineLevel(100)
                 .isWork(true)
@@ -212,10 +207,9 @@ public class PreCogControllerUnitTests {
 
     @Test
     public void PreCogController_RetirePreCog_ReturnsPreCog() throws Exception {
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(25)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Michael")
                 .dopamineLevel(100)
                 .isWork(false)
@@ -231,10 +225,9 @@ public class PreCogControllerUnitTests {
 
     @Test
     public void PreCogController_RehabilitatePreCog_ReturnsPreCog() throws Exception {
-        PreCog preCog1 = PreCog.builder()
-                .id(1L)
+        PreCogOutDto preCog1 = PreCogOutDto.builder()
                 .age(25)
-                .commissionedOn(LocalDateTime.now())
+                .commissionedOn("LocalDateTime.now()")
                 .preCogName("Michael")
                 .dopamineLevel(100)
                 .isWork(true)

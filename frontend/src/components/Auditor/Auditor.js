@@ -22,7 +22,7 @@ class DetectiveMain extends React.Component {
         this.setState({ showUsers: false});
         const token = localStorage.getItem('jwtToken');
 
-        fetch('http://localhost:8028/api/v1/auditor/cards', {
+        fetch('api/v1/auditor/cards', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ class DetectiveMain extends React.Component {
         this.setState({showModal: false});
         const token = localStorage.getItem('jwtToken');
 
-        fetch('http://localhost:8028/api/v1/auditor/users', {
+        fetch('api/v1/auditor/users', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -71,17 +71,9 @@ class DetectiveMain extends React.Component {
         this.setState({showUsers: false})
     }
 
-    openBurger = () => {
-        this.setState({ showBurger: true });
-    };
-
     closeBurger = () => {
         this.setState({showBurger: false});
         this.props.renew();
-    };
-
-    showAm = () => {
-
     };
 
 
@@ -111,14 +103,13 @@ class DetectiveMain extends React.Component {
                     <div className="rectangle-2">
                         {this.state.showUsers && (
                             <div>
-                                <h1 className="card-text">User List</h1>
+                                <h2 className="h-style">User List</h2>
                                 <Users onClose={this.closeUsers} usersList={this.state.users} onRenew={this.showUsers} role={"AUDITOR"}/>
                             </div>
                         )}
 
                         {this.state.showModal && (
                             <div>
-                                <h1 className="card-text">Card List</h1>
                                 <ListCards onClose={this.closeModal} crimeList={this.state.cards} onRenew={this.openModal} role={"AUDITOR"}/>
                             </div>
                         )}

@@ -48,6 +48,25 @@ public class AuditorController {
         if(crimeCardOutDtos.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        System.out.println("Auditor cards size= " + crimeCardOutDtos.size());
+        return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/cards/bycreationdate")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCrimeCardsSortedByCreationDate(@RequestParam String direction){
+        List<CrimeCardOutDto> crimeCardOutDtos = cardService.getAllCardsSortedByCreationDate(direction);
+        if(crimeCardOutDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/cards/bycrimetime")
+    public ResponseEntity<List<CrimeCardOutDto>> getAllCrimeCardsSortedByCrimeTime(@RequestParam String direction){
+        List<CrimeCardOutDto> crimeCardOutDtos = cardService.getAllCardsSortedByCrimeTime(direction);
+        if(crimeCardOutDtos.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(crimeCardOutDtos, HttpStatus.OK);
     }
 

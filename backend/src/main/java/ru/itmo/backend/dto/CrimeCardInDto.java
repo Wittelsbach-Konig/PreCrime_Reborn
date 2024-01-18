@@ -41,5 +41,6 @@ public class CrimeCardInDto {
     @NotNull
     private String crimeType;
     //@NotEmpty
+    @NotNull
     private Long visionId;
 }

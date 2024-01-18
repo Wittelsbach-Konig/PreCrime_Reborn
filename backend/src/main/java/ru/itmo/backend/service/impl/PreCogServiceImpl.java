@@ -3,6 +3,7 @@ package ru.itmo.backend.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.itmo.backend.dto.PreCogDto;
+import ru.itmo.backend.dto.PreCogOutDto;
 import ru.itmo.backend.exceptions.NotFoundException;
 import ru.itmo.backend.exceptions.NotValidArgumentException;
 import ru.itmo.backend.models.PreCog;
@@ -13,8 +14,11 @@ import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.PreCogService;
 import ru.itmo.backend.service.StatisticService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static ru.itmo.backend.mapper.PreCogMapper.mapToPreCogOutDto;
 
 @Service
 public class PreCogServiceImpl implements PreCogService {
@@ -36,9 +40,13 @@ public class PreCogServiceImpl implements PreCogService {
     }
 
     @Override
-    public List<PreCog> getAllPreCogs() {
+    public List<PreCogOutDto> getAllPreCogs() {
         List<PreCog> preCogs = preCogRepository.findAll();
-        return preCogs;
+        List<PreCogOutDto> result = new ArrayList<>();
+        for(PreCog preCog : preCogs) {
+            result.add(mapToPreCogOutDto(preCog));
+        }
+        return result;
     }
 
     @Override
@@ -47,17 +55,18 @@ public class PreCogServiceImpl implements PreCogService {
     }
 
     @Override
-    public PreCog getPreCog(Long id) {
-        return findPreCogById(id);
+    public PreCogOutDto getPreCog(Long id) {
+        PreCog preCog = findPreCogById(id);
+        return mapToPreCogOutDto(preCog);
     }
 
     @Override
-    public PreCog addNewPreCog(PreCogDto preCogDto) {
+    public PreCogOutDto addNewPreCog(PreCogDto preCogDto) {
         PreCog newPreCog = new PreCog();
         newPreCog.setPreCogName(preCogDto.getPreCogName());
         newPreCog.setAge(preCogDto.getAge());
         PreCog savedPreCog = preCogRepository.save(newPreCog);
-        return savedPreCog;
+        return mapToPreCogOutDto(savedPreCog);
     }
 
     @Override
@@ -67,28 +76,28 @@ public class PreCogServiceImpl implements PreCogService {
     }
 
     @Override
-    public PreCog updatePreCogInfo(Long id, PreCogDto preCogDto) {
+    public PreCogOutDto updatePreCogInfo(Long id, PreCogDto preCogDto) {
         PreCog preCogToUpdate = findPreCogById(id);
         preCogToUpdate.setPreCogName(preCogDto.getPreCogName());
         preCogToUpdate.setAge(preCogDto.getAge());
         PreCog updatedPreCog = preCogRepository.save(preCogToUpdate);
-        return updatedPreCog;
+        return mapToPreCogOutDto(updatedPreCog);
     }
 
     @Override
-    public PreCog retirePreCog(Long id) {
+    public PreCogOutDto retirePreCog(Long id) {
         PreCog preCogToRetire = findPreCogById(id);
         preCogToRetire.setWork(false);
         PreCog updatedPreCog = preCogRepository.save(preCogToRetire);
-        return updatedPreCog;
+        return mapToPreCogOutDto(updatedPreCog);
     }
 
     @Override
-    public PreCog rehabilitatePreCog(Long id) {
+    public PreCogOutDto rehabilitatePreCog(Long id) {
         PreCog preCogToRetire = findPreCogById(id);
         preCogToRetire.setWork(true);
         PreCog updatedPreCog = preCogRepository.save(preCogToRetire);
-        return updatedPreCog;
+        return mapToPreCogOutDto(updatedPreCog);
     }
 
     @Override

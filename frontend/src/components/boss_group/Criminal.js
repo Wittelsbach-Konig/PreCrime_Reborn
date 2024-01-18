@@ -15,12 +15,6 @@ class Criminal extends React.Component {
 
     }
 
-    showGR = () => {
-        this.setState({showReactionGroup: true})
-        this.setState({showTransport: false})
-        this.setState({showAmmunition: false})
-        this.setState({showCriminal:false})
-    };
 
     render() {
         const {criminals, renew} = this.props

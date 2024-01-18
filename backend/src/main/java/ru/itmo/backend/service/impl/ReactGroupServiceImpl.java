@@ -20,6 +20,7 @@ import ru.itmo.backend.service.StatisticService;
 import ru.itmo.backend.service.TelegramBotService;
 //import ru.itmo.precrimesyst.service.TelegramBotService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.itmo.backend.mapper.ReactGroupMapper.mapToReactGroup;
@@ -34,7 +35,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
     private final UserRepository userRepository;
     private final CriminalToReactGroupRepository criminalToReactGroupRepository;
 
-    private SecurityUtil securityUtil;
+    private final SecurityUtil securityUtil;
 
     @Autowired
     public ReactGroupServiceImpl(ReactGroupRepository reactGroupRepository
@@ -75,14 +76,12 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
     @Override
     public List<ReactGroup> getAllMembers() {
-        List<ReactGroup> reactGroups = reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"));
-        return reactGroups;
+        return reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"));
     }
 
     @Override
     public List<ReactGroup> getAllWorkingMembers() {
-        List<ReactGroup> workingReactGroups = reactGroupRepository.findAllByInOperationIsTrue();
-        return workingReactGroups;
+        return reactGroupRepository.findAllByInOperationIsTrue();
     }
 
     @Override
@@ -92,12 +91,6 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         ReactGroup retiredMember = reactGroupRepository.save(memberToRetire);
         return mapToReactGroupOutDto(retiredMember);
     }
-
-//    @Override
-//    public void deleteGroupMember(Long id) {
-//        ReactGroup reactGroupMember = findGroupMemberById(id);
-//        reactGroupRepository.delete(reactGroupMember);
-//    }
 
     @Override
     public ReactGroupOutDto updateGroupMember(Long id, ReactGroupInDto reactGroupInDto) {
@@ -115,9 +108,10 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         statisticService.appointedToArrest(user);
 
         Criminal criminal = findCriminalById(id);
+        criminal.setArrestAssigned(true);
         String message = "You have been assigned to arrest a criminal, information:\n"
                 + "Criminal Name: " + criminal.getName() + "\n"
-                + "Last known location: " + criminal.getLocation()
+                + "Last known location: " + criminal.getLocation() +"\n"
                 + "Weapon :" + criminal.getWeapon();
         for(Long memberId : group){
             ReactGroup groupMember = findGroupMemberById(memberId);
@@ -131,6 +125,17 @@ public class ReactGroupServiceImpl implements ReactGroupService {
             arrestAssignment.setReactGroup(groupMember);
             criminalToReactGroupRepository.save(arrestAssignment);
         }
+        criminalRepository.save(criminal);
     }
 
+    @Override
+    public List<ReactGroupOutDto> getMembersAssignedToArrestCriminal(Long id) {
+        Criminal criminal = findCriminalById(id);
+        List<CriminalToReactGroup> criminalToReactGroups = criminalToReactGroupRepository.findAllByCriminal(criminal);
+        List<ReactGroupOutDto> assignedMembers = new ArrayList<>();
+        for(CriminalToReactGroup record : criminalToReactGroups) {
+            assignedMembers.add(mapToReactGroupOutDto(record.getReactGroup()));
+        }
+        return assignedMembers;
+    }
 }

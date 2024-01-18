@@ -7,7 +7,7 @@ class UserCard extends Component {
         this.state = {
             isEditing: false,
             message: "",
-            selectedStatistic: "bossReactGroupStatistic", // По умолчанию выбраны данные bossReactGroupStatistic
+            selectedStatistic: "Select Statistic", // По умолчанию выбраны данные bossReactGroupStatistic
             statistics: {
                 bossReactGroupStatistic: {
                     id: 0,
@@ -51,10 +51,13 @@ class UserCard extends Component {
     };
 
 
+    splitStringByUpperCase(str) {
+        return str.split(/(?=[A-Z])/).join(' ');
+    }
 
     render() {
-        const { userStat, onClose, role } = this.props;
-        const { isEditing, editedCrimeData, selectedStatistic, message } = this.state;
+        const { userStat, onClose, roles } = this.props;
+        const { selectedStatistic } = this.state;
 
         return (
             <div className="modal">
@@ -93,33 +96,39 @@ class UserCard extends Component {
                                         value={selectedStatistic}
                                         onChange={(e) => this.handleStatisticChange(e.target.value)}
                                     >
+                                        <option> Select Statistic </option>
+                                        {roles.includes('REACTIONGROUP') &&
                                         <option className="table-select" value="bossReactGroupStatistic">Boss React Group Statistic</option>
+                                        }
+                                        {roles.includes('DETECTIVE') &&
                                         <option className="table-select" value="detectiveStatistic">Detective Statistic</option>
+                                        }
+                                        {roles.includes('TECHNIC') &&
                                         <option className="table-select" value="technicStatistic">Technic Statistic</option>
-                                    </select></td>
+                                        }
+                                        </select></td>
                                 </tr>
-                                <tr >
-                                    <td colSpan="2">
-                                <h2 className="h-style">{selectedStatistic}</h2>
+
+                                    <td colSpan="2" className='table-label-edit-td'>
+                                <h2 className="h-style">{this.splitStringByUpperCase(selectedStatistic)}</h2>
                                     </td>
-                                </tr>
                                     {userStat.bossReactGroupStatistic && selectedStatistic === "bossReactGroupStatistic" && Object.entries(userStat.bossReactGroupStatistic).map(([key, value]) => (
                                         (key !== 'id') && (<tr>
-                                        <td className="table-label-pr" key={key}>{key}:</td>
+                                        <td className="table-label-pr" key={key}>{this.splitStringByUpperCase(key)}</td>
                                         <td className="table-label-pr">{value}</td>
                                         </tr>)
 
                                     ))}
                                     {userStat.detectiveStatistic && selectedStatistic === "detectiveStatistic" && Object.entries(userStat.detectiveStatistic).map(([key, value]) => (
                                         (key !== 'id') &&  (<tr>
-                                        <td className="table-label-pr" key={key}>{key}</td>
+                                        <td className="table-label-pr" key={key}>{this.splitStringByUpperCase(key)}</td>
                                         <td className="table-label-pr">{value}</td>
                                         </tr>)
                                     ))}
                                     {userStat.technicStatistic && selectedStatistic === "technicStatistic" && Object.entries(userStat.technicStatistic).map(([key, value]) => (
 
                                         (key !== 'id') && (<tr>
-                                            <td className="table-label-pr" key={key}>{key}:</td>
+                                            <td className="table-label-pr" key={key}>{this.splitStringByUpperCase(key)}</td>
                                             <td className="table-label-pr">{value}</td>
                                         </tr>)
 

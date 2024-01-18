@@ -6,12 +6,11 @@ import ru.itmo.backend.models.ReactGroup;
 
 public class ReactGroupMapper {
     public static ReactGroup mapToReactGroup(ReactGroupInDto groupDto){
-        ReactGroup group = ReactGroup.builder()
+        return ReactGroup.builder()
                 //.id(groupDto.getId())
                 .memberName(groupDto.getMemberName())
                 .telegramId(groupDto.getTelegramId())
                 .build();
-        return group;
     }
     public static ReactGroupOutDto mapToReactGroupOutDto(ReactGroup group){
         ReactGroupOutDto groupDto = new ReactGroupOutDto();

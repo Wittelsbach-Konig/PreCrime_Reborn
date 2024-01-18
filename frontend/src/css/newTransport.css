@@ -61,6 +61,34 @@
     cursor: pointer;
 }
 
+.close-tr:hover,
+.close-tr:focus {
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.close-tr {
+    color: #aaa;
+    float: right;
+    font-size: 33px;
+    font-weight: bold;
+    margin-left:-5px;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.fuel-but:hover + .tooltip {
+    display: block;
+}
 
 .form-tr {
     display: flex;
@@ -95,7 +123,7 @@ input {
 }
 
 .bg-rg-edit{
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0);
     border: none;
 }
 
@@ -106,6 +134,14 @@ input {
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.0);
 }
+
+.table-label-prr{
+    color: #e0e0e0;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
 
 .modal-content-precog .button-tr:hover {
     background-color: #222;

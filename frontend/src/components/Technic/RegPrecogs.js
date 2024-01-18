@@ -18,7 +18,7 @@ class RegPrecogs extends Component {
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
         if(this.state.preCogName !== '' && this.state.age !== 0 )
-        {fetch('http://localhost:8028/api/v1/precogs/newprecog', {
+        {fetch('api/v1/precogs/newprecog', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

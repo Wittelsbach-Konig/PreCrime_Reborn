@@ -31,7 +31,7 @@ class RegTransport extends Component {
         console.log(typeof this.state.maximum_fuel)
         if(this.state.brand!=='' && this.state.model!=='' && this.state.maximum_fuel!==0)
         {
-        fetch('http://localhost:8028/api/v1/reactiongroup/transport/new', {
+        fetch('api/v1/reactiongroup/transport/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,6 +58,8 @@ class RegTransport extends Component {
         else
         {window.alert('input all fields')}
     };
+
+
 
     render() {
         const { onClose } = this.props;

@@ -68,7 +68,7 @@ public class VisionRepositoryTests {
         vision1.setAccepted(true);
         visionRepository.save(vision1);
         List<Vision> expectedVisions = Arrays.asList(vision, vision1);
-        List<Vision> foundVisions = visionRepository.findAllByAcceptedTrue();
+        List<Vision> foundVisions = visionRepository.findAllByAcceptedTrueAndAlreadyInUseFalse();
         Assertions.assertNotNull(foundVisions);
         Assertions.assertEquals(expectedVisions.size(), foundVisions.size());
         Assertions.assertEquals(expectedVisions, foundVisions);

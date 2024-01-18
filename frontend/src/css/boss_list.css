@@ -186,3 +186,21 @@
     background: white;
     border-radius: 10px;
 }
+
+.multi-select-menu{
+    display: flex;
+    text-align: left;
+    margin-left: 10%;
+    color: #e0e0e0;
+    padding: 1%;
+}
+
+.multi-select-menu input{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.header-pr .h-style{
+    display: flex;
+    text-align: left;
+}

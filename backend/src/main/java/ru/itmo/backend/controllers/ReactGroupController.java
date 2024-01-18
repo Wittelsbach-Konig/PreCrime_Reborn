@@ -62,7 +62,25 @@ public class ReactGroupController {
 
     @GetMapping("/criminal")
     public ResponseEntity<List<CriminalOutDto>> getAllCriminals() {
-        List<CriminalOutDto> criminals = cardService.getAllCriminals();
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.NOT_CAUGHT);
+        if(criminals.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(criminals, HttpStatus.OK);
+    }
+
+    @GetMapping("/caughtcriminal")
+    public ResponseEntity<List<CriminalOutDto>> getAllCaughtCriminals() {
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.CAUGHT);
+        if(criminals.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(criminals, HttpStatus.OK);
+    }
+
+    @GetMapping("/escapedcriminal")
+    public ResponseEntity<List<CriminalOutDto>> getAllEscapedCriminals() {
+        List<CriminalOutDto> criminals = cardService.getAllCriminals(CriminalStatus.ESCAPED);
         if(criminals.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -70,9 +88,18 @@ public class ReactGroupController {
     }
 
     @GetMapping("/criminal/{id}")
-    public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id){
+    public ResponseEntity<CriminalOutDto> getCriminal(@PathVariable Long id) {
         CriminalOutDto criminal = cardService.getCriminalById(id);
         return new ResponseEntity<>(criminal, HttpStatus.OK);
+    }
+
+    @GetMapping("/criminal/{id}/assignedgroup")
+    public ResponseEntity<List<ReactGroupOutDto>> getAssignedMembers(@PathVariable Long id) {
+        List<ReactGroupOutDto> assignedGroup = reactGroupService.getMembersAssignedToArrestCriminal(id);
+        if(assignedGroup.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(assignedGroup, HttpStatus.OK);
     }
 
     @GetMapping("/supply")
@@ -100,7 +127,7 @@ public class ReactGroupController {
     }
 
     @GetMapping("/supply/filter")
-    public ResponseEntity<List<GroupResource>> getResourcesByFilter(@RequestBody List<String> types){
+    public ResponseEntity<List<GroupResource>> getResourcesByFilter(@RequestBody(required = false) List<String> types){
         List<GroupResource> resources = groupResourceService.getResourcesByType(types);
         if(resources.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -187,13 +214,6 @@ public class ReactGroupController {
         groupResourceService.refuelCar(id, amount);
         return new ResponseEntity<>("Transport refueled successfully",HttpStatus.OK);
     }
-
-
-//    @DeleteMapping(path ="/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-//    public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
-//        reactGroupService.deleteGroupMember(id);
-//        return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
-//    }
     @PutMapping("/{id}/retire")
     public ResponseEntity<ReactGroupOutDto> retireGroupMember(@PathVariable Long id) {
         ReactGroupOutDto retiredMember = reactGroupService.retireGroupMember(id);

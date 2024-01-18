@@ -18,7 +18,7 @@ class UpdatePrecogs extends Component {
 
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
-        const url = `http://localhost:8028/api/v1/precogs/${this.props.pre.id}`;
+        const url = `api/v1/precogs/${this.props.pre.id}`;
         if(this.state.preCogName !== '' && this.state.age !== 0 )
         {fetch(url, {
             method: 'PUT',

@@ -1,10 +1,9 @@
 import React from "react";
 import Header from "../Header"
-import Profile from "../profile"
 import ReactionGroup from "./ReactionGroup";
 import Ammunition from "./Ammunition";
-import Criminal from "./Criminal"
-import Transport from "./Transport";
+import CriminalTable from "./CriminalTable";
+import TableTransport from "./TableTransport";
 import BurgerMenu from "../BurgerMenu";
 class main_list_boss extends React.Component {
     constructor(props) {
@@ -16,44 +15,70 @@ class main_list_boss extends React.Component {
             showTransport: false,
             showAmmunition: false,
             showCriminal: false,
-            showGroupWork:false,
-            transport:[],
-            groupList:[],
-            ammunition:[],
-            criminals:null,
-            pullRole: {"DETECTIVE": false,
+            showGroupWork: false,
+            transport: [],
+            groupList: [],
+            ammunition: [],
+            criminals: [],
+            pullRole: {
+                "DETECTIVE": false,
                 "TECHNIC": false,
                 "AUDITOR": false,
-                "REACTIONGROUP":false},
+                "REACTIONGROUP": false
+            },
         }
 
     }
 
     showGR = () => {
         const token = localStorage.getItem('jwtToken');
+
+        this.state.showGroupWork ?
+            (fetch('api/v1/reactiongroup/all', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+                },
+            })
+                .then(responses => responses.json())
+                .then(data => {
+                    this.setState({groupList:data})
+                    console.log(this.state.groupList)
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе к серверу:', error);
+                }))
+            :
+            (fetch('api/v1/reactiongroup/allworking', {
+                method: 'GET', // или другой метод
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+                },
+            })
+                .then(responses => responses.json())
+                .then(data => {
+                    this.setState({groupList:data})
+                    console.log(this.state.groupList)
+                })
+                .catch(error => {
+                    console.error('Ошибка при запросе к серверу:', error);
+                }))
+
+
         this.setState({showReactionGroup: true})
         this.setState({showTransport: false})
         this.setState({showAmmunition: false})
         this.setState({showCriminal:false})
 
-        this.state.showGroupWork ?
-            (fetch('http://localhost:8028/api/v1/reactiongroup/all', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({groupList:data})
-                console.log(this.state.groupList)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            }))
-        :
-        (fetch('http://localhost:8028/api/v1/reactiongroup/allworking', {
+
+
+    };
+
+    showAm = ()=> {
+       const token = localStorage.getItem('jwtToken');
+        fetch('api/v1/reactiongroup/supply', {
             method: 'GET', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -62,96 +87,48 @@ class main_list_boss extends React.Component {
         })
             .then(responses => responses.json())
             .then(data => {
-                this.setState({groupList:data})
-                console.log(this.state.groupList)
+                this.setState({ ammunition: data })
+                console.log(data)
             })
             .catch(error => {
                 console.error('Ошибка при запросе к серверу:', error);
-            }))
-
-    };
-
-    showAm = () => {
-        const token = localStorage.getItem('jwtToken');
+            })
 
         this.setState({showReactionGroup: false})
         this.setState({showTransport: false})
         this.setState({showAmmunition: true})
         this.setState({showCriminal:false})
 
-        fetch('http://localhost:8028/api/v1/reactiongroup/supply', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({ammunition:data})
-                console.log(this.state.ammunition)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+
     };
 
     showTr  = () => {
-        const token = localStorage.getItem('jwtToken');
+
 
         this.setState({showReactionGroup: false})
         this.setState({showTransport: true})
         this.setState({showAmmunition: false})
         this.setState({showCriminal:false})
 
-        fetch('http://localhost:8028/api/v1/reactiongroup/transport', {
-            method: 'GET', // или другой метод
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({transport:data})
-                console.log(this.state.transport)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
+
 
     };
 
     showCr = () => {
-        const token = localStorage.getItem('jwtToken');
         this.setState({showReactionGroup: false})
         this.setState({showTransport: false})
         this.setState({showAmmunition: false})
         this.setState({showCriminal:true})
 
-
-        fetch('http://localhost:8028/api/v1/reactiongroup/criminal', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
-            },
-        })
-            .then(responses => responses.json())
-            .then(data => {
-                this.setState({criminals:data})
-                console.log(this.state.criminals)
-            })
-            .catch(error => {
-                console.error('Ошибка при запросе к серверу:', error);
-            });
     };
 
     updateState = (newValue) => {
         this.setState({ showGroupWork: newValue }, ()=>{
             this.showGR()
         });
+
     };
+
 
     render() {
         const {onChange, me} = this.props
@@ -228,7 +205,7 @@ class main_list_boss extends React.Component {
 
                         {showTransport ? (
                             <div>
-                                <Transport
+                                <TableTransport
                                     trans={this.state.transport}
                                     renew={this.showTr}
                                 />
@@ -240,8 +217,7 @@ class main_list_boss extends React.Component {
 
                         {showCriminal ? (
                             <div>
-                                <Criminal
-                                    criminals={this.state.criminals}
+                                <CriminalTable
                                     renew={this.showCr}
                                     onChange={this.updateState}
                                 />

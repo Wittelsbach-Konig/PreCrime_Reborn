@@ -29,6 +29,12 @@ public class VisionController {
         return new ResponseEntity<>(visions, HttpStatus.OK);
     }
 
+    @GetMapping("/used")
+    public ResponseEntity<List<Vision>> getUsedVisionsList(){
+        List<Vision> visions = visionService.getUsedVisionList();
+        return new ResponseEntity<>(visions, HttpStatus.OK);
+    }
+
     @PostMapping(path = "/{id}/accept", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
     public ResponseEntity<String> acceptVision(@PathVariable Long id){
         visionService.approveVision(id);

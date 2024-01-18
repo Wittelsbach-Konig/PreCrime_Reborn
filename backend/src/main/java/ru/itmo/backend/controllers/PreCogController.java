@@ -1,13 +1,12 @@
 package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.PreCogDto;
-import ru.itmo.backend.models.PreCog;
+import ru.itmo.backend.dto.PreCogOutDto;
 import ru.itmo.backend.service.PreCogService;
 
 import javax.validation.Valid;
@@ -25,8 +24,8 @@ public class PreCogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PreCog>> getAllPreCogs() {
-        List<PreCog> preCogs = preCogService.getAllPreCogs();
+    public ResponseEntity<List<PreCogOutDto>> getAllPreCogs() {
+        List<PreCogOutDto> preCogs = preCogService.getAllPreCogs();
         if(preCogs.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -34,21 +33,21 @@ public class PreCogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PreCog> getPreCog(@PathVariable Long id) {
-        PreCog preCog = preCogService.getPreCog(id);
+    public ResponseEntity<PreCogOutDto> getPreCog(@PathVariable Long id) {
+        PreCogOutDto preCog = preCogService.getPreCog(id);
         return new ResponseEntity<>(preCog, HttpStatus.OK);
     }
 
     @PostMapping("/newprecog")
-    public ResponseEntity<PreCog> addNewPreCog(@Valid @RequestBody PreCogDto preCogDto) {
-        PreCog newPreCog = preCogService.addNewPreCog(preCogDto);
+    public ResponseEntity<PreCogOutDto> addNewPreCog(@Valid @RequestBody PreCogDto preCogDto) {
+        PreCogOutDto newPreCog = preCogService.addNewPreCog(preCogDto);
         return new ResponseEntity<>(newPreCog, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PreCog> updatePreCogInfo(@PathVariable Long id
+    public ResponseEntity<PreCogOutDto> updatePreCogInfo(@PathVariable Long id
                                                     , @Valid @RequestBody PreCogDto preCogDto) {
-        PreCog updatedPreCog = preCogService.updatePreCogInfo(id, preCogDto);
+        PreCogOutDto updatedPreCog = preCogService.updatePreCogInfo(id, preCogDto);
         return new ResponseEntity<>(updatedPreCog, HttpStatus.OK);
     }
 
@@ -72,14 +71,14 @@ public class PreCogController {
     }
 
     @PostMapping("/{id}/retire")
-    public ResponseEntity<PreCog> retirePreCog(@PathVariable Long id) {
-        PreCog retiredPreCog = preCogService.retirePreCog(id);
+    public ResponseEntity<PreCogOutDto> retirePreCog(@PathVariable Long id) {
+        PreCogOutDto retiredPreCog = preCogService.retirePreCog(id);
         return new ResponseEntity<>(retiredPreCog, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/rehabilitate")
-    public ResponseEntity<PreCog> rehabilitatePreCog(@PathVariable Long id) {
-        PreCog rehabilitatedPreCog = preCogService.rehabilitatePreCog(id);
+    public ResponseEntity<PreCogOutDto> rehabilitatePreCog(@PathVariable Long id) {
+        PreCogOutDto rehabilitatedPreCog = preCogService.rehabilitatePreCog(id);
         return new ResponseEntity<>(rehabilitatedPreCog, HttpStatus.OK);
     }
 

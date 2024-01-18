@@ -65,7 +65,7 @@ public class StatisticServiceImpl implements StatisticService {
                         technicStatistic.setTechnic(user);
                         technicStatisticRepository.save(technicStatistic);
                         break;
-                    case "GROUP_BOSS":
+                    case "REACTIONGROUP":
                         BossReactGroupStatistic bossReactGroupStatistic = new BossReactGroupStatistic();
                         bossReactGroupStatistic.setBoss(user);
                         bossStatisticRepository.save(bossReactGroupStatistic);

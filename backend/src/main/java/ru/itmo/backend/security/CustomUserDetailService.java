@@ -34,11 +34,10 @@ public class CustomUserDetailService implements UserDetailsService {
                     .collect(Collectors.toList());
 
 
-            User authUser = new User(
+            return new User(
                     user.getLogin(),
                     user.getPassword(),
                     authorities);
-            return authUser;
         }else{
             throw new UsernameNotFoundException("Invalid username or password");
         }

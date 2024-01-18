@@ -17,11 +17,16 @@ public class TelegramBotService extends TelegramLongPollingBot {
     protected static final Logger logger = LogManager.getLogger();
 
     private static final String ERROR_TEXT = "Error occured ";
-    private static final String HELP_TEXT = "This bot is created to demonstrate Power of PreCrime System.\n\n" +
-            "Authors: Kiryushin Vitaliy, Artem Khudyakov, Guskov Kirill\n\n"+
-            "You can execute commands from the main menu on the left or by typing a command:\n\n" +
-            "Type /start to see a welcome message\n\n" +
-            "Type /help to see this message again";
+    private static final String HELP_TEXT = """
+            This bot is created to demonstrate Power of PreCrime System.
+
+            Authors: Kiryushin Vitaliy, Artem Khudyakov, Guskov Kirill
+
+            You can execute commands from the main menu on the left or by typing a command:
+
+            Type /start to see a welcome message
+
+            Type /help to see this message again""";
 
     @Autowired
     public TelegramBotService(TelegramBotConfig telegramBotConfig) {

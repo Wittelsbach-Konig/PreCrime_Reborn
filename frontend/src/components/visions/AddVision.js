@@ -17,7 +17,7 @@ class AddVision extends Component {
 
     handleSubmit = () => {
         const token = localStorage.getItem('jwtToken');
-        fetch('http://localhost:8028/api/v1/visions/add', {
+        fetch('api/v1/visions/add', {
             method: 'POST', // или другой метод
             headers: {
                 'Content-Type': 'application/json',
@@ -46,15 +46,28 @@ class AddVision extends Component {
 
         return (<div>
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-user">
                         <span className="close" onClick={onClose}>&times;</span>
-                        <h2>Add Vision</h2>
+                        <h2 className="h-style">Add Vision</h2>
                         <form className="form-tr">
-                            <label>
-                                Url:
-                                <input type="text" name="url" value={url} onChange={this.handleInputChange} />
-                            </label>
-                            <br />
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className="table-label">
+                                            Url:
+                                        </td>
+                                        <td className="table-label-edit">
+                                            <input
+                                                type="text"
+                                                name="url"
+                                                value={url}
+                                                onChange={this.handleInputChange}
+                                            />
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                            </table>
+                            <br/>
                             <button className="button-tr" type="button" onClick={this.handleSubmit}>Submit</button>
                         </form>
                     </div>
