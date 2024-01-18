@@ -6,6 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends BasePage{
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[2]/div/div/form/div/div[1]/input")
+    
     private WebElement loginField;
 
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[2]/div/div/form/div/div[2]/input")

@@ -1,6 +1,7 @@
 package ru.itmo.backend.uitest.test;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,6 +31,7 @@ abstract public class BaseSeleniumTest {
         String chromedriverLocation = homeDir + ConfProperties.getProperty("chromedriver");
         System.setProperty("webdriver.chrome.driver", chromedriverLocation);
         ChromeOptions options = getChromeOptions(chromeBinaryLocation);
+        if (ConfProperties.getProperty("headless").equals("true")) { options.addArguments("--headless"); }
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
@@ -41,7 +43,6 @@ abstract public class BaseSeleniumTest {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("enable-automation");
         options.addArguments("--remote-allow-origins=*");
-        //options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-extensions");

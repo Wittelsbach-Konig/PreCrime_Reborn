@@ -63,7 +63,7 @@ public class ReactionGroupPage extends BasePage {
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[3]/div/div/div[2]/div/div")
     private WebElement transportModalContent;
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div[2]/div/table/tbody/tr[1]/td[4]/button")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div/div/table/tbody/tr/td[4]/button")
     private WebElement appointGroup;
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div[1]/div")
     private WebElement appointModalContent;
@@ -77,6 +77,8 @@ public class ReactionGroupPage extends BasePage {
     private WebElement selectStatus;
     @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div[2]/div/table/tbody/tr[1]/td[1]")
     private WebElement criminalName;
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div[3]/div/form/table/tbody/tr/td[1]/button")
+    private WebElement buttonYes;
 
     public ReactionGroupPage() {
         PageFactory.initElements(driver, this);
@@ -115,9 +117,11 @@ public class ReactionGroupPage extends BasePage {
     }
     public void setAppointMember() {
         criminalInfo.click();
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofMillis(5000));
+        WebElement wait_appoint = wait1.until(ExpectedConditions.visibilityOf(appointGroup));
         appointGroup.click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5000));
-        WebElement modalContent = wait.until(ExpectedConditions.visibilityOf(appointModalContent));
+        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofMillis(5000));
+        WebElement modalContent = wait2.until(ExpectedConditions.visibilityOf(appointModalContent));
         chooseMember.click();
         appointMember.click();
     }
@@ -125,10 +129,8 @@ public class ReactionGroupPage extends BasePage {
         criminalName.click();
         Select select = new Select(selectStatus);
         select.selectByVisibleText(status);
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(2000));
+        WebElement videoContainer = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"app\"]/div/div/div[4]/div/div[4]/div/div[3]/div")));
+        buttonYes.click();
     }
-
-
-
 }

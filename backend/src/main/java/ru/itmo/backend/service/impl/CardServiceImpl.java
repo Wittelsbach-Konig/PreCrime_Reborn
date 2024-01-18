@@ -244,8 +244,7 @@ public class CardServiceImpl implements CardService {
         Optional<Criminal> criminalOpt = criminalRepository.findById(id);
         if(criminalOpt.isPresent()) {
             Criminal criminal =  criminalOpt.get();
-            CriminalOutDto criminalOutDto = prepareCriminalForOutput(criminal);
-            return criminalOutDto;
+            return prepareCriminalForOutput(criminal);
         }
         return null;
     }

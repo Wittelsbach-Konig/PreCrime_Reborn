@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 public class PreCogMapper {
     public static PreCogOutDto mapToPreCogOutDto(PreCog preCog){
-        PreCogOutDto preCogOutDto = PreCogOutDto.builder()
+        return PreCogOutDto.builder()
                 .id(preCog.getId())
                 .preCogName(preCog.getPreCogName())
                 .age(preCog.getAge())
@@ -18,12 +18,10 @@ public class PreCogMapper {
                 .isWork(preCog.isWork())
                 .commissionedOn(convertDateToString(preCog.getCommissionedOn()))
                 .build();
-        return preCogOutDto;
     }
 
     private static String convertDateToString(LocalDateTime dateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedTime = dateTime.format(formatter);
-        return formattedTime;
+        return dateTime.format(formatter);
     }
 }

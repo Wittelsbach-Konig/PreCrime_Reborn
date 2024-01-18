@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 public class CardMapper {
     public static CrimeCard mapToCrimeCard(CrimeCardInDto cardDto){
-        CrimeCard card = CrimeCard.builder()
+        return CrimeCard.builder()
                 .id(cardDto.getId())
                 .victimName(cardDto.getVictimName())
                 .criminalName(cardDto.getCriminalName())
@@ -17,11 +17,10 @@ public class CardMapper {
                 .weapon(cardDto.getWeapon())
                 .crimeTime(cardDto.getCrimeTime())
                 .build();
-        return card;
     }
 
     public static CrimeCardOutDto mapToCrimeCardOutDto(CrimeCard crimeCard) {
-        CrimeCardOutDto card = CrimeCardOutDto.builder()
+        return CrimeCardOutDto.builder()
                 .id(crimeCard.getId())
                 .crimeTime(convertDateToString(crimeCard.getCrimeTime()))
                 .placeOfCrime(crimeCard.getPlaceOfCrime())
@@ -36,12 +35,10 @@ public class CardMapper {
                 .visionUrl(crimeCard.getVision().getVideoUrl())
                 .creationDate(convertDateToString(crimeCard.getCreationDate()))
                 .build();
-        return card;
     }
 
     private static String convertDateToString(LocalDateTime dateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedTime = dateTime.format(formatter);
-        return formattedTime;
+        return dateTime.format(formatter);
     }
 }

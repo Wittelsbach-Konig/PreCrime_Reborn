@@ -35,7 +35,7 @@ public class ReactGroupServiceImpl implements ReactGroupService {
     private final UserRepository userRepository;
     private final CriminalToReactGroupRepository criminalToReactGroupRepository;
 
-    private SecurityUtil securityUtil;
+    private final SecurityUtil securityUtil;
 
     @Autowired
     public ReactGroupServiceImpl(ReactGroupRepository reactGroupRepository
@@ -76,14 +76,12 @@ public class ReactGroupServiceImpl implements ReactGroupService {
 
     @Override
     public List<ReactGroup> getAllMembers() {
-        List<ReactGroup> reactGroups = reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"));
-        return reactGroups;
+        return reactGroupRepository.findAll(Sort.by(Sort.Direction.DESC, "inOperation"));
     }
 
     @Override
     public List<ReactGroup> getAllWorkingMembers() {
-        List<ReactGroup> workingReactGroups = reactGroupRepository.findAllByInOperationIsTrue();
-        return workingReactGroups;
+        return reactGroupRepository.findAllByInOperationIsTrue();
     }
 
     @Override
@@ -93,12 +91,6 @@ public class ReactGroupServiceImpl implements ReactGroupService {
         ReactGroup retiredMember = reactGroupRepository.save(memberToRetire);
         return mapToReactGroupOutDto(retiredMember);
     }
-
-//    @Override
-//    public void deleteGroupMember(Long id) {
-//        ReactGroup reactGroupMember = findGroupMemberById(id);
-//        reactGroupRepository.delete(reactGroupMember);
-//    }
 
     @Override
     public ReactGroupOutDto updateGroupMember(Long id, ReactGroupInDto reactGroupInDto) {

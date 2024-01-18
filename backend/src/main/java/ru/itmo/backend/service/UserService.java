@@ -1,7 +1,6 @@
 package ru.itmo.backend.service;
 
 
-import org.apache.catalina.User;
 import ru.itmo.backend.dto.RegistrationDto;
 import ru.itmo.backend.dto.UserOutDto;
 import ru.itmo.backend.models.UserEntity;
@@ -17,6 +16,4 @@ public interface UserService {
     UserEntity findUserById(Long id);
     UserOutDto getUserById(Long id);
     UserOutDto getUserByLogin(String login);
-//    UserOutDto securePasswordSingle(UserOutDto userOutDto);
-//    List<UserOutDto> securePasswordList(List<UserOutDto> userOutDtos);
 }

@@ -51,12 +51,11 @@ public class VisionServiceImpl implements VisionService {
         Vision newVision = new Vision();
         newVision.setVideoUrl(visionDto.getVideoUrl());
         Vision savedVision = visionRepository.save(newVision);
-        VisionOutDto result = VisionOutDto.builder()
+        return VisionOutDto.builder()
                 .id(savedVision.getId())
                 .videoUrl(savedVision.getVideoUrl())
                 .accepted(savedVision.isAccepted())
                 .build();
-        return result;
     }
 
     @Override
@@ -103,8 +102,6 @@ public class VisionServiceImpl implements VisionService {
 
     @Override
     public List<Vision> getUsedVisionList() {
-        List<Vision> visionList = new ArrayList<>();
-        visionList.addAll(visionRepository.findAllByAlreadyInUseTrue());
-        return visionList;
+        return new ArrayList<>(visionRepository.findAllByAlreadyInUseTrue());
     }
 }

@@ -5,7 +5,7 @@ import ru.itmo.backend.models.Criminal;
 
 public class CriminalOutMapper {
     public static CriminalOutDto mapToCriminalOutDto(Criminal criminal){
-        CriminalOutDto criminalOutDto = CriminalOutDto.builder()
+        return CriminalOutDto.builder()
                 .id(criminal.getId())
                 .name(criminal.getName())
                 .weapon(criminal.getWeapon())
@@ -13,6 +13,5 @@ public class CriminalOutMapper {
                 .status(criminal.getStatus().name())
                 .isArrestAssigned(criminal.isArrestAssigned())
                 .build();
-        return criminalOutDto;
     }
 }

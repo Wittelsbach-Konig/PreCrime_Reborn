@@ -28,31 +28,31 @@ public class TemplePage extends BasePage{
     private WebElement physicsDropDown;
     @FindBy(xpath = "//*[@id=\"serotoninLevel\"]")
     private WebElement serotoninLevel;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[2]/div/div[1]/button")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[2]/td/table/tbody/tr[1]/td[3]/button")
     private WebElement serotoninEnter;
     @FindBy(xpath = "//*[@id=\"dopamineLevel\"]")
     private WebElement dopamineLevel;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[2]/div/div[2]/button")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]/button")
     private WebElement dopamineEnter;
     @FindBy(xpath = "//*[@id=\"stressLevel\"]")
     private WebElement stressLevel;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[2]/div/div[3]/button")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td[3]/button")
     private WebElement depressantEnter;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/div/table/tbody/tr/td[1]")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/table/tbody/tr")
     private WebElement visionButton;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/div/table/tbody/tr/td[4]/td[1]/button/img")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/table/tbody/tr/td[4]/td[1]/button/img")
     private WebElement acceptButton;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/div/table/tbody/tr/td[4]/td[2]/button/img")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/table/tbody/td[1]/div/table/tbody/tr/td[4]/td[2]/button/img")
     private WebElement deleteButton;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[8]/td/td[1]/button/img")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[1]/td[2]/div/table/tbody/tr[8]/td/td[1]/button/img")
     private WebElement retirePreCog;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[7]/td[2]")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[1]/td[2]/div/table/tbody/tr[7]/td[2]")
     private WebElement preCogStatus;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[4]/td[2]")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[1]/td[2]/div/table/tbody/tr[4]/td[2]")
     private WebElement preCogSerotonin;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[3]/td[2]")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[1]/td[2]/div/table/tbody/tr[3]/td[2]")
     private WebElement preCogDopamine;
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/div[1]/div/div/table/tbody/tr[5]/td[2]")
+    @FindBy(xpath = "//*[@id=\"app\"]/div/div/div[3]/div/div/div/table/tbody/tr[1]/td[2]/div/table/tbody/tr[5]/td[2]")
     private WebElement preCogStress;
 
 

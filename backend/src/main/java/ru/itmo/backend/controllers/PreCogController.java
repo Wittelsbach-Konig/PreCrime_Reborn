@@ -1,14 +1,12 @@
 package ru.itmo.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.backend.dto.PreCogDto;
 import ru.itmo.backend.dto.PreCogOutDto;
-import ru.itmo.backend.models.PreCog;
 import ru.itmo.backend.service.PreCogService;
 
 import javax.validation.Valid;

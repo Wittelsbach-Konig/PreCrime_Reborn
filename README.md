@@ -1,46 +1,78 @@
-# Precrime react-frontend 
+# **Информационная система для проведения расследований будущих преступлений «PreCrime»**
 
-Для того чтобы запустить frontend приложение на react нужно выполнить следующие действия 
+## Авторы
 
+  * [Гуськов Кирилл Сергеич](https://github.com/RobotanTM "Front")
+  * [Кирюшин Виталий](https://github.com/Wittelsbach-Konig "Back&Test")
+  * [Худяков Артём](https://github.com/ArtKhud00 "Back&Test")
 
-### Установка node.js
-Для того чтобы работать с react библиотекой, необходимо установить Node.js, который дополняет его, предоставляя среду выполнения для серверного рендеринга, управления пакетами и инструментов сборки. 
+## ITMO, МПИ, курсовая работа - PreCrime System
 
-#### Ссылка на скачивание
+  Идея проекта заключается в автоматизации проведения расследований в рамках выдуманной системы PreCrime - предсказания будущих преступлений.
 
-```http
-  https://nodejs.org/en
-```
+## Источники
+  1. Steven Spielberg - Minority Report (Особое мнение) [Мультимедиа] / Spielberg Steven Allan - United States, 2002
+  2. Philip K. Dick "The Minority Report" / (1956)
 
-### Создание нового проекта
-После того как мы установили node.js, необходимо открыть терминал и перейти в папку, где вы будете создавать новый проект. 
-```http
-  npx create-react-app название_вашего_проекта
+## Документация проекта
+  0. [Тех. задание](https://docs.google.com/document/d/1hMvditgHhaRTZWnLKKQVJqnq68EoZwM46DTUUy0d1U8/edit?usp=sharing)
+  1. [Vision](https://docs.google.com/document/d/1vbYOExy0uI6AfOE4IB3Xk4F_uz77dFG6/edit?usp=sharing&ouid=107187646949579496351&rtpof=true&sd=true)
+  2. [Software Requirements Specification](https://docs.google.com/document/d/1ovJ3-4AXb3JprjwpIep2AhiCAizOuFSdsPO56p8rZMQ/edit?usp=sharing)
+  3. [Use Case]()
+  4. [Software Development Plan](https://docs.google.com/document/d/17GFOVInRwEk13up0IzgfmBd-y1rsTplhEh0IXH86VhY/edit?usp=sharing)
+  5. [Business Case](https://docs.google.com/document/d/1rcWrLc_-UOhzhQMEW-HjqbCRpiZ54cOaFpZh4Kb9FAo/edit?usp=sharing)
+  6. [Glossary](https://docs.google.com/document/d/1rcWzyMFbh1gjjKk_IGCiKuCtp6r_01uWI8e1CY4gkPk/edit?usp=sharing)
+  7. [RiskList](https://docs.google.com/document/d/1vkuBwmmlAS7_ddU4XmtJZzMO3T66eVFcrbZfqKXiqhI/edit?usp=sharing)
+  8. [Software Architecture Document](https://docs.google.com/document/d/1NsIzNU0NHnJ_nQvd92pVwencNoaU5QpuH_ol5Pw8q5E/edit?usp=sharing)
+  9. [TestPlan](https://docs.google.com/document/d/1Pq3QE04I8wFa6oFxD2fqhUuANkDlmBDBKOIsnJTb9hM/edit?usp=sharing)
 
-```
+## Сервер Helios
 
-### Переход в директорию проекта
-Перейдите в созданную директорию проекта
-```http
-  cd ./название_вашего_проекта
-```
-### Добавление JSX-файлов
-JSX-файлы (расширение .js или .jsx) находятся в директории src. Добавьте в свой проект текущие файлы приложения.
-### Запуск приложения
-Вернитесь в терминале к корневой директории вашего проекта и выполните команду
-```http
-  npm start
-```
-Это запустит локальный сервер разработки и автоматически откроет приложение в браузере.
-### Остановка приложения
-Чтобы остановить локальный сервер разработки, используйте сочетание клавиш Ctrl + C в терминале.
-### Установка дополнительных библиотек
-```http
-  npm i form-data
-```
-```http
-  npm i react-modal
-```
+[Небольшая справка по Helios](connect_to_helios.md)
+
+## Используемый стек технологий
+
+  ReactJs + Java + SpringBoot + PostgreSQL
+
+  1. Java 17+ (jdk17+):
+      ```bash
+      $ java --version
+      openjdk 17.0.6 2023-01-17 LTS
+      OpenJDK Runtime Environment (build 17.0.6+10-LTS)
+      OpenJDK 64-Bit Server VM (build 17.0.6+10-LTS, mixed mode, sharing)
+      ```
+  2. SpringBoot:
+      ```
+      2.7.17
+      ```
+  3. maven: 
+      ```bash
+      $ mvn --version
+      Apache Maven 3.6.3
+      Maven home: /usr/share/maven
+      Java version: 17.0.6, vendor: BellSoft, runtime: /usr/lib/jvm/bellsoft-java17-amd64
+      ```
+  4. PostgreSQL:
+      ```bash
+      $ psql --version
+      psql (PostgreSQL) 16.0 (Ubuntu 16.0-1.pgdg22.04+1)
+      ```
+  5. NodeJs:
+      ```bash
+      $ node --version
+      v20.10.0
+      ```
+  6. npm:
+      ```bash
+      $ npm --version
+      10.2.3
+      ```
+  7. React:
+      ```bash
+      $ npm view react version
+      18.2.0
+      ```
+
 
 
 

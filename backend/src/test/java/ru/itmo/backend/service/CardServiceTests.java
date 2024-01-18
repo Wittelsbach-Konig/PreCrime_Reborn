@@ -21,6 +21,7 @@ import ru.itmo.backend.repository.VisionRepository;
 import ru.itmo.backend.security.SecurityUtil;
 import ru.itmo.backend.service.impl.CardServiceImpl;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.mockito.Mockito.doNothing;
@@ -91,7 +92,7 @@ public class CardServiceTests {
                 .placeOfCrime("City")
                 .victimName("victim")
                 .weapon("weapon")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
 
@@ -130,6 +131,7 @@ public class CardServiceTests {
                 .victimName("victim")
                 .weapon("weapon")
                 .crimeType("INTENTIONAL")
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .placeOfCrime("City")
                 .visionId(1L)
                 .build();
@@ -172,7 +174,7 @@ public class CardServiceTests {
                 .placeOfCrime("City")
                 .victimName("woman")
                 .weapon("gun")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         CrimeCard crimeCard2 = CrimeCard.builder()
@@ -184,7 +186,7 @@ public class CardServiceTests {
                 .placeOfCrime("CountrySide")
                 .victimName("Old man")
                 .weapon("knife")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         List<CrimeCard> crimeCards = Arrays.asList(crimeCard1, crimeCard2);
@@ -205,7 +207,7 @@ public class CardServiceTests {
                 .placeOfCrime("City")
                 .victimName("woman")
                 .weapon("gun")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         CrimeCard crimeCard2 = CrimeCard.builder()
@@ -217,7 +219,7 @@ public class CardServiceTests {
                 .placeOfCrime("CountrySide")
                 .victimName("Old man")
                 .weapon("knife")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         CrimeCard crimeCard3 = CrimeCard.builder()
@@ -229,7 +231,7 @@ public class CardServiceTests {
                 .placeOfCrime("Tommy's house")
                 .victimName("Tommy Angelo")
                 .weapon("shotgun")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         CrimeCard crimeCard4 = CrimeCard.builder()
@@ -241,7 +243,7 @@ public class CardServiceTests {
                 .placeOfCrime("Aesir Tower")
                 .victimName("Nicole Horn")
                 .weapon("Broadcast antenna")
-                .crimeTime(null)
+                .crimeTime(LocalDateTime.parse("2007-12-03T10:15:30"))
                 .isCriminalCaught(false)
                 .build();
         List<CrimeCard> crimeCardsDetective = Arrays.asList(crimeCard1, crimeCard2, crimeCard3);

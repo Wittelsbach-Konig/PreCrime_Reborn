@@ -1,6 +1,5 @@
 package ru.itmo.backend.repository;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.itmo.backend.models.CrimeCard;
 import ru.itmo.backend.models.UserEntity;

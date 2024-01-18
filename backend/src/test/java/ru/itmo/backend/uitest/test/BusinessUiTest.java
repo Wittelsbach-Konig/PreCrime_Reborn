@@ -37,7 +37,6 @@ public class BusinessUiTest extends BaseSeleniumTest{
         driver.get(ConfProperties.getProperty("mainpage"));
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         loginPage.clickRegisterBtn();
-        Thread.sleep(1000);
         registerPage.registerNewUser("Willy", "Wolles",
                 "technic", "technic",
                 "email@yandex.ru", 433915408,
@@ -63,7 +62,7 @@ public class BusinessUiTest extends BaseSeleniumTest{
         Thread.sleep(1000);
         detectivePage.checkCard();
 
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         detectivePage.clickLogOut();
     }
 
@@ -94,7 +93,7 @@ public class BusinessUiTest extends BaseSeleniumTest{
         Thread.sleep(1500);
         templePage.clickRetirePreCog("bob");
         Assertions.assertEquals(templePage.getPreCogStatus("bob"), "No");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         templePage.clickLogOut();
     }
 
@@ -105,24 +104,23 @@ public class BusinessUiTest extends BaseSeleniumTest{
 
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         loginPage.clickRegisterBtn();
-        Thread.sleep(1000);
         registerPage.registerNewUser("Coba", "Ivanov",
                 "reactiongroup", "reactiongroup",
                 "email@rambler.ru", 433915408,
                 false, false,false,true);
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         loginPage.auth("reactiongroup", "reactiongroup");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         reactionGroupPage.purchaseAmmo("M4", 10, 100, "WEAPON");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         reactionGroupPage.setNewTransport("Kia", "Solaris", 160);
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         reactionGroupPage.setRegisterNewMan("Patrick", 433915408);
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         reactionGroupPage.setAppointMember();
         Thread.sleep(1500);
         reactionGroupPage.arrestCriminal("CAUGHT");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         reactionGroupPage.clickLogOut();
 
 
@@ -135,15 +133,16 @@ public class BusinessUiTest extends BaseSeleniumTest{
 
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         loginPage.clickRegisterBtn();
-        Thread.sleep(1000);
         registerPage.registerNewUser("Vasiliy", "Shemyaka",
                 "auditor", "auditor",
                 "email@gmail.ru", 433915408,
                 false, false,true,false);
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
         loginPage.auth("auditor", "auditor");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
+        auditorPage.setReportMistake("I found a mistake, You will be executed");
+        Thread.sleep(1500);
         auditorPage.clickLogOut();
 
     }

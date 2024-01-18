@@ -214,13 +214,6 @@ public class ReactGroupController {
         groupResourceService.refuelCar(id, amount);
         return new ResponseEntity<>("Transport refueled successfully",HttpStatus.OK);
     }
-
-
-//    @DeleteMapping(path ="/{id}", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
-//    public ResponseEntity<String> deleteGroupMember (@PathVariable Long id) {
-//        reactGroupService.deleteGroupMember(id);
-//        return new ResponseEntity<>("Group member successfully deleted", HttpStatus.NO_CONTENT);
-//    }
     @PutMapping("/{id}/retire")
     public ResponseEntity<ReactGroupOutDto> retireGroupMember(@PathVariable Long id) {
         ReactGroupOutDto retiredMember = reactGroupService.retireGroupMember(id);
