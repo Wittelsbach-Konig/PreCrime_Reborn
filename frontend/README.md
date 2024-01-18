@@ -17,7 +17,7 @@
 Активировать переменные окружения
 
 ```bash
-
+export PATH="/usr/local/lib/nodejs/node-v20.10.0-linux-x64/bin/:$PATH"
 ```
 
 ### Установка дополнительных библиотек
