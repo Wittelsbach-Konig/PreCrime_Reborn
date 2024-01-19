@@ -29,9 +29,17 @@ scp -P 2222 hello.txt sXXXXXX@helios.cs.ifmo.ru:~/
 scp -P 2222 sXXXXXX@helios.cs.ifmo.ru:~/hello.txt hello.txt
 ```
 Если ваша версия Windows ниже 10-ой: использовать программу WinSCP
-### Как пробросить порт
-TODO
-
+### Вход в PostgreSQL Helios
+Все необходимые таблицы создаются в базе данных studs, схема sXXXXXXX (ваш id).
+Подключение к бд.
+```bash
+psql -h pg -d studs
+```
+### Как пробросить порт?
+Команда для проброски порта:
+```bash
+ssh -L 8080:localhost:80 sXXXXXX@helios.cs.ifmo.ru -p 2222
+```
 ### Настоятельно рекомендуется
 1. Записать в надежном месте свой пароль
 2. Не менять пароль командой passwd
