@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.psychic-container {
+    position: relative;
+    font-family: "Poppins" , sans-serif;
+    left: 58%;
+    margin-top: 1%;
+    top: 50%;
+    max-width: 40%;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+}
+
+
+.psychic-dropdown-container {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+}
+
+.ch-pr{
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    color: #e7e8ec;
+    position: relative;
+    left: 40%;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#psychicDropdown {
+    width: 93%;
+    position: relative;
+    top: 55%;
+    left: 3%;
+    padding: 10px;
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    background-color: #000;
+    color: #fff;
+    table-layout: fixed;
+}
+
+
+td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    max-width: 200px;
+    max-height: 20%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.table-label {
+    text-align: center;
+    font-weight: bold;
+    white-space: nowrap;
+    color: #e0e0e0;
+}
+
+.table-label-resize {
+    width: 150px;
+}
+
+
+.psychic-container::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    backdrop-filter: blur(8px);
+}
+
+.psychic-info {
+    position: relative;
+    top: calc(100% + 10px);
+    left: 0;
+    background-color: rgba(0,0,0,0.0);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+
+}
+
+.psychic-info h2 {
+    color: #DDD;
+    margin-bottom: 5px;
+}
+
+.psychic-info p {
+    margin: 5px 0;
+}
+
+
+#psychicDropdown option:checked {
+    font-weight: bold;
+}
+
+
+#psychicDropdown:focus + .psychic-info {
+    display: block;
+}
+
+.check-precogs {
+    cursor: pointer;
+    color: #e0e0e0;
+    background-color: rgba(0,0,0,0);
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    height: 10%;
+    padding: 5%;
+    left: 0%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    text-align: center;
+    top: 0%;
+    width: 100%;
+    border-bottom: 2px;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+
+.check-vision {
+    cursor: pointer;
+    color: #e0e0e0;
+    background-color: rgba(0,0,0,0);
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    height: 10%;
+    left: 0%;
+    padding: 5%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    text-align: center;
+    top: 0%;
+    width: 100%;
+    border-bottom: 2px;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.header-pr {
+    background-color: rgba(0, 0, 0, 0.0);
+    font-weight: 600;
+    text-align: center; /* Центрируем текст внутри header */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 2px;
+}
+
+.name-precog{
+    text-align: center;
+    font-weight: 600;
+    padding-bottom: -15px;
+    font-size: 20px;
+}
+
+.del-vis,
+.acc-vis,
+.new-precog,
+.del-precog,
+.upd-precog,
+.reh-precog,
+.ret-precog {
+    cursor: pointer;
+    color: #e7e8ec;
+    background-color: rgba(0, 0, 0, 0.0);
+    font-family: "Poppins" , sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 15px;
+    display: inline-block;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Плавные анимации */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+}
+
+.opt-precog{
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+}
+
+
+.add-vis {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    height: 5%;
+    left: 75.5%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 7%;
+    z-index: 1;
+}
+.add-vis:hover{
+    transform: scale(1.1);
+}
+
+
+.content-container-vision {
+    position: relative;
+    height: 60vh;
+    width: 100%;
+    z-index: 1;
+}
+
+.table-container-vision {
+    max-height: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1;
+}
+.video-container {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+}
+
+.video-container iframe {
+    margin-top: 15px;
+    width: 100%;
+    height: 50vh;
+    border: none;
+    border-radius: 5px;
+}
+
+
+
+
+
+.video-container-card {
+    width: 100%;
+    height: 300px;
+    background-color: #000;
+    border-radius: 10px;
+}
+
+.video-container-card iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.content-detective-vision {
+    position: relative;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 32%;
+    overflow: auto;
+    z-index: 1;
+}
+
+.table-detective-vision {
+    margin-left: 20px;
+    max-height: 100%;
+    overflow-y: auto; /* Добавляем прокрутку, если контент выходит за пределы высоты */
+    max-width: 100%;
+    z-index: 1;
+}
+
+
+.card-list {
+    cursor: pointer;
+    color: #e0e0e0;
+    background-color: rgba(0,0,0,0);
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    height: 10%;
+    left: 0%;
+    padding: 5%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    text-align: center;
+    top: 0%;
+    width: 100%;
+    border-bottom: 2px;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.create-card {
+    cursor: pointer;
+    color: #e0e0e0;
+    background-color: rgba(0,0,0,0);
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    height: 10%;
+    left: 0%;
+    padding: 5%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+    text-align: center;
+    top: 0%;
+    width: 100%;
+    border-bottom: 2px;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+
+.check-precogs:hover,
+.check-vision:hover,
+.card-list:hover,
+.create-card:hover{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.del-vis:hover,
+.acc-vis:hover,
+.new-precog:hover,
+.del-precog:hover,
+.upd-precog:hover,
+.reh-precog:hover,
+.ret-precog:hover {
+    color: #a6b2a0;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}

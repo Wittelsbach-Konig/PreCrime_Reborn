@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.burger-menu {
+    font-family: "Poppins" , sans-serif;
+    font-weight: 600;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #333;
+    padding-top: 50px;
+    transform: translateX(-200px);
+    transition: transform 0.3s ease-in-out;
+    border-right: 2px solid #888;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.burger-menu.open {
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.burger-menu ul {
+    list-style: none;
+    padding: 0;
+    z-index: 2;
+}
+
+.burger-menu li {
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+}
+
+.burger-menu li:hover {
+    background-color: #555;
+    z-index: 2;
+}
+
+.burger-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    position: fixed;
+    top: 1%;
+    left: 1%;
+    color: white;
+    transition: transform 0.3s ease;
+    z-index: 3;
+}
+
+.burger-button.open {
+    transform: translateX(200px);
+    z-index: 3;
+}
+
+.role-p{
+    color: #e0e0e0;
+    position: fixed;
+    top: 1%;
+    left: 5%;
+    font-size: 20px;
+}

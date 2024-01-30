@@ -1,0 +1,162 @@
+.modal {
+    position: fixed;
+    z-index:3;
+    left: 0;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto ;
+    overflow-x: hidden ;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+
+.modal-content-precog {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+.modal-content-appoint {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.modal-content-user {
+    border-radius: 10px;
+    background-color: #333;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close-tr:hover,
+.close-tr:focus {
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.close-tr {
+    color: #aaa;
+    float: right;
+    font-size: 33px;
+    font-weight: bold;
+    margin-left:-5px;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.fuel-but:hover + .tooltip {
+    display: block;
+}
+
+.form-tr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-content-precog label {
+    color: #e0e0e0;
+    margin-bottom: 10px;
+    margin-right: 15px;
+}
+
+input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.modal-content-precog .button-tr {
+    background-color: #222;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 40%;
+    margin-left: 20px;
+}
+
+.bg-rg{
+    background-color: rgba(0,0,0,0.5);
+    border: none;
+}
+
+.bg-rg-edit{
+    background-color: rgba(0,0,0,0);
+    border: none;
+}
+
+.table-label-pr{
+    color: #e0e0e0;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.table-label-prr{
+    color: #e0e0e0;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+
+.modal-content-precog .button-tr:hover {
+    background-color: #222;
+}
+
+.modal-content-appoint .button-tr:hover {
+    background-color: #222;
+}
+
+.h-style{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #e0e0e0;
+    border-bottom: 2px;
+}
+
+

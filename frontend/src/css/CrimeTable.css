@@ -1,0 +1,86 @@
+/* CrimeTable.css */
+
+.crime-content-container {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 90%;
+    z-index: 1;
+}
+
+.crime-table-container {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.user-content-container {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 90%;
+    z-index: 1;
+}
+
+.user-table-container {
+    max-height: 10%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    z-index: 1;
+    position: relative;;
+}
+
+th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+    color: #fff;
+}
+
+th, tr {
+    background-color: #333;
+}
+
+tr:hover {
+    background-color: #555;
+}
+
+.selected-row {
+    background-color: #777 !important;
+}
+
+.react-datepicker-popper {
+    position: relative;
+    z-index: 9 !important;
+}
+
+.react-datepicker {
+    position: absolute;
+    z-index: 9999 !important;
+}
+
+.date_pick{
+    position: relative;
+    display: flex;
+    align-items: start;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.date_pick_1{
+    position: relative;
+    display: flex;
+    align-items: start;
+    padding-left: 57px;
+}

@@ -1,0 +1,816 @@
+{
+	"info": {
+		"_postman_id": "cbad3515-456f-426d-9820-e7da7fa09ab6",
+		"name": "Security test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27793373"
+	},
+	"item": [
+		{
+			"name": "registration",
+			"item": [
+				{
+					"name": "register_detective",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"detective_login\", pm.response.json().login);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"prigozhin\",\r\n    \"password\": {{detective_password}},\r\n    \"confirmPassword\": {{detective_password}},\r\n    \"email\": \"user@example.com\",\r\n    \"firstName\": \"Zhenya\",\r\n    \"lastName\": \"Prigozhin\",\r\n    \"address\": \"Kremlin\",\r\n    \"roles\": [\r\n        {{role_detective}}\r\n    ],\r\n    \"telegramId\": 12346\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/registration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register_technic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"technic_login\", pm.response.json().login);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"baiden\",\r\n    \"password\": {{technic_password}},\r\n    \"confirmPassword\": {{technic_password}},\r\n    \"email\": \"user@example.com\",\r\n    \"firstName\": \"Jo\",\r\n    \"lastName\": \"Baiden\",\r\n    \"address\": \"Washington DC\",\r\n    \"roles\": [\r\n        {{role_technic}}\r\n    ],\r\n    \"telegramId\": 12346\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/registration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register_auditor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"auditor_login\", pm.response.json().login);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"mask\",\r\n    \"password\": {{auditor_password}},\r\n    \"confirmPassword\": {{auditor_password}},\r\n    \"email\": \"user@example.com\",\r\n    \"firstName\": \"Ilon\",\r\n    \"lastName\": \"Mask\",\r\n    \"address\": \"Silicon Valey\",\r\n    \"roles\": [\r\n        {{role_auditor}}\r\n    ],\r\n    \"telegramId\": 12346\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/registration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register_reactiongroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"reactiongroup_login\", pm.response.json().login);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"dzerjinski\",\r\n    \"password\": {{reactiongroup_password}},\r\n    \"confirmPassword\": {{reactiongroup_password}},\r\n    \"email\": \"user@example.com\",\r\n    \"firstName\": \"Felix\",\r\n    \"lastName\": \"Dzerjinski\",\r\n    \"address\": \"Kremlin\",\r\n    \"roles\": [\r\n        {{role_reactiongroup}}\r\n    ],\r\n    \"telegramId\": 12346\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/registration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "login_detective",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"detective_token\", pm.response.json().accessToken);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"{{detective_login}}\",\r\n    \"password\": {{detective_password}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_incorrect",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"sdsadsa\",\r\n    \"password\": \"sdsdsdsd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_technic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"technic_token\", pm.response.json().accessToken);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"{{technic_login}}\",\r\n    \"password\": {{technic_password}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_auditor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"auditor_token\", pm.response.json().accessToken);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"{{auditor_login}}\",\r\n    \"password\": {{auditor_password}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login_reactiongroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"reactiongroup_token\", pm.response.json().accessToken);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"{{reactiongroup_login}}\",\r\n    \"password\": {{reactiongroup_password}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{basePort}}{{apiVersion}}auth",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "detective",
+			"item": [
+				{
+					"name": "positive",
+					"item": [
+						{
+							"name": "cards",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{detective_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}cards",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}cards"
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "randomDateTime",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{detective_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}cards/randomDateTime",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}cards",
+									"path": [
+										"randomDateTime"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "negative",
+					"item": [
+						{
+							"name": "precogs_detective",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{detective_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}precogs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}precogs"
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "technic",
+			"item": [
+				{
+					"name": "positive",
+					"item": [
+						{
+							"name": "precogs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{technic_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}precogs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}precogs"
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "negative",
+					"item": [
+						{
+							"name": "cards_technic",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{technic_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}cards/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}cards",
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "auditor",
+			"item": [
+				{
+					"name": "positive",
+					"item": [
+						{
+							"name": "get_users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auditor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}auditor/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}auditor",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "negative",
+					"item": [
+						{
+							"name": "randomDateTime_auditor",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{auditor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}cards/randomDateTime",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}cards",
+									"path": [
+										"randomDateTime"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "reactiongroup",
+			"item": [
+				{
+					"name": "positive",
+					"item": [
+						{
+							"name": "create_newman",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{reactiongroup_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"memberName\": \"Alesha1\",\r\n    \"telegramId\": 123455\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}reactiongroup/newman",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}reactiongroup",
+									"path": [
+										"newman"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "negative",
+					"item": [
+						{
+							"name": "cards_reactiongroup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{reactiongroup_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}:{{basePort}}{{apiVersion}}cards/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"port": "{{basePort}}{{apiVersion}}cards",
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

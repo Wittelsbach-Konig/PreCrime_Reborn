@@ -1,0 +1,437 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.car-text {
+    position: relative;
+    justify-content: center;
+    text-align: center;
+    color: #e0e0e0;
+    z-index: 1;
+    font-size: 24px;
+}
+
+.card-text {
+    position: relative;
+    left: 44%;
+    z-index: 1;
+    color: #e0e0e0;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    font-size:28px;
+}
+
+.content-container {
+    position: absolute;
+    left :27%;
+    top : -28%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 60%;
+    overflow-y: auto;
+    z-index: 1;
+
+}
+
+.table-container {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    z-index: 1;
+    position: relative;
+
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+th, td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+    color: #000000;
+}
+
+
+.selected-row {
+    background-color: #a0d3ff;
+}
+
+.new-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 17%;
+    z-index: 1;
+}
+.new-transport:hover{
+    transform: scale(1.1);
+}
+
+.reh-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 35%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 7%;
+    z-index: 1;
+}
+.reh-transport:hover{
+    transform: scale(1.1);
+}
+
+.ret-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 27%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 7%;
+    z-index: 1;
+}
+.ret-transport:hover{
+    transform: scale(1.1);
+}
+
+.ref-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 59.2%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 10%;
+    z-index: 1;
+}
+.ref-transport:hover{
+    transform: scale(1.1);
+}
+
+.del-transport {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 46%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 10%;
+    z-index: 1;
+}
+.del-transport:hover{
+    transform: scale(1.1);
+}
+
+
+.content-container-group {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 50%;
+    z-index: 1;
+}
+
+.content-container-criminal {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 60%;
+    z-index: 1;
+}
+
+.table-container-group {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 1;
+}
+
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #555;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 2; /* Устанавливаем z-index выше затененного фона, но ниже таблицы */
+}
+
+
+/* Добавляем стили для затененного фона */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Затененный фон */
+    z-index: 2; /* Устанавливаем нижний z-index */
+}
+
+.content-container-group-cr {
+    position: absolute;
+    left: 15%;
+    top: 10%;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 70%;
+    overflow-y: auto;
+    z-index: 3;
+}
+
+.table-container-group-cr {
+    max-height: 100%;
+    max-width: 100%;
+    z-index: 3; /* Устанавливаем более высокий z-index, чтобы таблица находилась над затененным фоном */
+}
+
+/* Стиль для выделенной строки */
+.selected-row {
+    background-color: #e0e0e0;
+}
+
+
+
+
+.new-group {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -25%;
+    width: 17%;
+    z-index: 1;
+}
+.new-group:hover{
+    transform: scale(1.1);
+}
+
+.del-man {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -15%;
+    width: 17%;
+    z-index: 1;
+}
+.del-man:hover{
+    transform: scale(1.1);
+}
+
+.work-man {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 5%;
+    width: 17%;
+    z-index: 1;
+}
+.work-man:hover{
+    transform: scale(1.1);
+}
+
+.corr-group {
+    cursor: pointer;
+    border-radius: 10px;
+    color: #000000;
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 5%;
+    left: 70%;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: -5%;
+    width: 17%;
+    z-index: 1;
+}
+.corr-group:hover{
+    transform: scale(1.1);
+}
+
+
+
+.content-container-supply {
+    position: relative;
+    left :5%;
+    display: flex;
+    flex-direction: column;
+    height: 10%;
+    width: 90%;
+    z-index: 1;
+}
+
+.table-container-supply {
+    max-height: 10%;
+    max-width: 100%;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.modal-buttons {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    margin-top: 20px;
+    top: 80%;
+    left:35%;
+}
+
+.containerStyle {
+    position: relative;
+    top: 30%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 50%;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.labelStyle {
+    width: 33%;
+    padding-right: 10px;
+    margin-top: 7px;
+}
+
+.inputStyle {
+    flex: 1;
+    padding: 8px;
+}
+
+.buttonStyle {
+    width: 33%;
+    height: 28%;
+    padding: 10px;
+    margin-left: 5px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;;
+}
+
+.buttonStyle:hover {
+    transform: scale(1.01);
+    background-color: #000;
+    color: #fff;
+}
+
+.draggableContainer {
+    font-weight: 600;
+    font-family: "Poppins" , sans-serif;
+    color: #e0e0e0;
+    position: absolute;
+    width: 105%;
+    top: 65%;
+    left: 3%;
+}
+
+.fuel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.fuel-but {
+    position: relative;
+    height: 30px;
+    margin: -0px -5px -0px;
+    padding-bottom: -100px;
+}
+
+.special td {
+    text-align: center;
+}
+

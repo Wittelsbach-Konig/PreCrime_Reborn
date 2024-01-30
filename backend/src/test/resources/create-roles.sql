@@ -1,0 +1,6 @@
+INSERT INTO roles(name) VALUES
+('ADMIN'),
+('AUDITOR'),
+('DETECTIVE'),
+('REACTIONGROUP'),
+('TECHNIC');

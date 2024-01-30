@@ -1,0 +1,49 @@
+.crime-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+    color: #fff;
+    z-index: 2;
+}
+
+.form-button-cc {
+    left:30%;
+    position: relative;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #212121;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 3;
+    width: 13.65%;
+}
+
+.form-button-cc:hover {
+    background-color: #424242;
+}
+
+.form-label-cc {
+    left:30%;
+    position: relative;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #212121;
+    color: #fff;
+    z-index: 3;
+    width: 19%;
+}
+
+.form-input {
+    margin-bottom: 10px;
+    padding: 8px;
+    z-index: 3;
+}
+
+.crime-info {
+    position: relative;
+    margin-top: 20px;
+    left:30%;
+}

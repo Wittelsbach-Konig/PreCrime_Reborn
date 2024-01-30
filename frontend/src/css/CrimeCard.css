@@ -1,0 +1,147 @@
+/* CrimeCard.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+.crime-card {
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.crime-card-content {
+    background-color: #555;
+    margin: 2.6% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    z-index: 3;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 3;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-edit{
+    position: relative;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 10px;
+    border: none;
+    left: 27%;
+    cursor: pointer;
+    width: 40%;
+    margin-left: 20px;
+    transition: background-color ease 0.5s;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.button-edit:hover{
+    background-color: rgba(0,0,0,0.8);
+}
+
+.table-label-edit{
+    color: #e0e0e0;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.table-label-edit-td{
+    color: #e0e0e0;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+    background-color: #333;
+}
+
+.table-label-edit input,
+.table-label-edit select,
+.table-label-edit button{
+    border: none;
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    text-align: center;
+    color: #e0e0e0;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 0px;
+}
+
+.table-label-edit iframe{
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+.table-select{
+    color: #000;
+}
+
+.table-label-edit-rel{
+    color: #e0e0e0;
+    width: 20%;
+    text-align: center;
+    font-weight: bold;
+    white-space: nowrap;
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.table-label-edit-rel select{
+    background-color: rgba(0, 0, 0, 0.0);
+    width: 100%;
+    text-align: center;
+    color: #e0e0e0;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-top: 0px;
+}
+
+
+.table-label-edit-rel option{
+    width: 100%;
+    text-align: center;
+    color: #000;
+
+}
+
+.table-label-edit button:hover{
+    background-color: rgba(155, 155, 155, 0.5);
+}
+
+.message {
+    border-radius: 10px;
+    position: relative;
+    border: none;
+    width: 100%;
+    height: 200px;
+    padding: 5px;
+    justify-content: start;
+    text-align: start !important;
+    word-wrap: break-word;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
