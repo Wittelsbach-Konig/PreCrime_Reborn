@@ -23,7 +23,7 @@
   0. [Тех. задание](https://docs.google.com/document/d/1hMvditgHhaRTZWnLKKQVJqnq68EoZwM46DTUUy0d1U8/edit?usp=sharing)
   1. [Vision](https://docs.google.com/document/d/1vbYOExy0uI6AfOE4IB3Xk4F_uz77dFG6/edit?usp=sharing&ouid=107187646949579496351&rtpof=true&sd=true)
   2. [Software Requirements Specification](https://docs.google.com/document/d/1ovJ3-4AXb3JprjwpIep2AhiCAizOuFSdsPO56p8rZMQ/edit?usp=sharing)
-  3. [Use Case]()
+  3. [Use Case](https://docs.google.com/document/d/10TrkdeUaDxa_sQm4rzueAuqJe2fuyxf6vpJss9iNM4E/edit?usp=sharing)
   4. [Software Development Plan](https://docs.google.com/document/d/17GFOVInRwEk13up0IzgfmBd-y1rsTplhEh0IXH86VhY/edit?usp=sharing)
   5. [Business Case](https://docs.google.com/document/d/1rcWrLc_-UOhzhQMEW-HjqbCRpiZ54cOaFpZh4Kb9FAo/edit?usp=sharing)
   6. [Glossary](https://docs.google.com/document/d/1rcWzyMFbh1gjjKk_IGCiKuCtp6r_01uWI8e1CY4gkPk/edit?usp=sharing)
